@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0f1115">
+<title>기𝕏차 목적지 보내기</title>
+<style>
+  :root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#eef1f6;--sub:#9aa3b2;--red:#e82127;--ok:#2ecc71;--err:#ff6b6b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+       display:flex;align-items:flex-start;justify-content:center;padding:max(24px,env(safe-area-inset-top)) 16px 32px}
+  .card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 22px 22px;margin-top:6vh;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .logo{width:40px;height:40px;border-radius:12px;background:var(--red);display:grid;place-items:center;font-size:22px;flex:none}
+  h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.2px}
+  .lead{color:var(--sub);font-size:14px;margin:4px 0 20px}
+  label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
+  label .opt{color:var(--sub);font-weight:400}
+  input{width:100%;font-size:17px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#0f1218;color:var(--txt);outline:none;-webkit-appearance:none}
+  input:focus{border-color:#4b8bff;box-shadow:0 0 0 3px rgba(75,139,255,.2)}
+  .count{text-align:right;color:var(--sub);font-size:12px;margin-top:4px}
+  button{width:100%;margin-top:18px;font-size:17px;font-weight:700;padding:14px;border:0;border-radius:12px;background:var(--red);color:#fff;cursor:pointer}
+  button:disabled{background:#3a3f4b;color:#9aa3b2;cursor:not-allowed}
+  .status{min-height:24px;margin-top:14px;font-size:15px;text-align:center}
+  .status.ok{color:var(--ok)} .status.err{color:var(--err)} .status.busy{color:var(--sub)}
+  .notice{text-align:center;padding:18px 4px 6px}
+  .notice .big{font-size:40px} .notice p{margin:8px 0 0;color:var(--sub)}
+  .notice b{color:var(--txt);font-size:18px}
+  .foot{color:#6b7382;font-size:12px;text-align:center;margin-top:18px}
+  .row{display:flex;gap:8px;align-items:stretch}
+  .row input{flex:1}
+  .row button{width:auto;margin-top:0;padding:0 18px;flex:none;background:#2b5fd9}
+  .results{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .results li button{width:100%;margin:0;text-align:left;background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--txt);font-weight:400;font-size:15px}
+  .results li button:hover{border-color:#4b5568}
+  .results li button[aria-checked="true"]{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,33,39,.35);background:#1d1416}
+  .results .nm{font-weight:700;font-size:16px;display:flex;gap:8px;align-items:center}
+  .results .cat{font-size:12px;font-weight:600;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:0 7px}
+  .results .ad{color:var(--sub);font-size:13px;margin-top:2px}
+  .picked{margin-top:12px;font-size:14px;color:var(--sub);text-align:center}
+  .picked b{color:var(--txt)}
+  .cur{margin:0 0 4px;padding:12px 14px;border-radius:12px;border:1px solid #2f4a7a;background:#121a2a}
+  .cur .t{font-size:12px;font-weight:700;color:#8fb3ff;letter-spacing:.2px}
+  .cur .nm{font-size:17px;font-weight:700;margin-top:2px;word-break:keep-all}
+  .cur .ad{color:var(--sub);font-size:13px;margin-top:1px}
+  .cur .tm{color:#6b7382;font-size:12px;margin-top:4px}
+  .cur{display:flex;gap:12px;align-items:center}
+  .cur .info{flex:1;min-width:0}
+  .cur .resend{width:96px;flex:none;margin:0;padding:10px 8px;font-size:14px;line-height:1.25;border-radius:10px;white-space:nowrap;
+               background:var(--red);touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px}
+  .cur .resend.ok{background:#1f7a46;color:#fff} .cur .resend.err{background:#7a2626;color:#fff}
+  .cur .resend:disabled{background:#3a3f4b;color:#cfd5df}
+  .cur .resend.ok:disabled{background:#1f7a46;color:#fff} .cur .resend.err:disabled{background:#7a2626;color:#fff}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="head"><div class="logo" aria-hidden="true">🚗</div><h1>기𝕏차 목적지 보내기</h1></div>
+  <p class="lead">목적지를 검색해서 고르면 차량 내비게이션에 설정돼요.</p>
+
+  <div id="loading" class="notice"><p>불러오는 중…</p></div>
+  <div id="badlink" class="notice" hidden><div class="big">🔒</div><b>링크가 올바르지 않아요</b><p>받은 링크 전체(# 뒤까지)를 그대로 열어 주세요.</p></div>
+  <div id="notready" class="notice" hidden><div class="big">🛠️</div><b>아직 준비 중이에요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+
+  <form id="form" hidden autocomplete="off" novalidate>
+    <div id="cur" class="cur" hidden aria-live="polite"><div class="info"><div class="t">📍 현재 설정된 목적지</div>
+      <div class="nm" id="curName"></div><div class="ad" id="curAddr" hidden></div><div class="tm" id="curTime"></div></div>
+      <button id="resend" class="resend" type="button" aria-label="현재 목적지를 테슬라로 다시 보내기">테슬라로<br>재전송</button></div>
+    <label for="dest">목적지</label>
+    <div class="row">
+      <input id="dest" name="destination" maxlength="60" required placeholder="예: 유성고등학교, 대전역, 주소" enterkeyhint="search">
+      <button id="find" type="submit">검색</button>
+    </div>
+    <ul id="results" class="results" role="radiogroup" aria-label="검색 결과" hidden></ul>
+    <div id="picked" class="picked" hidden></div>
+    <button id="send" type="button" disabled hidden>이 곳으로 보내기</button>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+  </form>
+  <div class="foot">이 링크를 받은 사람만 사용할 수 있어요.</div>
+</main>
+<script>
+// CRYPTO-BEGIN (same format as ../index.html: PBKDF2-SHA256 → AES-256-GCM; passphrase = #k=… fragment, never sent to the server)
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(doc.salt), iterations:doc.iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+
+// ---- SEND: the ONE place to adapt the request. cfg = decrypted cfg.enc.json ----
+//   cfg.mode === 'direct' : {url, key}  → POST JSON with Authorization: Bearer <key> (needs CORS from the webhook host)
+//   cfg.mode === 'relay'  : {url}       → POST text/plain JSON (a "simple" request, no preflight) to a relay that adds the key
+// Must resolve on success and throw on failure.
+async function sendDestination(cfg, payload){
+  const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 15000);
+  try{
+    let res;
+    if(cfg.mode === 'relay'){
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                  body:JSON.stringify(payload), signal:ctl.signal, redirect:'follow'});
+    }else{
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+                                  body:JSON.stringify(payload), signal:ctl.signal});
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(cfg.mode === 'relay'){   // the relay always answers 200; the real result is in {ok, error|status}
+      let j=null; try{ j = await res.json(); }catch(e){}
+      if(j && j.ok === false) throw new Error(j.error==='rate' ? '잠시 후 다시' : (j.error ? '오류: '+j.error : 'HTTP '+(j.status||'?')));
+    }
+    return true;
+  }finally{ clearTimeout(t); }
+}
+
+// ---- SEARCH: relay first ({action:'search', q} → {ok:true, results}); if the relay is the old version
+//      (answers {ok:false,error:'empty'}) or fails, search Photon (OSM, keyless, CORS *) directly from the browser.
+const KR = {minLat:33.0, maxLat:38.7, minLng:124.5, maxLng:132.0};
+const inKr = (la,ln) => Number.isFinite(la) && Number.isFinite(ln) && la>=KR.minLat && la<=KR.maxLat && ln>=KR.minLng && ln<=KR.maxLng;
+const OSM_CAT = {station:'역',stop:'역',halt:'역',subway_entrance:'역 출입구',bus_stop:'버스정류장',department_store:'백화점',mall:'쇼핑몰',
+  supermarket:'마트',school:'학교',university:'대학교',college:'대학',cafe:'카페',restaurant:'음식점',fast_food:'음식점',hotel:'호텔',
+  hospital:'병원',clinic:'병원',pharmacy:'약국',parking:'주차장',fuel:'주유소',charging_station:'충전소',bank:'은행',apartments:'아파트',
+  residential:'아파트·주거',house:'주소',building:'건물',park:'공원',attraction:'명소',museum:'박물관'};
+function photonList(fs){
+  const list = fs.map(f=>{
+    const p=f.properties||{}, c=(f.geometry||{}).coordinates||[], parts=[];
+    const push=v=>{ if(v && !parts.includes(v)) parts.push(v); };
+    push(p.state); push(p.city); push(p.county);
+    if(!p.street) push(p.district||p.locality);
+    push(p.street ? p.street+(p.housenumber?' '+p.housenumber:'') : '');
+    const r = p.osm_value==='bus_stop' ? 2 : (p.osm_key==='landuse' ? 1 : 0);
+    return {name:p.name||parts.join(' '), address:parts.join(' '), category:OSM_CAT[p.osm_value]||'', lat:+c[1], lng:+c[0], _r:r};
+  }).filter(x=>x.name && inKr(x.lat,x.lng));
+  list.sort((a,b)=>a._r-b._r);
+  const seen=new Set(), out=[];
+  for(const x of list){ const k=x.name+'|'+x.lat.toFixed(3)+','+x.lng.toFixed(3); if(seen.has(k)) continue; seen.add(k); delete x._r; out.push(x); }
+  return out;
+}
+async function fetchJson(url, opt, ms){
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(), ms);
+  try{ const r=await fetch(url,{...opt,signal:ctl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
+  finally{ clearTimeout(t); }
+}
+async function searchPlaces(cfg, q){
+  if(cfg.mode==='relay'){
+    try{
+      const j = await fetchJson(cfg.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                         body:JSON.stringify({action:'search', q}),redirect:'follow'}, 10000);
+      if(j && j.ok && Array.isArray(j.results))
+        return j.results.filter(x=>x && x.name && inKr(+x.lat,+x.lng)).map(x=>({...x,lat:+x.lat,lng:+x.lng}));
+    }catch(e){ /* fall back below */ }
+  }
+  const j = await fetchJson('https://photon.komoot.io/api/?limit=50&lang=default&bbox=124.5,33,132,38.7&q='+encodeURIComponent(q), {}, 10000);
+  return photonList(j.features||[]);
+}
+
+const $ = id => document.getElementById(id);
+const show = id => { for(const x of ['loading','badlink','notready','form']) $(x).hidden = (x!==id); };
+let CFG = null, RESULTS = [], PICK = null, LOCKED = false;
+const COOLDOWN = 30;
+
+function passFromHash(){
+  const m = location.hash.match(/[#&]k=([^&]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+async function init(){
+  const pass = passFromHash();
+  if(!pass || !window.crypto || !crypto.subtle){ show('badlink'); return; }
+  let doc;
+  try{
+    const r = await fetch('cfg.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.status===404){ show('notready'); return; }
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    doc = await r.json();
+  }catch(e){ show('notready'); return; }
+  if(doc && doc.placeholder){ show('notready'); return; }
+  try{
+    CFG = await decryptDoc(doc, pass);
+    if(!CFG || !CFG.url) { show('notready'); return; }
+  }catch(e){ show(e.badKey ? 'badlink' : 'notready'); return; }
+  show('form'); $('dest').focus();
+  loadCurrent(pass);
+}
+
+// ---- CURRENT DESTINATION: cur.enc.json = encrypted {name,address,lat,lng,set_at,expires} written by tesla_cur_dest.py
+//      (called from ~/.tesla/set_dest.py). Missing / unreadable / {none:true} / expired → card stays hidden (page as before).
+const CUR_MAX_H = 24;   // fallback age limit when the file has no `expires`
+function fmtKst(iso){
+  const d=new Date(iso); if(isNaN(d)) return '';
+  const p=Object.fromEntries(new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric',weekday:'short',
+    hour:'numeric',minute:'2-digit',hour12:true}).formatToParts(d).map(x=>[x.type,x.value]));
+  return `${p.month}/${p.day}(${p.weekday}) ${p.dayPeriod} ${p.hour}:${p.minute}`;
+}
+let CUR = null;   // the destination shown on the card (used by the 재전송 button)
+async function loadCurrent(pass){
+  let cur=null;
+  try{
+    const r = await fetch('cur.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.ok) cur = await decryptDoc(await r.json(), pass);
+  }catch(e){ cur=null; }
+  const now=Date.now(), set=cur && Date.parse(cur.set_at);
+  const exp = cur && (cur.expires ? Date.parse(cur.expires) : set + CUR_MAX_H*3600e3);
+  const valid = cur && !cur.none && cur.name && Number.isFinite(set) && Number.isFinite(exp) && now < exp;
+  if(!valid){ $('cur').hidden=true; CUR=null; return; }
+  CUR = {name:cur.name, address:cur.address||'', lat:+cur.lat, lng:+cur.lng};
+  $('curName').textContent = cur.name;
+  const ad = (cur.address||'').trim();
+  $('curAddr').textContent = ad; $('curAddr').hidden = !ad || ad===cur.name;
+  $('curTime').textContent = fmtKst(cur.set_at) + ' 설정';
+  $('cur').hidden=false;
+}
+
+function setStatus(cls, msg){ const s=$('status'); s.className='status '+cls; s.textContent=msg; }
+function esc(t){ return String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function clearResults(){
+  RESULTS=[]; PICK=null; $('results').innerHTML=''; $('results').hidden=true;
+  $('picked').hidden=true; $('send').hidden=true; if(!LOCKED) $('send').disabled=true;
+}
+function renderResults(){
+  const ul=$('results');
+  ul.innerHTML = RESULTS.map((x,i)=>`<li><button type="button" role="radio" aria-checked="false" data-i="${i}">
+      <div class="nm">${esc(x.name)}${x.category?`<span class="cat">${esc(x.category)}</span>`:''}</div>
+      <div class="ad">${esc(x.address||'')}</div></button></li>`).join('');
+  ul.hidden=false; $('send').hidden=false; $('send').disabled=true;
+  $('picked').hidden=false; $('picked').textContent='목록에서 갈 곳을 눌러 고르세요.';
+}
+function pick(i){
+  PICK = RESULTS[i] || null;
+  for(const b of $('results').querySelectorAll('button')) b.setAttribute('aria-checked', String(+b.dataset.i===i));
+  if(PICK){ $('picked').innerHTML = `선택: <b>${esc(PICK.name)}</b>`; if(!LOCKED) $('send').disabled=false; }
+}
+$('results').addEventListener('click', ev=>{ const b=ev.target.closest('button[data-i]'); if(b) pick(+b.dataset.i); });
+
+function cooldown(sec){
+  LOCKED = sec>0; const b=$('send'); b.disabled=true;
+  const r=$('resend');
+  const tick=()=>{ if(!RESENDING) r.disabled = sec>0;
+                   if(sec<=0){ LOCKED=false; b.textContent='이 곳으로 보내기'; b.disabled=!PICK; return; }
+                   b.textContent=`다시 보내기까지 ${sec}초`; sec--; setTimeout(tick,1000); };
+  tick();
+}
+
+let searching=false;
+$('dest').addEventListener('input', ()=>{ if(RESULTS.length) clearResults(); });
+$('form').addEventListener('submit', async ev=>{
+  ev.preventDefault();
+  if(searching) return;
+  const q = $('dest').value.trim().slice(0,60);
+  if(!q){ setStatus('err','목적지를 입력해 주세요.'); $('dest').focus(); return; }
+  searching=true; $('find').disabled=true; $('find').textContent='검색 중…'; clearResults(); setStatus('busy','찾는 중…');
+  try{
+    RESULTS = await searchPlaces(CFG, q);
+    if(!RESULTS.length){ setStatus('err','찾는 장소가 없어요. 다른 이름이나 주소로 검색해 보세요'); }
+    else { setStatus('',''); renderResults(); $('dest').blur(); }
+  }catch(e){
+    setStatus('err','검색에 실패했어요. 잠시 후 다시 시도해 주세요.');
+  }finally{ searching=false; $('find').disabled=false; $('find').textContent='검색'; }
+});
+// one payload shape for an already-picked place (normal pick AND 재전송), so the relay/routine treat both the same
+function pickedPayload(x, extra){
+  // destination = "<name> <address>" so the routine also works with the OLD relay (which forwards only destination)
+  const destination = (x.name + (x.address && x.address!==x.name ? ' ' + x.address : '')).slice(0,200);
+  return {destination, name:x.name, address:x.address||'', lat:x.lat, lng:x.lng, picked:true,
+          source:'tesla-form', sent_at:new Date().toISOString(), ...(extra||{})};
+}
+$('send').addEventListener('click', async ()=>{
+  if($('send').disabled || !PICK || LOCKED) return;
+  const x = PICK;
+  const payload = pickedPayload(x);
+  $('send').disabled = true; $('send').textContent = '보내는 중…'; setStatus('busy','보내는 중…');
+  try{
+    await sendDestination(CFG, payload);
+    setStatus('ok',`보냈어요! '${x.name}'(으)로 차에 곧 설정돼요`);
+    $('dest').value=''; clearResults(); $('send').hidden=false;
+    cooldown(COOLDOWN);
+    const pw=passFromHash(); for(const s of [45,90,150]) setTimeout(()=>loadCurrent(pw), s*1000);  // pick up the new destination once the car has it
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    setStatus('err',`전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(5);
+  }
+});
+// ---- 재전송: re-send the card's destination through the SAME sendDestination() path (no search, no ambiguity question).
+//      Shares LOCKED with the main send (the relay allows 1 send / 20 s anyway). resend:true is informational only.
+let RESENDING=false;
+function resendLabel(cls, html){ const b=$('resend'); b.className='resend'+(cls?' '+cls:''); b.innerHTML=html; }
+$('resend').addEventListener('click', async ()=>{
+  if(RESENDING || LOCKED || !CUR || !inKr(CUR.lat, CUR.lng)) return;
+  RESENDING=true; const b=$('resend'); b.disabled=true; resendLabel('', '보내는<br>중…'); setStatus('busy','보내는 중…');
+  let wait=5;
+  try{
+    await sendDestination(CFG, pickedPayload(CUR, {resend:true}));
+    resendLabel('ok','보냈어요<br>✓'); setStatus('ok',`다시 보냈어요! '${CUR.name}'(으)로 차에 곧 설정돼요`);
+    cooldown(COOLDOWN); wait=COOLDOWN;
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    resendLabel('err','실패<br>다시 시도'); setStatus('err',`재전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(wait);
+  }
+  setTimeout(()=>{ RESENDING=false; b.disabled=false; resendLabel('', '테슬라로<br>재전송'); }, wait*1000);
+});
+window.addEventListener('hashchange', init);
+init();
+</script>
+</body>
+</html>
