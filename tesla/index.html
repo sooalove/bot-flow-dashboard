@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0f1115">
+<title>행복한 우리집</title>
+<style>
+  :root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#eef1f6;--sub:#9aa3b2;--red:#e82127;--ok:#2ecc71;--err:#ff6b6b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+       display:flex;align-items:flex-start;justify-content:center;padding:0 16px 32px}
+  .card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 16px 22px;margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .logo{width:40px;height:40px;border-radius:12px;background:var(--red);display:grid;place-items:center;font-size:22px;flex:none}
+  h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.2px}
+  .lead{color:var(--sub);font-size:14px;margin:4px 0 20px}
+  label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
+  label .opt{color:var(--sub);font-weight:400}
+  input{width:100%;font-size:17px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#0f1218;color:var(--txt);outline:none;-webkit-appearance:none}
+  input:focus{border-color:#4b8bff;box-shadow:0 0 0 3px rgba(75,139,255,.2)}
+  .count{text-align:right;color:var(--sub);font-size:12px;margin-top:4px}
+  button{width:100%;margin-top:18px;font-size:17px;font-weight:700;padding:14px;border:0;border-radius:12px;background:var(--red);color:#fff;cursor:pointer}
+  button:disabled{background:#3a3f4b;color:#9aa3b2;cursor:not-allowed}
+  .status{min-height:24px;margin-top:14px;font-size:15px;text-align:center}
+  .status.ok{color:var(--ok)} .status.err{color:var(--err)} .status.busy{color:var(--sub)}
+  .notice{text-align:center;padding:18px 4px 6px}
+  .notice .big{font-size:40px} .notice p{margin:8px 0 0;color:var(--sub)}
+  .notice b{color:var(--txt);font-size:18px}
+  .foot{color:#6b7382;font-size:12px;text-align:center;margin-top:18px}
+  .row{display:flex;gap:8px;align-items:stretch}
+  .row input{flex:1}
+  .row button{width:auto;margin-top:0;padding:0 18px;flex:none;background:#2b5fd9}
+  .results{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .results li button{width:100%;margin:0;text-align:left;background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--txt);font-weight:400;font-size:15px}
+  .results li button:hover{border-color:#4b5568}
+  .results li button[aria-checked="true"]{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,33,39,.35);background:#1d1416}
+  .results .nm{font-weight:700;font-size:16px;display:flex;gap:8px;align-items:center}
+  .results .cat{font-size:12px;font-weight:600;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:0 7px}
+  .results .ad{color:var(--sub);font-size:13px;margin-top:2px}
+  .picked{margin-top:12px;font-size:14px;color:var(--sub);text-align:center}
+  .picked b{color:var(--txt)}
+  .cur{margin:0 0 4px;padding:12px 14px;border-radius:12px;border:1px solid #2f4a7a;background:#121a2a}
+  .cur .t{font-size:12px;font-weight:700;color:#8fb3ff;letter-spacing:.2px}
+  .cur .nm{font-size:17px;font-weight:700;margin-top:2px;word-break:keep-all}
+  .cur .ad{color:var(--sub);font-size:13px;margin-top:1px}
+  .cur .tm{color:#6b7382;font-size:12px;margin-top:4px}
+  .cur .arr{margin-top:6px;font-size:15px;font-weight:700;line-height:1.35}
+  .cur .arr.good{color:#5fd38d} .cur .arr.low{color:#ffb84d} .cur .arr.short{color:#ff6b6b} .cur .arr.na{color:#9aa3b2;font-weight:600;font-size:13px}
+  .cur .arr .sub{display:block;font-size:12px;font-weight:500;color:#8a93a3;margin-top:1px}
+  .cur{display:flex;gap:12px;align-items:center}
+  .cur .info{flex:1;min-width:0}
+  .cur .resend{width:96px;flex:none;margin:0;padding:10px 8px;font-size:14px;line-height:1.25;border-radius:10px;white-space:nowrap;
+               background:var(--red);touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px}
+  .cur .resend.ok{background:#1f7a46;color:#fff} .cur .resend.err{background:#7a2626;color:#fff}
+  .cur .resend:disabled{background:#3a3f4b;color:#cfd5df}
+  .cur .resend.ok:disabled{background:#1f7a46;color:#fff} .cur .resend.err:disabled{background:#7a2626;color:#fff}
+  /* ---- 2026-10-27 tabs + 홈자동화봇 tab ---- */
+  .tabs{display:flex;gap:6px;margin:-14px -10px 18px;padding:4px;background:#0f1218;border:1px solid var(--line);border-radius:14px}
+  .tabs button{flex:1;width:auto;margin:0;padding:12px 8px;min-height:52px;font-size:16px;font-weight:700;border-radius:10px;
+               background:transparent;color:var(--sub);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .tabs button[aria-selected="true"]{background:#262b36;color:var(--txt);box-shadow:inset 0 -3px 0 var(--tabc,var(--red))}
+  .tabs button#tabHome{--tabc:#1fd1c1}
+  .logo.home{background:#13857a}
+  .hp-lead{color:var(--sub);font-size:14px;margin:4px 0 16px}
+  .hgrp{margin-top:18px}
+  .hgrp h2{font-size:15px;margin:0 0 8px;color:var(--txt);font-weight:700;display:flex;gap:6px;align-items:baseline}
+  .hgrp h2 .rm{color:var(--sub);font-weight:500;font-size:13px}
+  .hlist{display:flex;flex-direction:column;gap:10px}
+  .hrow{background:#0f1218;border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px}
+  .hrow .top{display:flex;align-items:center;gap:10px}
+  .hrow .nm{flex:1;min-width:0;font-size:18px;font-weight:700;word-break:keep-all}
+  .hrow .btns{display:flex;gap:8px;flex:none}
+  .hrow .btns button{width:96px;margin:0;min-height:60px;font-size:18px;border-radius:12px;padding:0 6px;
+                     touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .hrow .btns .on{background:#1f8f5a} .hrow .btns .off{background:#4a5160}
+  .hrow .btns button:disabled{background:#2c313b;color:#7d8594}
+  .hrow .msg{min-height:0;font-size:13px;margin-top:6px;color:var(--sub)}
+  .hrow .msg:empty{display:none}
+  .hrow .msg.ok{color:var(--ok)} .hrow .msg.err{color:var(--err)}
+  .hrow.na .nm{color:#7d8594}
+  .hrow .note{font-size:13px;color:#ffb84d;margin-top:6px}
+  .hfoot{color:#6b7382;font-size:12px;margin-top:14px;text-align:center}
+  @media (min-width:820px){
+    .card.wide{max-width:880px}
+    .card.wide .hgrp .hlist{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+    .card.wide .hrow .btns button{width:116px;min-height:72px;font-size:20px}
+    .card.wide .hrow .nm{font-size:20px}
+  }
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="card" id="card">
+  <nav id="tabs" class="tabs" role="tablist" aria-label="페이지 선택" hidden>
+    <button id="tabTesla" type="button" role="tab" aria-selected="true" aria-controls="form">🚗 기𝕏차 목적지</button>
+    <button id="tabHome" type="button" role="tab" aria-selected="false" aria-controls="homePanel">🏠 홈자동화봇</button>
+  </nav>
+  <div id="teslaHead"><div class="head"><div class="logo" aria-hidden="true">🚗</div><h1>기𝕏차 목적지 보내기</h1></div>
+  <p class="lead">목적지를 검색해서 고르면 차량 내비게이션에 설정돼요.</p></div>
+
+  <div id="loading" class="notice"><p>불러오는 중…</p></div>
+  <div id="badlink" class="notice" hidden><div class="big">🔒</div><b>링크가 올바르지 않아요</b><p>받은 링크 전체(# 뒤까지)를 그대로 열어 주세요.</p></div>
+  <div id="notready" class="notice" hidden><div class="big">🛠️</div><b>아직 준비 중이에요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+
+  <form id="form" hidden autocomplete="off" novalidate>
+    <div id="cur" class="cur" hidden aria-live="polite"><div class="info"><div class="t">📍 현재 설정된 목적지</div>
+      <div class="nm" id="curName"></div><div class="ad" id="curAddr" hidden></div><div class="tm" id="curTime"></div>
+      <div class="arr" id="curArr" hidden></div></div>
+      <button id="resend" class="resend" type="button" aria-label="현재 목적지를 테슬라로 다시 보내기">테슬라로<br>재전송</button></div>
+    <label for="dest">목적지</label>
+    <div class="row">
+      <input id="dest" name="destination" maxlength="60" required placeholder="예: 유성고등학교, 대전역, 주소" enterkeyhint="search">
+      <button id="find" type="submit">검색</button>
+    </div>
+    <ul id="results" class="results" role="radiogroup" aria-label="검색 결과" hidden></ul>
+    <div id="picked" class="picked" hidden></div>
+    <button id="send" type="button" disabled hidden>이 곳으로 보내기</button>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+  </form>
+  <section id="homePanel" role="tabpanel" aria-labelledby="tabHome" hidden>
+    <div class="head"><div class="logo home" aria-hidden="true">🏠</div><h1>홈자동화봇</h1></div>
+    <p class="hp-lead" id="homeLead">버튼을 누르면 홈자동화봇이 기기를 켜거나 꺼요.</p>
+    <div id="homeGroups"></div>
+    <div id="homeNotReady" class="notice" hidden><div class="big">🛠️</div><b>홈 기기 목록이 아직 없어요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+    <div class="hfoot">이 화면은 현재 켜짐/꺼짐 상태를 보여주지 않아요. 요청만 보내요.</div>
+  </section>
+  <div class="foot">이 링크를 받은 사람만 사용할 수 있어요.</div>
+</main>
+<script>
+// CRYPTO-BEGIN (same format as ../index.html: PBKDF2-SHA256 → AES-256-GCM; passphrase = #k=… fragment, never sent to the server)
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(doc.salt), iterations:doc.iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+
+// ---- SEND: the ONE place to adapt the request. cfg = decrypted cfg.enc.json ----
+//   cfg.mode === 'direct' : {url, key}  → POST JSON with Authorization: Bearer <key> (needs CORS from the webhook host)
+//   cfg.mode === 'relay'  : {url}       → POST text/plain JSON (a "simple" request, no preflight) to a relay that adds the key
+// Must resolve on success and throw on failure.
+async function sendDestination(cfg, payload){
+  const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 15000);
+  try{
+    let res;
+    if(cfg.mode === 'relay'){
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                  body:JSON.stringify(payload), signal:ctl.signal, redirect:'follow'});
+    }else{
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+                                  body:JSON.stringify(payload), signal:ctl.signal});
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(cfg.mode === 'relay'){   // the relay always answers 200; the real result is in {ok, error|status}
+      let j=null; try{ j = await res.json(); }catch(e){}
+      if(j && j.ok === false) throw new Error(j.error==='rate' ? '잠시 후 다시' : (j.error ? '오류: '+j.error : 'HTTP '+(j.status||'?')));
+    }
+    return true;
+  }finally{ clearTimeout(t); }
+}
+
+// ---- SEARCH: relay first ({action:'search', q} → {ok:true, results}); if the relay is the old version
+//      (answers {ok:false,error:'empty'}) or fails, search Photon (OSM, keyless, CORS *) directly from the browser.
+const KR = {minLat:33.0, maxLat:38.7, minLng:124.5, maxLng:132.0};
+const inKr = (la,ln) => Number.isFinite(la) && Number.isFinite(ln) && la>=KR.minLat && la<=KR.maxLat && ln>=KR.minLng && ln<=KR.maxLng;
+const OSM_CAT = {station:'역',stop:'역',halt:'역',subway_entrance:'역 출입구',bus_stop:'버스정류장',department_store:'백화점',mall:'쇼핑몰',
+  supermarket:'마트',school:'학교',university:'대학교',college:'대학',cafe:'카페',restaurant:'음식점',fast_food:'음식점',hotel:'호텔',
+  hospital:'병원',clinic:'병원',pharmacy:'약국',parking:'주차장',fuel:'주유소',charging_station:'충전소',bank:'은행',apartments:'아파트',
+  residential:'아파트·주거',house:'주소',building:'건물',park:'공원',attraction:'명소',museum:'박물관'};
+function photonList(fs){
+  const list = fs.map(f=>{
+    const p=f.properties||{}, c=(f.geometry||{}).coordinates||[], parts=[];
+    const push=v=>{ if(v && !parts.includes(v)) parts.push(v); };
+    push(p.state); push(p.city); push(p.county);
+    if(!p.street) push(p.district||p.locality);
+    push(p.street ? p.street+(p.housenumber?' '+p.housenumber:'') : '');
+    const r = p.osm_value==='bus_stop' ? 2 : (p.osm_key==='landuse' ? 1 : 0);
+    return {name:p.name||parts.join(' '), address:parts.join(' '), category:OSM_CAT[p.osm_value]||'', lat:+c[1], lng:+c[0], _r:r};
+  }).filter(x=>x.name && inKr(x.lat,x.lng));
+  list.sort((a,b)=>a._r-b._r);
+  const seen=new Set(), out=[];
+  for(const x of list){ const k=x.name+'|'+x.lat.toFixed(3)+','+x.lng.toFixed(3); if(seen.has(k)) continue; seen.add(k); delete x._r; out.push(x); }
+  return out;
+}
+async function fetchJson(url, opt, ms){
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(), ms);
+  try{ const r=await fetch(url,{...opt,signal:ctl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
+  finally{ clearTimeout(t); }
+}
+async function searchPlaces(cfg, q){
+  if(cfg.mode==='relay'){
+    try{
+      const j = await fetchJson(cfg.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                         body:JSON.stringify({action:'search', q}),redirect:'follow'}, 10000);
+      if(j && j.ok && Array.isArray(j.results))
+        return j.results.filter(x=>x && x.name && inKr(+x.lat,+x.lng)).map(x=>({...x,lat:+x.lat,lng:+x.lng}));
+    }catch(e){ /* fall back below */ }
+  }
+  const j = await fetchJson('https://photon.komoot.io/api/?limit=50&lang=default&bbox=124.5,33,132,38.7&q='+encodeURIComponent(q), {}, 10000);
+  return photonList(j.features||[]);
+}
+
+const $ = id => document.getElementById(id);
+let TAB = 'tesla';   // 'tesla' | 'home' (2026-10-27 tabs)
+let SHOWN = 'loading';
+const show = id => {
+  SHOWN = id;
+  for(const x of ['loading','badlink','notready']) $(x).hidden = (x!==id);
+  const ready = id==='form';
+  $('tabs').hidden = !ready;
+  $('form').hidden = !(ready && TAB==='tesla');
+  $('homePanel').hidden = !(ready && TAB==='home');
+  $('teslaHead').hidden = ready && TAB==='home';
+  $('card').classList.toggle('wide', ready && TAB==='home');
+};
+let CFG = null, RESULTS = [], PICK = null, LOCKED = false;
+const COOLDOWN = 30;
+
+function tabFromHash(){ return /[#&]t=home(&|$)/.test(location.hash) ? 'home' : 'tesla'; }
+function setTab(t, save){
+  TAB = t==='home' ? 'home' : 'tesla';
+  $('tabTesla').setAttribute('aria-selected', String(TAB==='tesla'));
+  $('tabHome').setAttribute('aria-selected', String(TAB==='home'));
+  if(save){   // remember the tab in the fragment (replaceState: no reload, no hashchange, the key stays in the #fragment)
+    const h = location.hash.replace(/&t=[^&]*/g,'') + (TAB==='home' ? '&t=home' : '');
+    try{ history.replaceState(null, '', location.pathname + location.search + h); }catch(e){}
+  }
+  show(SHOWN);
+}
+$('tabTesla').addEventListener('click', ()=>setTab('tesla', true));
+$('tabHome').addEventListener('click', ()=>setTab('home', true));
+
+function passFromHash(){
+  const m = location.hash.match(/[#&]k=([^&]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+async function init(){
+  const pass = passFromHash();
+  if(!pass || !window.crypto || !crypto.subtle){ show('badlink'); return; }
+  let doc;
+  try{
+    const r = await fetch('cfg.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.status===404){ show('notready'); return; }
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    doc = await r.json();
+  }catch(e){ show('notready'); return; }
+  if(doc && doc.placeholder){ show('notready'); return; }
+  try{
+    CFG = await decryptDoc(doc, pass);
+    if(!CFG || !CFG.url) { show('notready'); return; }
+  }catch(e){ show(e.badKey ? 'badlink' : 'notready'); return; }
+  TAB = tabFromHash(); setTab(TAB, false);
+  renderHome(CFG.home);
+  show('form'); if(TAB==='tesla') $('dest').focus();
+  loadCurrent(pass);
+}
+
+// ---- CURRENT DESTINATION: cur.enc.json = encrypted {name,address,lat,lng,set_at,expires} written by tesla_cur_dest.py
+//      (called from ~/.tesla/set_dest.py). Missing / unreadable / {none:true} / expired → card stays hidden (page as before).
+const CUR_MAX_H = 24;   // fallback age limit when the file has no `expires`
+function fmtKst(iso){
+  const d=new Date(iso); if(isNaN(d)) return '';
+  const p=Object.fromEntries(new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric',weekday:'short',
+    hour:'numeric',minute:'2-digit',hour12:true}).formatToParts(d).map(x=>[x.type,x.value]));
+  return `${p.month}/${p.day}(${p.weekday}) ${p.dayPeriod} ${p.hour}:${p.minute}`;
+}
+let CUR = null;   // the destination shown on the card (used by the 재전송 button)
+async function loadCurrent(pass){
+  let cur=null;
+  try{
+    const r = await fetch('cur.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.ok) cur = await decryptDoc(await r.json(), pass);
+  }catch(e){ cur=null; }
+  const now=Date.now(), set=cur && Date.parse(cur.set_at);
+  const exp = cur && (cur.expires ? Date.parse(cur.expires) : set + CUR_MAX_H*3600e3);
+  const valid = cur && !cur.none && cur.name && Number.isFinite(set) && Number.isFinite(exp) && now < exp;
+  if(!valid){ $('cur').hidden=true; CUR=null; return; }
+  CUR = {name:cur.name, address:cur.address||'', lat:+cur.lat, lng:+cur.lng};
+  $('curName').textContent = cur.name;
+  const ad = (cur.address||'').trim();
+  $('curAddr').textContent = ad; $('curAddr').hidden = !ad || ad===cur.name;
+  $('curTime').textContent = fmtKst(cur.set_at) + ' 설정';
+  renderArrival(cur.arrival);
+  $('cur').hidden=false;
+  // extra guard (2026-10-27): the box also clears the file at `expires`; if the page stays open past it, hide the card then too
+  clearTimeout(window.CUR_EXP_T);
+  if(exp-now < 2147483000) window.CUR_EXP_T = setTimeout(()=>{ $('cur').hidden=true; CUR=null; }, exp-now+500);
+}
+
+// arrival = tesla_arrival.py result baked into cur.enc.json by the box (the page never calls the car):
+// {source:'car'|'estimate'|'unavailable', arrival_pct, short_km, dist_km, battery_pct, range_km, vehicle_at, reason}
+function renderArrival(a){
+  const el=$('curArr');
+  if(!a || !a.source){ el.hidden=true; el.textContent=''; return; }
+  const at = a.vehicle_at ? ' · 차량 정보 '+fmtKst(a.vehicle_at)+' 기준' : '';
+  let main, sub, cls;
+  if(a.source==='unavailable'){
+    cls='na'; main='🔋 도착 배터리 확인 불가'; sub=(a.reason||'차량 정보를 받지 못했어요');
+  }else{
+    const short = +a.short_km>0;
+    cls = short ? 'short' : (+a.arrival_pct<=15 ? 'low' : 'good');
+    main = short ? `🔋 도착 시 예상 배터리 0% · 약 ${a.short_km} km 부족 (충전 필요)` : `🔋 도착 시 예상 배터리 ${a.arrival_pct}%`;
+    sub = a.source==='car' ? `차량 내비 기준 · 남은 거리 ${a.dist_km} km`
+        : `추정치 · 도로 ${a.dist_km} km, 현재 ${a.battery_pct}% (주행가능 ${a.range_km} km) 기준`;
+  }
+  el.className='arr '+cls;
+  el.innerHTML = esc(main)+`<span class="sub">${esc(sub+at)}</span>`;
+  el.hidden=false;
+}
+
+function setStatus(cls, msg){ const s=$('status'); s.className='status '+cls; s.textContent=msg; }
+function esc(t){ return String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function clearResults(){
+  RESULTS=[]; PICK=null; $('results').innerHTML=''; $('results').hidden=true;
+  $('picked').hidden=true; $('send').hidden=true; if(!LOCKED) $('send').disabled=true;
+}
+function renderResults(){
+  const ul=$('results');
+  ul.innerHTML = RESULTS.map((x,i)=>`<li><button type="button" role="radio" aria-checked="false" data-i="${i}">
+      <div class="nm">${esc(x.name)}${x.category?`<span class="cat">${esc(x.category)}</span>`:''}</div>
+      <div class="ad">${esc(x.address||'')}</div></button></li>`).join('');
+  ul.hidden=false; $('send').hidden=false; $('send').disabled=true;
+  $('picked').hidden=false; $('picked').textContent='목록에서 갈 곳을 눌러 고르세요.';
+}
+function pick(i){
+  PICK = RESULTS[i] || null;
+  for(const b of $('results').querySelectorAll('button')) b.setAttribute('aria-checked', String(+b.dataset.i===i));
+  if(PICK){ $('picked').innerHTML = `선택: <b>${esc(PICK.name)}</b>`; if(!LOCKED) $('send').disabled=false; }
+}
+$('results').addEventListener('click', ev=>{ const b=ev.target.closest('button[data-i]'); if(b) pick(+b.dataset.i); });
+
+function cooldown(sec){
+  LOCKED = sec>0; const b=$('send'); b.disabled=true;
+  const r=$('resend');
+  const tick=()=>{ if(!RESENDING) r.disabled = sec>0;
+                   if(sec<=0){ LOCKED=false; b.textContent='이 곳으로 보내기'; b.disabled=!PICK; return; }
+                   b.textContent=`다시 보내기까지 ${sec}초`; sec--; setTimeout(tick,1000); };
+  tick();
+}
+
+let searching=false;
+$('dest').addEventListener('input', ()=>{ if(RESULTS.length) clearResults(); });
+$('form').addEventListener('submit', async ev=>{
+  ev.preventDefault();
+  if(searching) return;
+  const q = $('dest').value.trim().slice(0,60);
+  if(!q){ setStatus('err','목적지를 입력해 주세요.'); $('dest').focus(); return; }
+  searching=true; $('find').disabled=true; $('find').textContent='검색 중…'; clearResults(); setStatus('busy','찾는 중…');
+  try{
+    RESULTS = await searchPlaces(CFG, q);
+    if(!RESULTS.length){ setStatus('err','찾는 장소가 없어요. 다른 이름이나 주소로 검색해 보세요'); }
+    else { setStatus('',''); renderResults(); $('dest').blur(); }
+  }catch(e){
+    setStatus('err','검색에 실패했어요. 잠시 후 다시 시도해 주세요.');
+  }finally{ searching=false; $('find').disabled=false; $('find').textContent='검색'; }
+});
+// one payload shape for an already-picked place (normal pick AND 재전송), so the relay/routine treat both the same
+function pickedPayload(x, extra){
+  // destination = "<name> <address>" so the routine also works with the OLD relay (which forwards only destination)
+  const destination = (x.name + (x.address && x.address!==x.name ? ' ' + x.address : '')).slice(0,200);
+  return {destination, name:x.name, address:x.address||'', lat:x.lat, lng:x.lng, picked:true,
+          source:'tesla-form', sent_at:new Date().toISOString(), ...(extra||{})};
+}
+$('send').addEventListener('click', async ()=>{
+  if($('send').disabled || !PICK || LOCKED) return;
+  const x = PICK;
+  const payload = pickedPayload(x);
+  $('send').disabled = true; $('send').textContent = '보내는 중…'; setStatus('busy','보내는 중…');
+  try{
+    await sendDestination(CFG, payload);
+    setStatus('ok',`보냈어요! '${x.name}'(으)로 차에 곧 설정돼요`);
+    $('dest').value=''; clearResults(); $('send').hidden=false;
+    cooldown(COOLDOWN);
+    const pw=passFromHash(); for(const s of [45,90,150]) setTimeout(()=>loadCurrent(pw), s*1000);  // pick up the new destination once the car has it
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    setStatus('err',`전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(5);
+  }
+});
+// ---- 재전송: re-send the card's destination through the SAME sendDestination() path (no search, no ambiguity question).
+//      Shares LOCKED with the main send (the relay allows 1 send / 20 s anyway). resend:true is informational only.
+let RESENDING=false;
+function resendLabel(cls, html){ const b=$('resend'); b.className='resend'+(cls?' '+cls:''); b.innerHTML=html; }
+$('resend').addEventListener('click', async ()=>{
+  if(RESENDING || LOCKED || !CUR || !inKr(CUR.lat, CUR.lng)) return;
+  RESENDING=true; const b=$('resend'); b.disabled=true; resendLabel('', '보내는<br>중…'); setStatus('busy','보내는 중…');
+  let wait=5;
+  try{
+    await sendDestination(CFG, pickedPayload(CUR, {resend:true}));
+    resendLabel('ok','보냈어요<br>✓'); setStatus('ok',`다시 보냈어요! '${CUR.name}'(으)로 차에 곧 설정돼요`);
+    cooldown(COOLDOWN); wait=COOLDOWN;
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    resendLabel('err','실패<br>다시 시도'); setStatus('err',`재전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(wait);
+  }
+  setTimeout(()=>{ RESENDING=false; b.disabled=false; resendLabel('', '테슬라로<br>재전송'); }, wait*1000);
+});
+
+// ---- 홈자동화봇 tab (2026-10-27). Device list comes ONLY from the encrypted cfg (cfg.home = home_accessories.json);
+//      nothing is invented here. Payload {kind:'home', accessory, action:'on'|'off'} goes through the SAME sendDestination()
+//      (relay → webhook routine → 홈자동화봇). No name/destination field, so an old relay rejects it ('empty') instead of
+//      ever treating it as a destination. No on/off state is shown (the page cannot read Apple Home).
+const HOME_LOCK_S = 4;   // relay allows 1 home command / 4 s
+let HOME_BUSY = false;
+function renderHome(h){
+  const box=$('homeGroups');
+  const groups = h && Array.isArray(h.groups) ? h.groups : [];
+  $('homeNotReady').hidden = groups.length>0;
+  if(h && h.lead) $('homeLead').textContent = h.lead;
+  // accessory = "name" (sent id = shown name) or {id, label} (id = unique identifier sent to the relay, label = shown name)
+  for(const g of groups) g._acc = (Array.isArray(g.accessories) ? g.accessories : []).map(a=>
+      typeof a==='string' ? {id:a, label:a} : (a && typeof a.id==='string' ? {id:a.id, label:a.label||a.id} : null))
+    .filter(a=>a && a.id.trim());
+  box.innerHTML = groups.map((g,gi)=>{
+    const acc = g._acc.map(a=>a.label);
+    const head = `<h2>${esc(g.icon||'')} ${esc(g.title||'')}${g.room?` <span class="rm">· ${esc(g.room)}</span>`:''}</h2>`;
+    const rows = acc.length ? acc.map((a,ai)=>`<div class="hrow" data-g="${gi}" data-a="${ai}"><div class="top"><div class="nm">${esc(a)}</div>
+        <div class="btns"><button type="button" class="on" data-act="on" aria-label="${esc(g.title||"")} ${esc(a)} 켜기">켜기</button>
+        <button type="button" class="off" data-act="off" aria-label="${esc(g.title||"")} ${esc(a)} 끄기">끄기</button></div></div>
+        <div class="msg" role="status" aria-live="polite"></div></div>`).join('')
+      : `<div class="hrow na"><div class="top"><div class="nm">${esc(g.title||'')}</div>
+        <div class="btns"><button type="button" class="on" disabled>켜기</button><button type="button" class="off" disabled>끄기</button></div></div>
+        <div class="note">${esc(g.empty_note || '등록된 기기가 없어요')}</div></div>`;
+    return `<div class="hgrp">${head}<div class="hlist">${rows}</div></div>`;
+  }).join('');
+  box._groups = groups;
+}
+function homeButtons(dis){ for(const b of $('homeGroups').querySelectorAll('.hrow:not(.na) button')) b.disabled = dis; }
+$('homeGroups').addEventListener('click', async ev=>{
+  const b = ev.target.closest('button[data-act]'); if(!b || b.disabled || HOME_BUSY) return;
+  const row = b.closest('.hrow'), g = ($('homeGroups')._groups||[])[+row.dataset.g];
+  const accessory = g && g._acc[+row.dataset.a] && g._acc[+row.dataset.a].id; const action = b.dataset.act;
+  if(!accessory || (action!=='on' && action!=='off')) return;
+  const label = action==='on' ? '켜기' : '끄기', msg = row.querySelector('.msg');
+  HOME_BUSY = true; homeButtons(true); const orig=b.textContent; b.textContent='보내는 중…';
+  msg.className='msg'; msg.textContent='보내는 중…';
+  let wait = HOME_LOCK_S;
+  try{
+    await sendDestination(CFG, {kind:'home', accessory, action, source:'tesla-form-home', sent_at:new Date().toISOString()});
+    msg.className='msg ok'; msg.textContent=`${label} 요청 보냈어요 (반영까지 수십 초 걸릴 수 있어요)`;
+  }catch(e){
+    const m = String(e.message||'');
+    const why = e.name==='AbortError' ? '응답이 없어요'
+      : /empty|kind/.test(m) ? '중계 서버가 아직 홈 명령을 지원하지 않아요'
+      : /accessory|action/.test(m) ? '허용되지 않은 요청이에요'
+      : /^(HTTP|오류|잠시)/.test(m) ? m : '네트워크 오류';
+    msg.className='msg err'; msg.textContent=`${label} 요청을 보내지 못했어요 (${why})`;
+    if(/잠시/.test(m)) wait = HOME_LOCK_S;
+  }
+  b.textContent = orig;
+  setTimeout(()=>{ HOME_BUSY=false; homeButtons(false); }, wait*1000);
+});
+
+window.addEventListener('hashchange', init);
+init();
+</script>
+</body>
+</html>
