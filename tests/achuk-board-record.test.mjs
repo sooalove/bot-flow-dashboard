@@ -181,8 +181,8 @@ assert.ok(api.REC_KINDS.includes('세이브') && !api.REC_KINDS.includes('슈퍼
 assert.match(html, /#recb\{position:fixed;right:/);
 assert.match(html, /bottom:max\(1\.5vh,env\(safe-area-inset-bottom\)\)/);
 assert.match(html, /\.board\.sw \.A\{order:3\}\.board\.sw \.B\{order:1\}/);
-assert.match(html, /class="team A"><h2>\$\{esc\(M\.A&&M\.A\.name\|\|'A'\)\}<\/h2><div class="sc" id="sa">/);
-assert.match(html, /class="team B"><h2>\$\{esc\(M\.B&&M\.B\.name\|\|'B'\)\}<\/h2><div class="sc" id="sb">/);
+assert.match(html, /class="team A"><p class="id"><i aria-hidden="true"><\/i>블랙<\/p><h2>\$\{esc\(M\.A&&M\.A\.name\|\|'A'\)\}<\/h2><div class="sc" id="sa">/);
+assert.match(html, /class="team B"><p class="id"><i aria-hidden="true"><\/i>블루<\/p><h2>\$\{esc\(M\.B&&M\.B\.name\|\|'B'\)\}<\/h2><div class="sc" id="sb">/);
 assert.match(html, /class="board\$\{SW\?' sw':''\}"/);
 assert.match(html, /aria-label="기록 등록">기록</);
 assert.match(html, /aria-label="좌우 바꾸기"/);
@@ -193,8 +193,8 @@ const assign = html.indexOf('M=res.match', commit);
 const publish = html.indexOf('publishLive(ev)', commit);
 assert.ok(commit>0 && failReturn>commit && assign>failReturn && publish>assign, 'score publish follows a successful save');
 assert.equal(html.includes('uid:'), false);
-assert.match(html, /const B='20261107080000'/);
+assert.match(html, /const B='20261107084500'/);
 const version = JSON.parse(readFileSync(new URL('../achuk/board/version.json', import.meta.url), 'utf8'));
-assert.equal(version.b, '20261107080000');
+assert.equal(version.b, '20261107084500');
 
 console.log('achuk board record tests ok');
