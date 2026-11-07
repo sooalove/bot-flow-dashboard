@@ -6,9 +6,11 @@
  * worker can use these rules only after the same operations exist inside
  * the production Apps Script, wrapped in LockService.getScriptLock().
  *
- * The only Apps Script source available here is an older get/put script
- * that replaces a whole match. The live page already uses later event
- * operations, so this file must not be pasted over that script.
+ * The only Apps Script file in git is an older get/put script. It is not
+ * the live version 4 and must not be pasted over production. The live page
+ * already uses later event operations. After the current Code.gs is saved
+ * from the editor (not the truncated history view), call dispatchAnalysis
+ * inside the existing LockService lock and preserveMatch after a whole-match put.
  */
 
 const PMW = {골:3, 어시:2, 유효슈팅:1, 세이브:2, 철벽수비:2};
@@ -224,4 +226,122 @@ export function applyGenericPut(doc, record, now){
   if(!doc.matches) doc.matches = {};
   doc.matches[record.id] = next;
   return {ok: true, applied: true, preserved: !!(next.analysis && next.analysis.ready)};
+}
+
+function pct(n, d){
+  if(!d) return null;
+  return Math.round((n / d) * 1000) / 10;
+}
+function pctLabel(n, d){
+  const v = pct(n, d);
+  if(v == null) return '—';
+  return (Math.abs(v - Math.round(v)) < 1e-9 ? String(Math.round(v)) : v.toFixed(1)) + '%';
+}
+function sideOf(e){
+  if(!e) return '';
+  if(e.k === '골') return e.t === 'A' ? 'A' : 'B';
+  if(e.k === '자책골') return e.t === 'A' ? 'B' : 'A';
+  if(e.k === '상대골') return 'B';
+  return '';
+}
+
+/** Card-shaped snapshot. ready stays false until the store commit. AI text is attached by the caller. */
+export function buildObserved(match, now){
+  const m = match || {};
+  const fin = m.aomFinal;
+  if(!fin || !fin.finalized || !fin.win) return null;
+  const ev = m.goals || [];
+  const score = {A:0, B:0};
+  const flow = [];
+  ev.forEach(e => {
+    const side = sideOf(e);
+    if(!side) return;
+    score[side]++;
+    flow.push({n: flow.length + 1, k: e.k, p: e.p || '', t: e.t || '', side});
+  });
+  const team = side => {
+    const roster = ((m[side] && m[side].players) || []).filter(isRealPlayer);
+    const rows = roster.map(p => ({p, goal:0, ast:0, own:0, sot:0, save:0, block:0}));
+    const by = {};
+    rows.forEach(r => { by[r.p] = r; });
+    let direct = 0, assists = 0, ownFor = 0, ownAgainst = 0, opp = 0, sot = 0, save = 0, block = 0;
+    ev.forEach(e => {
+      if(e.k === '골' && e.t === side){ direct++; if(by[e.p]) by[e.p].goal++; }
+      else if(e.k === '어시' && e.t === side){ assists++; if(by[e.p]) by[e.p].ast++; }
+      else if(e.k === '자책골' && e.t === side){ ownAgainst++; if(by[e.p]) by[e.p].own++; }
+      else if(e.k === '자책골' && (e.t === 'A' || e.t === 'B') && e.t !== side) ownFor++;
+      else if(e.k === '상대골' && side === 'B') opp++;
+      else if(e.k === '유효슈팅' && e.t === side){ sot++; if(by[e.p]) by[e.p].sot++; }
+      else if(e.k === '세이브' && e.t === side){ save++; if(by[e.p]) by[e.p].save++; }
+      else if(e.k === '철벽수비' && e.t === side){ block++; if(by[e.p]) by[e.p].block++; }
+    });
+    const topGoal = rows.reduce((n, r) => Math.max(n, r.goal), 0);
+    const top = rows.filter(r => r.goal && r.goal === topGoal);
+    return {
+      side, name: (m[side] && m[side].name) || side, roster: roster.length, score: score[side],
+      direct, assists, ownFor, ownAgainst, opp, sot, save, block, scorers: rows.filter(r => r.goal > 0).length,
+      top: top.map(r => ({p: r.p, goal: r.goal, share: pct(r.goal, direct), shareLabel: pctLabel(r.goal, direct)})),
+      players: rows
+    };
+  };
+  const A = team('A'), B = team('B');
+  const run = [];
+  let a = 0, b = 0;
+  flow.forEach(f => { if(f.side === 'A') a++; else b++; run.push({n: f.n, a, b}); });
+  const facts = [
+    A.name + ' ' + A.score + ':' + B.score + ' ' + B.name + ' (직접 득점 ' + A.direct + '+상대 자책 ' + A.ownFor + ' / ' + B.direct + '+' + B.ownFor + ')',
+    '득점한 선수 ' + A.scorers + '/' + A.roster + ' · ' + B.scorers + '/' + B.roster,
+    '어시스트 ' + A.assists + ' 대 ' + B.assists
+  ];
+  if(A.top.length) facts.push(A.name + ' 최다 득점 ' + A.top.map(t => t.p + ' ' + t.goal + '골').join(', ') + ' · 직접 득점 ' + A.direct + '골 중 ' + A.top[0].shareLabel);
+  if(B.top.length) facts.push(B.name + ' 최다 득점 ' + B.top.map(t => t.p + ' ' + t.goal + '골').join(', ') + ' · 직접 득점 ' + B.direct + '골 중 ' + B.top[0].shareLabel);
+  return stripIdentity({
+    v: 1, ready: false, kind: 'observed', asOf: now, matchId: m.id,
+    date: String(m.date || '').slice(0, 10), ai: null, recommendations: [],
+    observed: {
+      score: {A: A.score, B: B.score, aName: A.name, bName: B.name},
+      aom: {win: fin.win, why: fin.why, tally: fin.tally, tb: fin.tb || '', closedAt: fin.closedAt},
+      teams: [A, B], flow, run, facts,
+      opinion: (m.reviews_anon || []).map(r => ({text: String(r && r.text || '').trim()})).filter(r => r.text)
+    }
+  });
+}
+
+function publicVotes(votes){
+  return (votes || []).filter(v => v && v.voter && v.p).map(v => ({voter: v.voter, p: v.p, ts: +v.ts || 0}));
+}
+
+/**
+ * Next action for the scheduled routine. It never calls a model.
+ * When step is needAi, the routine supplies aiText on the following call and then commits once.
+ */
+export function planRoutine(input){
+  const match = input && input.match;
+  const now = input && input.now;
+  if(!match || !match.id) return {step: 'wait', reason: 'match'};
+  if(isReadySnapshot(match.analysis)) return {step: 'ready', analysis: match.analysis};
+  if(!(match.aomFinal && match.aomFinal.finalized)){
+    const gate = finalizePredicate(match, match.goals || [], input.votes || [], now);
+    if(!gate.ready) return {step: 'wait', reason: gate.ended ? 'aom' : 'end', gate};
+    return {step: 'finalizeAom', request: {op: 'finalizeAom', id: match.id, votes: publicVotes(input.votes), now}};
+  }
+  const lock = match.analysisLock;
+  if(lock && lock.until > now && lock.id !== input.claimId) return {step: 'held', until: lock.until};
+  if(!lock || !(lock.until > now)){
+    return {step: 'claimAnalysis', request: {op: 'claimAnalysis', id: match.id, now, claimId: input.claimId, ttlMs: input.ttlMs || CLAIM_TTL_MS}};
+  }
+  if(!input.aiText) return {step: 'needAi', claimId: lock.id, fingerprint: lock.fingerprint, until: lock.until};
+  const snapshot = buildObserved(match, now);
+  if(!snapshot) return {step: 'wait', reason: 'aom'};
+  snapshot.ai = {text: String(input.aiText)};
+  return {step: 'commitAnalysis', request: {op: 'commitAnalysis', id: match.id, claimId: input.claimId, now, snapshot}};
+}
+
+/** Call inside the existing script lock. Does not handle get, put, or event ops. */
+export async function dispatchAnalysis(doc, body){
+  if(!body || ownIdentity(body).length) return fail('identity');
+  if(body.op === 'finalizeAom') return finalizeAom(doc, body);
+  if(body.op === 'claimAnalysis') return claimAnalysis(doc, body);
+  if(body.op === 'commitAnalysis') return commitAnalysis(doc, body);
+  return fail('op');
 }

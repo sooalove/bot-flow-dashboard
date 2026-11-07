@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {
   finalizePredicate, finalizeAom, claimAnalysis, commitAnalysis,
-  applyGenericPut, fingerprint, analysisInputs
+  applyGenericPut, fingerprint, analysisInputs, planRoutine, dispatchAnalysis, buildObserved
 } from '../achuk/store-analysis.mjs';
 
 const html = readFileSync(new URL('../achuk/index.html', import.meta.url), 'utf8');
@@ -188,6 +188,39 @@ const snap = (win = '가') => ({
   assert.equal(inputs.aom, undefined);
   assert.equal(JSON.stringify(inputs).includes('주홍'), false);
   assert.equal(JSON.stringify(inputs).includes('drop-me'), false);
+}
+
+{
+  const now = after;
+  const named = base();
+  assert.equal(planRoutine({match: named, votes: [], now, claimId: 'job-1'}).step, 'wait');
+  assert.equal(planRoutine({match: named, votes: [], now, claimId: 'job-1'}).reason, 'aom');
+  const d = doc(named);
+  let plan = planRoutine({match: named, votes: votes().map(v => ({...v, uid: 'no'})), now, claimId: 'job-1'});
+  assert.equal(plan.step, 'finalizeAom');
+  assert.equal(plan.request.votes[0].uid, undefined);
+  let res = await dispatchAnalysis(d, plan.request);
+  assert.equal(res.created, true);
+  plan = planRoutine({match: named, votes: votes(), now: now + 1, claimId: 'job-1'});
+  assert.equal(plan.step, 'claimAnalysis');
+  res = await dispatchAnalysis(d, plan.request);
+  assert.equal(res.claimed, true);
+  plan = planRoutine({match: named, now: now + 2, claimId: 'job-1'});
+  assert.equal(plan.step, 'needAi');
+  plan = planRoutine({match: named, now: now + 2, claimId: 'job-1', aiText: '한 번 저장된 해석'});
+  assert.equal(plan.step, 'commitAnalysis');
+  assert.equal(plan.request.snapshot.ready, false);
+  assert.equal(plan.request.snapshot.ai.text, '한 번 저장된 해석');
+  assert.equal(plan.request.snapshot.observed.aom.win, '가');
+  res = await dispatchAnalysis(d, plan.request);
+  assert.equal(res.created, true);
+  assert.equal(res.analysis.ready, true);
+  const again = planRoutine({match: named, now: now + 3, claimId: 'other', aiText: '다시'});
+  assert.equal(again.step, 'ready');
+  assert.equal(again.analysis.ai.text, '한 번 저장된 해석');
+  const observed = buildObserved(named, now);
+  assert.equal(observed.observed.score.A, 1);
+  assert.equal(observed.ready, false);
 }
 
 console.log('store analysis contract tests ok');
