@@ -1,92 +1,66 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261107093000';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('rtbvr')!==j.b){sessionStorage.setItem('rtbvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판 미리보기</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261107103000';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('rtbvr')!==j.b){sessionStorage.setItem('rtbvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판 미리보기</title>
 <style>
 *{box-sizing:border-box;margin:0}
-html,body{height:100%;background:#f5f6f8;color:#12141a;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;color-scheme:light}
-#app{height:100%;display:flex;flex-direction:column;padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(88px,calc(12vh + env(safe-area-inset-bottom))) max(14px,env(safe-area-inset-left))}
-.mast{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;min-height:64px;padding:0 18px;background:#12141a;color:#fff}
-.brand{font-weight:900;letter-spacing:.14em;font-size:clamp(18px,2.6vh,28px)}
-.brand small{display:block;letter-spacing:.22em;font-size:.48em;font-weight:700;opacity:1}
-.clock{text-align:center}
-.clock b{display:block;font-size:clamp(26px,4.6vh,48px);font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
-.clock span{font-size:clamp(12px,1.6vh,16px);font-weight:800;letter-spacing:.16em}
-.note{justify-self:end;text-align:right;font-weight:800;font-size:clamp(13px,1.7vh,16px);line-height:1.35;max-width:34vw}
-.board{position:relative;flex:1;min-height:0;margin-top:12px;display:grid;grid-template-columns:1fr 92px 1fr;background:#fff;border:3px solid #12141a;overflow:hidden}
-.team{display:grid;min-width:0;background:#fff}
-.team.A{grid-template-columns:64px 1fr;order:1}
-.team.B{grid-template-columns:1fr 64px;order:3}
-.rail{display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-weight:900;letter-spacing:.18em;font-size:clamp(18px,2.5vh,28px);color:#fff}
-.team.A .rail{background:#12141a}
-.team.B .rail{background:#06275c}
-.face{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:2.4vh 3vw}
-.team.A .face{align-items:flex-end;text-align:right}
-.team.B .face{align-items:flex-start;text-align:left}
-.face h2{font-size:clamp(28px,4.8vh,60px);font-weight:900;line-height:1;margin-bottom:1vh;max-width:100%}
-.team.A h2,.team.A .sc{color:#12141a}
-.team.B h2,.team.B .sc{color:#06275c}
-.sc{font-size:min(32vh,17vw);font-weight:900;line-height:.92;font-variant-numeric:tabular-nums;letter-spacing:0;padding:.04em .02em;max-width:100%;white-space:nowrap}
-.mid{order:2;display:flex;align-items:center;justify-content:center;background:#f7f7f5;border-left:3px solid #12141a;border-right:3px solid #12141a}
-.colon{font-size:min(9vh,64px);font-weight:900;line-height:1;color:#12141a}
-.board.sw .A{order:3}.board.sw .B{order:1}
-.board.sw .team.A{grid-template-columns:1fr 64px}
-.board.sw .team.A .rail{order:2}
-.board.sw .team.A .face{align-items:flex-start;text-align:left}
-.board.sw .team.B{grid-template-columns:64px 1fr}
-.board.sw .team.B .rail{order:0}
-.board.sw .team.B .face{align-items:flex-end;text-align:right}
-#fx{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:2;pointer-events:none;max-width:70%;text-align:center}
-#fx[hidden]{display:none}
-#fx b{display:inline-block;background:#fff;color:#12141a;border:3px solid #12141a;padding:8px 14px;font-size:clamp(16px,2.6vh,28px);font-weight:900;line-height:1.25}
-#fx.goal b{animation:rise .5s cubic-bezier(.2,.8,.2,1)}
-#fx.soft b{animation:rise .35s ease}
-.sc.pop{animation:settle .5s cubic-bezier(.2,.8,.2,1)}
-.rail.pop{animation:rail .5s ease}
-@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes settle{from{transform:translateY(-8px) scale(1.05)}to{transform:none}}
-@keyframes rail{from{transform:scaleY(.9)}to{transform:none}}
-#swb{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);background:#ffc65a;color:#12141a;border:3px solid #12141a;font-size:clamp(18px,2.4vh,24px);font-weight:900;min-height:48px;min-width:48px;padding:12px 20px;border-radius:999px;z-index:6;font-family:inherit;touch-action:manipulation}
+html,body{height:100%;background:#fff;color:#111;font-family:"Avenir Next","Futura","Helvetica Neue",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;color-scheme:light}
+#app{height:100%;display:flex;flex-direction:column;padding:0 0 max(76px,calc(48px + env(safe-area-inset-bottom)))}
+.util{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right));background:#f5f5f5;border-bottom:1px solid #e5e5e5;color:#111;font-size:14px;font-weight:500;letter-spacing:.04em}
+.util b{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:0}
+.board{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;padding:48px max(24px,env(safe-area-inset-right)) 24px max(24px,env(safe-area-inset-left));background:#fff}
+.side{min-width:0}
+.side.A{order:1;text-align:left}
+.side.B{order:3;text-align:right}
+.side h2{font-size:clamp(40px,6vh,72px);font-weight:500;line-height:1;letter-spacing:.06em;margin-bottom:8px}
+.side.A h2,.side.A .sc{color:#111}
+.side.B h2,.side.B .sc{color:#06275c}
+.sc{font-size:min(33vh,18vw);font-weight:700;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap;display:inline-block;max-width:100%}
+.sep{order:2;align-self:end;padding:0 24px .12em;font-size:32px;font-weight:500;line-height:1.2;color:#111}
+.board.sw .A{order:3;text-align:right}
+.board.sw .B{order:1;text-align:left}
+#fx{min-height:28px;margin:0 max(24px,env(safe-area-inset-right)) 0 max(24px,env(safe-area-inset-left));pointer-events:none}
+#fx[hidden]{display:block;visibility:hidden}
+#fx b{display:inline-block;font-size:16px;font-weight:500;line-height:1.5;letter-spacing:0;color:#111}
+#fx.goal b{animation:cut .42s ease}
+#fx.soft b{animation:cut .32s ease}
+.sc.pop{animation:cut .42s cubic-bezier(.2,.7,.2,1)}
+@keyframes cut{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#swb,#recb{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));min-height:48px;min-width:48px;padding:0 32px;border:0;border-radius:999px;font:500 16px/1.2 "Avenir Next","Helvetica Neue",-apple-system,sans-serif;touch-action:manipulation;z-index:6}
+#swb{left:50%;transform:translateX(-50%);background:#ffc65a;color:#111}
+#recb{right:max(16px,env(safe-area-inset-right));background:#111;color:#fff;z-index:7}
 #swb:active{transform:translateX(-50%) scale(.98)}
-#recb{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:7;background:#12141a;color:#fff;border:3px solid #12141a;font-size:clamp(18px,2.4vh,24px);font-weight:900;min-height:48px;min-width:48px;padding:12px 18px;border-radius:999px;font-family:inherit;touch-action:manipulation}
 #recb:active{transform:scale(.98)}
-#sheet{position:fixed;inset:0;z-index:30;background:rgba(18,20,26,.35);display:flex;align-items:flex-end;justify-content:center}
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(17,17,17,.28);display:flex;align-items:flex-end}
 #sheet[hidden]{display:none}
-#sheet .panel{width:min(960px,100%);max-height:64vh;overflow:auto;-webkit-overflow-scrolling:touch;background:#fff;color:#12141a;border:3px solid #12141a;border-bottom:0;padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
-#sheet h3{font-size:clamp(22px,3vh,32px);margin:0 0 6px}
-#sheet .hint{color:#12141a;font-weight:700;font-size:clamp(16px,1.9vh,20px);line-height:1.35;margin-bottom:12px}
-#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-#sheet .tl{font-weight:900;font-size:clamp(18px,2.3vh,26px);margin-bottom:8px}
-#sheet .pc,#sheet .kinds button,#sheet .ghost,#toast button{min-height:48px;font-family:inherit;font-weight:900;touch-action:manipulation}
-#sheet .pc{font-size:clamp(18px,2.3vh,24px);border-radius:10px;border:3px solid #12141a;margin:0 8px 8px 0;padding:10px 14px;background:#fff;color:#12141a}
-#sheet .pc.A{background:#12141a;color:#fff}
-#sheet .pc.B{background:#06275c;color:#fff;border-color:#06275c}
-#sheet .pc.sel{outline:4px solid #ffc65a;outline-offset:2px}
-#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-#sheet .kinds button{font-size:clamp(17px,2.2vh,22px);border-radius:10px;border:3px solid #12141a;background:#fff;color:#12141a}
-#sheet .row{display:flex;justify-content:flex-end;margin-top:12px}
-#sheet .ghost{background:#fff;color:#12141a;border:3px solid #12141a;border-radius:999px;padding:10px 18px;font-size:18px}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:max(84px,12vh);z-index:40;background:#fff;color:#12141a;border:3px solid #12141a;padding:12px 14px;font-weight:900;display:flex;gap:10px;align-items:center;max-width:92vw}
+#sheet .panel{width:min(880px,100%);margin:0 auto;max-height:46vh;overflow:auto;background:#fff;border-top:1px solid #cacacb;padding:24px 24px calc(24px + env(safe-area-inset-bottom))}
+#sheet h3{font-size:32px;font-weight:500;line-height:1.2;margin-bottom:8px}
+#sheet .hint{font-size:16px;font-weight:400;line-height:1.5;color:#111;margin-bottom:16px}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+#sheet .tl{font-size:16px;font-weight:500;letter-spacing:.06em;margin-bottom:8px}
+#sheet .pc,#sheet .kinds button,#sheet .ghost,#toast button{min-height:48px;border:0;border-radius:999px;font:500 16px/1.2 "Avenir Next","Helvetica Neue",-apple-system,sans-serif;touch-action:manipulation}
+#sheet .pc{padding:0 18px;margin:0 8px 8px 0}
+#sheet .pc.A{background:#111;color:#fff}
+#sheet .pc.B{background:#06275c;color:#fff}
+#sheet .pc.sel{outline:2px solid #111;outline-offset:3px}
+#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+#sheet .kinds button{background:#f5f5f5;color:#111}
+#sheet .row{display:flex;justify-content:flex-end;margin-top:16px}
+#sheet .ghost{background:#fff;color:#111;padding:0 24px;border:1px solid #111}
+#toast{position:fixed;left:50%;bottom:max(76px,12vh);transform:translateX(-50%);z-index:40;background:#fff;color:#111;border-top:1px solid #cacacb;padding:12px 16px;font-size:16px;font-weight:500;display:flex;gap:12px;align-items:center}
 #toast[hidden]{display:none}
-#toast button{background:#12141a;color:#fff;border:0;border-radius:8px;padding:10px 14px}
+#toast button{background:#111;color:#fff;padding:0 16px}
 @media (orientation:portrait){
- .mast{grid-template-columns:1fr auto;min-height:72px}
- .note{display:none}
- .board{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr}
- .team.A,.team.B,.board.sw .team.A,.board.sw .team.B{grid-template-columns:1fr}
- .rail{order:-1}
- .rail{writing-mode:horizontal-tb;letter-spacing:.16em;min-height:48px}
- .face,.team.A .face,.team.B .face{align-items:center;text-align:center;padding:1.6vh 4vw 2vh}
- .sc{font-size:min(28vh,34vw)}
- .mid{border:0;border-top:3px solid #12141a;border-bottom:3px solid #12141a;min-height:44px}
- .colon{font-size:42px}
- #fx{max-width:92%}
- #swb{left:auto;right:max(14px,env(safe-area-inset-right));top:46%;bottom:auto;transform:none}
+ .board{grid-template-columns:1fr;grid-template-rows:auto auto auto;align-items:start;padding-top:24px;gap:8px}
+ .sep{display:none}
+ .side,.board.sw .A,.board.sw .B{text-align:left}
+ .sc{font-size:min(26vh,40vw)}
+ #swb{left:auto;right:max(16px,env(safe-area-inset-right));top:42%;bottom:auto;transform:none}
  #swb:active{transform:scale(.98)}
- #sheet .kinds{grid-template-columns:repeat(2,1fr)}
- #sheet .panel{max-height:72vh}
+ #sheet .kinds{grid-template-columns:1fr 1fr}
+ #sheet .panel{max-height:42vh}
 }
-@media (prefers-reduced-motion:reduce){#fx.goal b,#fx.soft b,.sc.pop,.rail.pop{animation:none}}
+@media (prefers-reduced-motion:reduce){#fx.goal b,#fx.soft b,.sc.pop{animation:none}}
 </style></head><body><div id="app"></div>
 <script>
-// 미리보기 전용. 이 페이지는 서버 저장소에 기록하지 않는다.
+// 미리보기 전용. 서버 저장소에 기록하지 않는다.
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // RECORD-LOGIC-BEGIN
 const REC_KINDS=['골','어시','자책골','세이브','유효슈팅','철벽수비'];
@@ -154,7 +128,7 @@ function fxAdmit(e, seen, force, started){
 function scoreSide(e){if(!e)return '';if(e.k==='골')return e.t==='A'?'A':'B';if(e.k==='자책골')return e.t==='A'?'B':'A';if(e.k==='상대골')return 'B';return e.t==='B'?'B':'A'}
 // FX-END
 const FXSTART=Date.now();
-let FXSEEN={},M=null,SW=false,SEL=null,ASST=null,SHEET=false,LAST=null;
+let FXSEEN={},M=null,SW=false,SEL=null,ASST=null,SHEET=false;
 try{SW=localStorage.getItem('achuk_preview_sw')==='1'}catch(e){}
 const REC=createRecorder();
 function previewSeed(){
@@ -171,8 +145,7 @@ async function postJSON(body){
     return {ok:true, applied:true, match:Object.assign({}, M, {goals})};
   }
   if(body.op==='removeEvent'){
-    const goals=(M.goals||[]).filter(g=>g.eid!==body.eventId);
-    return {ok:true, applied:true, match:Object.assign({}, M, {goals})};
+    return {ok:true, applied:true, match:Object.assign({}, M, {goals:(M.goals||[]).filter(g=>g.eid!==body.eventId)})};
   }
   return {ok:false, applied:false};
 }
@@ -181,13 +154,13 @@ function toast(msg,undo){const el=$('#toast');if(!el)return;el.hidden=false;el.i
 function playFx(e, force){const r=fxAdmit(e, FXSEEN, !!force, FXSTART);FXSEEN=r.seen;if(!r.play)return;showFx(e, r.tone)}
 function showFx(e, tone){const el=$('#fx');if(!el||!M)return;const side=scoreSide(e);const word=side==='B'?'블루':'블랙';
  el.hidden=false;el.className=tone==='goal'?'goal':'soft';el.querySelector('b').textContent=`${recLabel(e.k)} · ${e.p||''} · ${word}`;
- if(tone==='goal'){const sc=side==='B'?$('#sb'):$('#sa');const rail=document.querySelector(side==='B'?'.team.B .rail':'.team.A .rail');[sc,rail].forEach(n=>{if(!n)return;n.classList.remove('pop');void n.offsetWidth;n.classList.add('pop')})}
- clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true;el.className=''},1800)}
+ if(tone==='goal'){const sc=side==='B'?$('#sb'):$('#sa');if(sc){sc.classList.remove('pop');void sc.offsetWidth;sc.classList.add('pop')}}
+ clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true;el.className=''},1600)}
 function paintSheet(){const el=$('#sheet');if(!el||!M)return;if(!SHEET){el.hidden=true;return}el.hidden=false;
  const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('');
  const kinds=REC_KINDS.map(k=>`<button type="button" data-k="${k}">${esc(recLabel(k))}</button>`).join('');
- const as=ASST&&ASST.until>Date.now()?`<div class="hint">${esc(ASST.scorer)} 골 · 어시스트는? 점수는 그대로예요.</div>${(M[ASST.t].players||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
- el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록</h3><div class="hint">선수 다음 종류. 저장이 된 뒤에만 점수가 바뀌어요.</div><div class="cols"><div><div class="tl">블랙</div>${chips('A')}</div><div><div class="tl">블루</div>${chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p)+' 선택됨':'선수를 먼저 고르세요'}</div><div class="row"><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
+ const as=ASST&&ASST.until>Date.now()?`<div class="hint">${esc(ASST.scorer)} 골. 어시스트는 점수에 더하지 않아요.</div>${(M[ASST.t].players||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
+ el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록</h3><div class="hint">선수를 고른 뒤 종류를 누르세요. 점수는 저장 후에만 바뀝니다.</div><div class="cols"><div><div class="tl">블랙</div>${chips('A')}</div><div><div class="tl">블루</div>${chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p):'선수'}</div><div class="row"><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
  el.onclick=e=>{if(e.target===el){SHEET=false;el.hidden=true}};
  const panel=el.querySelector('.panel');if(panel)panel.onclick=e=>e.stopPropagation();
  el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,t=b.dataset.t;SEL=SEL&&SEL.p===p&&SEL.t===t?null:{p,t};paintSheet()});
@@ -200,13 +173,13 @@ async function commitRec(p,k,t){if(!M)return;const ev={eid:newEid(),p,k,t,ts:Dat
  M=res.match;render();playFx(ev,true);SEL=null;
  if(k==='골'){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
  if(SHEET)paintSheet();
- toast('저장됐어요',async()=>{const rm=await postJSON({op:'removeEvent',id:M.id,eventId:ev.eid});if(!rm.ok||!rm.applied){toast('삭제되지 않았어요. 점수는 그대로입니다.');return}M=rm.match;const sc=scoreFromEvents(M.goals||[],M);M.sa=sc[0];M.sb=sc[1];if(ASST&&ASST.scorer===p)ASST=null;render();if(SHEET)paintSheet();toast('되돌렸어요')})}
+ toast('저장됐어요',async()=>{const rm=await postJSON({op:'removeEvent',id:M.id,eventId:ev.eid});if(!rm.ok||!rm.applied){toast('삭제되지 않았어요. 점수는 그대로입니다.');return}M=rm.match;if(ASST&&ASST.scorer===p)ASST=null;render();if(SHEET)paintSheet();toast('되돌렸어요')})}
 function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');return}commitRec(SEL.p,k,SEL.t)}
 function render(){if(!M)return;const [a,b]=scoreFromEvents(M.goals||[],M);
- if(!$('#sa')){$('#app').innerHTML=`<header class="mast"><div class="brand">아축<small>미리보기</small></div><div class="clock"><b id="clk">00:00</b><span>경과</span></div><div class="note">미리보기<br>실제 경기에는 저장되지 않아요</div></header><div class="board${SW?' sw':''}" id="brd"><section class="team A"><div class="rail">블랙</div><div class="face"><h2>${esc(M.A.name)}</h2><div class="sc" id="sa">0</div></div></section><div class="mid"><div class="colon">:</div></div><section class="team B"><div class="face"><h2>${esc(M.B.name)}</h2><div class="sc" id="sb">0</div></div><div class="rail">블루</div></section><div id="fx" hidden><b></b></div></div><button id="swb" type="button" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button><button id="recb" type="button" aria-label="기록 등록">기록</button><div id="sheet" hidden></div><div id="toast" hidden></div>`;
+ if(!$('#sa')){$('#app').innerHTML=`<header class="util"><span>아축</span><span><b id="clk">00:00</b> 경과</span><span>미리보기 · 실제 경기에는 저장되지 않아요</span></header><div class="board${SW?' sw':''}" id="brd"><section class="side A"><h2>${esc(M.A.name)}</h2><div class="sc" id="sa">0</div></section><div class="sep" aria-hidden="true">:</div><section class="side B"><h2>${esc(M.B.name)}</h2><div class="sc" id="sb">0</div></section></div><div id="fx" hidden><b></b></div><button id="swb" type="button" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button><button id="recb" type="button" aria-label="기록 등록">기록</button><div id="sheet" hidden></div><div id="toast" hidden></div>`;
   $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_preview_sw',SW?'1':'')}catch(e){}$('#brd').classList.toggle('sw',SW)};
   $('#recb').onclick=()=>{SHEET=!SHEET;paintSheet()}}
- [['sa',a],['sb',b]].forEach(([id,v])=>{const el=$('#'+id);if(el&&el.textContent!==String(v))el.textContent=v});LAST=[a,b]}
+ [['sa',a],['sb',b]].forEach(([id,v])=>{const el=$('#'+id);if(el&&el.textContent!==String(v))el.textContent=v})}
 function tick(){const el=$('#clk');if(!el||!M)return;const s=Math.max(0,Math.floor((Date.now()-M.kick)/1000));el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 setInterval(tick,1000);
 M=previewSeed();(M.goals||[]).forEach(e=>{if(e.eid)FXSEEN[e.eid]=1});render();tick();
