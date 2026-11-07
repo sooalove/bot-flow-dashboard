@@ -1,70 +1,79 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261107103000';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('rtbvr')!==j.b){sessionStorage.setItem('rtbvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판 미리보기</title>
-<style>
-*{box-sizing:border-box;margin:0}
-html,body{height:100%;background:#fff;color:#111;font-family:"Avenir Next","Futura","Helvetica Neue",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;color-scheme:light}
-#app{height:100%;display:flex;flex-direction:column;padding:0 0 max(76px,calc(48px + env(safe-area-inset-bottom)))}
-.util{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right));background:#f5f5f5;border-bottom:1px solid #e5e5e5;color:#111;font-size:14px;font-weight:500;letter-spacing:.04em}
-.util b{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:0}
-.board{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;padding:48px max(24px,env(safe-area-inset-right)) 24px max(24px,env(safe-area-inset-left));background:#fff}
-.side{min-width:0}
-.side.A{order:1;text-align:left}
-.side.B{order:3;text-align:right}
-.side h2{font-size:clamp(40px,6vh,72px);font-weight:500;line-height:1;letter-spacing:.06em;margin-bottom:8px}
-.side.A h2,.side.A .sc{color:#111}
-.side.B h2,.side.B .sc{color:#06275c}
-.sc{font-size:min(33vh,18vw);font-weight:700;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap;display:inline-block;max-width:100%}
-.sep{order:2;align-self:end;padding:0 24px .12em;font-size:32px;font-weight:500;line-height:1.2;color:#111}
-.board.sw .A{order:3;text-align:right}
-.board.sw .B{order:1;text-align:left}
-#fx{min-height:28px;margin:0 max(24px,env(safe-area-inset-right)) 0 max(24px,env(safe-area-inset-left));pointer-events:none}
-#fx[hidden]{display:block;visibility:hidden}
-#fx b{display:inline-block;font-size:16px;font-weight:500;line-height:1.5;letter-spacing:0;color:#111}
-#fx.goal b{animation:cut .42s ease}
-#fx.soft b{animation:cut .32s ease}
-.sc.pop{animation:cut .42s cubic-bezier(.2,.7,.2,1)}
-@keyframes cut{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-#swb,#recb{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));min-height:48px;min-width:48px;padding:0 32px;border:0;border-radius:999px;font:500 16px/1.2 "Avenir Next","Helvetica Neue",-apple-system,sans-serif;touch-action:manipulation;z-index:6}
-#swb{left:50%;transform:translateX(-50%);background:#ffc65a;color:#111}
-#recb{right:max(16px,env(safe-area-inset-right));background:#111;color:#fff;z-index:7}
-#swb:active{transform:translateX(-50%) scale(.98)}
-#recb:active{transform:scale(.98)}
-#sheet{position:fixed;inset:0;z-index:30;background:rgba(17,17,17,.28);display:flex;align-items:flex-end}
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261107080000';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('bvr')!==j.b){sessionStorage.setItem('bvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판</title>
+<style>*{box-sizing:border-box;margin:0}html,body{height:100%;background:#05080f;color:#e6edf3;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
+#app{height:100%;display:flex;flex-direction:column;padding:2vh 4vw 9vh}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:2.2vh;color:#6b7891;height:3.5vh}
+.board{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:3vw;min-height:0;margin:3vh 0 0}
+.team{padding:3vh 2vw;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:2vh;background:#0e1626;overflow:hidden;min-width:0}
+.team h2{font-size:5.5vh;font-weight:800;line-height:1.1;margin-bottom:2vh}
+.sc{font-size:min(38vh,30vw);font-weight:900;line-height:.9;font-variant-numeric:tabular-nums;letter-spacing:-.04em;transition:transform .25s}
+.sc.bump{transform:scale(1.06)}
+.A{border-top:1vh solid #e6edf3;order:1}.A .sc{color:#fff}
+.B{border-top:1vh solid #3b82f6;order:3}.B .sc,.B h2{color:#3b82f6}
+.mid{order:2;display:flex;flex-direction:column;align-items:center;justify-content:center}.colon{font-size:12vh;font-weight:800;color:#55627a}
+.board.sw .A{order:3}.board.sw .B{order:1}
+.clk{font-size:4.5vh;font-weight:700;color:#ffc65a;font-variant-numeric:tabular-nums}
+#swb{position:fixed;left:50%;bottom:1.5vh;transform:translateX(-50%);background:#ffc65a;color:#05080f;border:0;font-size:2.6vh;font-weight:800;padding:1.1vh 2.6vh;border-radius:99px;box-shadow:0 .4vh 1.4vh rgba(0,0,0,.6);z-index:5;font-family:inherit}
+#swb:active{transform:translateX(-50%) scale(.95)}
+@media (orientation:portrait){.board{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr;gap:2vh;margin-top:2vh}.colon{display:none}.sc{font-size:min(22vh,45vw)}.team h2{font-size:3.6vh}.mid{min-height:4vh}#swb{left:auto;right:3vw;transform:none;bottom:auto;top:50%;margin-top:-2.6vh}#swb:active{transform:scale(.95)}}
+
+.msg{margin:auto;text-align:center;font-size:4vh;color:#8aa}
+.keyf{margin:auto;width:min(560px,90vw);background:#0e1626;padding:28px;border-radius:16px;display:flex;flex-direction:column;gap:12px;font-size:18px}
+.keyf input,.keyf button{font-size:20px;padding:12px;border-radius:10px;border:1px solid #2c3d58;background:#05080f;color:#e6edf3}.keyf button{background:#1e2a3d;font-weight:700}.err{color:#ff6b6b}
+#recb{position:fixed;right:max(2vw,env(safe-area-inset-right));bottom:max(1.5vh,env(safe-area-inset-bottom));z-index:6;background:#39ff88;color:#05080f;border:0;font-size:2.6vh;font-weight:800;padding:1.2vh 2.6vh;border-radius:99px;box-shadow:0 .4vh 1.4vh rgba(0,0,0,.6);font-family:inherit;touch-action:manipulation}
+#recb:active{transform:scale(.96)}
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(5,8,15,.55);display:flex;align-items:flex-end;justify-content:center}
 #sheet[hidden]{display:none}
-#sheet .panel{width:min(880px,100%);margin:0 auto;max-height:46vh;overflow:auto;background:#fff;border-top:1px solid #cacacb;padding:24px 24px calc(24px + env(safe-area-inset-bottom))}
-#sheet h3{font-size:32px;font-weight:500;line-height:1.2;margin-bottom:8px}
-#sheet .hint{font-size:16px;font-weight:400;line-height:1.5;color:#111;margin-bottom:16px}
-#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-#sheet .tl{font-size:16px;font-weight:500;letter-spacing:.06em;margin-bottom:8px}
-#sheet .pc,#sheet .kinds button,#sheet .ghost,#toast button{min-height:48px;border:0;border-radius:999px;font:500 16px/1.2 "Avenir Next","Helvetica Neue",-apple-system,sans-serif;touch-action:manipulation}
-#sheet .pc{padding:0 18px;margin:0 8px 8px 0}
-#sheet .pc.A{background:#111;color:#fff}
-#sheet .pc.B{background:#06275c;color:#fff}
-#sheet .pc.sel{outline:2px solid #111;outline-offset:3px}
-#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
-#sheet .kinds button{background:#f5f5f5;color:#111}
-#sheet .row{display:flex;justify-content:flex-end;margin-top:16px}
-#sheet .ghost{background:#fff;color:#111;padding:0 24px;border:1px solid #111}
-#toast{position:fixed;left:50%;bottom:max(76px,12vh);transform:translateX(-50%);z-index:40;background:#fff;color:#111;border-top:1px solid #cacacb;padding:12px 16px;font-size:16px;font-weight:500;display:flex;gap:12px;align-items:center}
+#sheet .panel{width:min(980px,100%);max-height:62vh;overflow:auto;-webkit-overflow-scrolling:touch;background:#0e1626;border-radius:2.2vh 2.2vh 0 0;padding:2.2vh 3vw calc(2.2vh + env(safe-area-inset-bottom));box-shadow:0 -1vh 4vh rgba(0,0,0,.45)}
+#sheet h3{font-size:3vh;margin:0 0 .6vh}
+#sheet .hint{color:#8aa;font-size:1.8vh;margin:0 0 1.2vh;line-height:1.35}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:2vw}
+#sheet .tl{font-weight:800;font-size:2.2vh;margin-bottom:1vh}
+#sheet .pc{min-height:6.4vh;font-size:2.4vh;font-weight:800;border-radius:1.4vh;border:2px solid transparent;margin:0 .6vh .8vh 0;padding:1vh 1.6vh;font-family:inherit;touch-action:manipulation}
+#sheet .pc.A{background:#e6edf3;color:#05080f}
+#sheet .pc.B{background:#3b82f6;color:#fff}
+#sheet .pc.sel{outline:3px solid #39ff88;outline-offset:2px}
+#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:1vh;margin-top:1.2vh}
+#sheet .kinds button{min-height:7.2vh;font-size:2.3vh;font-weight:800;border-radius:1.4vh;border:1px solid #2c3d58;background:#1e2a3d;color:#e6edf3;font-family:inherit;touch-action:manipulation}
+#sheet .kinds button:active,#sheet .pc:active{filter:brightness(1.12)}
+#sheet .row{display:flex;justify-content:space-between;align-items:center;gap:1vh;margin-top:1.2vh}
+#sheet .ghost{background:transparent;color:#e6edf3;border:1px solid #2c3d58;border-radius:99px;padding:1.1vh 2vh;font-weight:800;font-family:inherit;font-size:2vh;touch-action:manipulation}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:12vh;z-index:40;background:#111827;color:#e6edf3;border:1px solid #39ff88;border-radius:1.4vh;padding:1.2vh 1.8vh;font-weight:800;font-size:2vh;display:flex;gap:1vh;align-items:center;max-width:92vw}
 #toast[hidden]{display:none}
-#toast button{background:#111;color:#fff;padding:0 16px}
-@media (orientation:portrait){
- .board{grid-template-columns:1fr;grid-template-rows:auto auto auto;align-items:start;padding-top:24px;gap:8px}
- .sep{display:none}
- .side,.board.sw .A,.board.sw .B{text-align:left}
- .sc{font-size:min(26vh,40vw)}
- #swb{left:auto;right:max(16px,env(safe-area-inset-right));top:42%;bottom:auto;transform:none}
- #swb:active{transform:scale(.98)}
- #sheet .kinds{grid-template-columns:1fr 1fr}
- #sheet .panel{max-height:42vh}
-}
-@media (prefers-reduced-motion:reduce){#fx.goal b,#fx.soft b,.sc.pop{animation:none}}
-</style></head><body><div id="app"></div>
+#toast button{background:#39ff88;color:#05080f;border:0;border-radius:1vh;padding:1vh 1.4vh;font-weight:800;font-family:inherit;touch-action:manipulation}
+@media (orientation:portrait){#recb{font-size:2vh}#sheet .kinds{grid-template-columns:repeat(2,1fr)}#sheet .pc{min-height:5.6vh;font-size:2vh}#sheet .panel{max-height:70vh}}
+</style></head><body><div id="app"><div class="msg">불러오는 중…</div></div>
 <script>
-// 미리보기 전용. 서버 저장소에 기록하지 않는다.
-const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// 아축 아이패드 점수판. 점수 = 저장된 경기 기록(골·자책골·상대골)만. 어시·슈퍼세이브는 득점 없음. 폴링 없음.
+let STORE='';
+// CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
+// File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
+// Passphrase = #k=<key> from the URL fragment (fragments are never sent to the server).
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const KEYC = {salt:null, iter:0, pass:null, key:null};
+async function aesKey(pass, salt, iter){
+  if(KEYC.key && KEYC.salt===salt && KEYC.iter===iter && KEYC.pass===pass) return KEYC.key; // derive once
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(salt), iterations:iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  Object.assign(KEYC, {salt, iter, pass, key}); return key;
+}
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const key = await aesKey(pass, doc.salt, doc.iter);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
 // RECORD-LOGIC-BEGIN
 const REC_KINDS=['골','어시','자책골','세이브','유효슈팅','철벽수비'];
 function recLabel(k){return k==='세이브'?'슈퍼세이브':k}
+function assertAnon(obj){
+  const bad=['uid','user','writer','device','deviceId','by'];
+  for(const k of bad) if(obj&&Object.prototype.hasOwnProperty.call(obj,k)) throw new Error('identity');
+  return obj;
+}
 function scoreFromEvents(ev, match){
   if(match&&match.base) return [+match.sa||0, +match.sb||0];
   const seen={}; let a=0,b=0;
@@ -78,6 +87,22 @@ function scoreFromEvents(ev, match){
   });
   return [a,b];
 }
+function persistedEvents(match, live, removed){
+  const rm=Object.assign({}, (match&&match.removedEvents)||{}, removed||{});
+  const out={};
+  ((match&&match.goals)||[]).forEach((g,i)=>{
+    const eid=g&&(g.eid||g.eventId||('legacy-'+i));
+    if(!eid||rm[eid]) return;
+    out[eid]=Object.assign({}, g, {eid});
+  });
+  Object.keys(live||{}).forEach(k=>{
+    const e=live[k]; if(!e) return;
+    const eid=e.eid||e.eventId||k;
+    if(!eid||rm[eid]||out[eid]||e.saved===false) return;
+    out[eid]=Object.assign({}, e, {eid});
+  });
+  return Object.values(out);
+}
 function applyPersistedEvent(match, ev){
   const m=JSON.parse(JSON.stringify(match||{}));
   const goals=Array.isArray(m.goals)?m.goals:[];
@@ -86,12 +111,20 @@ function applyPersistedEvent(match, ev){
   if(!m.base){ const sc=scoreFromEvents(goals, m); m.sa=sc[0]; m.sb=sc[1]; }
   return m;
 }
+function addEventRequest(key, match, ev){
+  return assertAnon({key:key, op:'addEvent', id:match.id, eventId:ev.eid, p:ev.p, k:ev.k, t:ev.t});
+}
+function removeEventRequest(key, match, eventId){
+  return assertAnon({key:key, op:'removeEvent', id:match.id, eventId:eventId});
+}
+function livePayload(ev){ return assertAnon({p:ev.p, k:ev.k, t:ev.t}); }
 function entryAllowed(match, p, k, t){
-  if(!match||match.deleted) return false;
+  if(!match||match.deleted||String(match.id||'').startsWith('pv-')) return false;
   if(k==='상대골') return match.type==='external' && t==='B';
   if(REC_KINDS.indexOf(k)<0) return false;
   if(t!=='A'&&t!=='B') return false;
-  return ((match[t]&&match[t].players)||[]).indexOf(p)>=0;
+  const roster=(match[t]&&match[t].players)||[];
+  return roster.indexOf(p)>=0;
 }
 function tapGuard(state, key, now){
   const s=state||{busyKey:null,lastKey:'',lastTs:0,lastOk:false};
@@ -99,88 +132,113 @@ function tapGuard(state, key, now){
   if(s.lastOk && s.lastKey===key && now-s.lastTs<800) return {ok:false, reason:'dup', state:s};
   return {ok:true, state:{busyKey:key, lastKey:key, lastTs:now, lastOk:false}};
 }
-function finishGuard(state, ok){return {busyKey:null, lastKey:state.lastKey, lastTs:state.lastTs, lastOk:!!ok}}
+function finishGuard(state, ok){
+  return {busyKey:null, lastKey:state.lastKey, lastTs:state.lastTs, lastOk:!!ok};
+}
+async function saveRecord(match, ev, key, fetchImpl){
+  const request=addEventRequest(key, match, ev);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const base=(j.match&&typeof j.match==='object')?j.match:match;
+  return {ok:true, match:applyPersistedEvent(base, ev), request:request};
+}
+async function deleteRecord(match, eventId, key, fetchImpl){
+  const request=removeEventRequest(key, match, eventId);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const m=JSON.parse(JSON.stringify((j.match&&typeof j.match==='object')?j.match:match));
+  m.removedEvents=Object.assign({}, m.removedEvents, {[eventId]:1});
+  m.goals=(m.goals||[]).filter(g=>g&&g.eid!==eventId);
+  if(!m.base){ const sc=scoreFromEvents(m.goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return {ok:true, match:m, request:request};
+}
 function createRecorder(){
   let guard={busyKey:null,lastKey:'',lastTs:0,lastOk:false};
-  return {async add(match, ev, key, fetchImpl, now){
-    if(!entryAllowed(match, ev.p, ev.k, ev.t)) return {ok:false, reason:'reject', match};
-    const g=tapGuard(guard, ev.p+'|'+ev.k+'|'+ev.t, now==null?Date.now():now);
-    if(!g.ok) return {ok:false, reason:g.reason, match};
-    guard=g.state;
-    let res; try{ res=await fetchImpl({op:'addEvent', id:match.id, eventId:ev.eid, p:ev.p, k:ev.k, t:ev.t}); }
-    catch(e){ res={ok:false}; }
-    guard=finishGuard(guard, !!(res&&res.ok&&res.applied));
-    if(!res||res.ok!==true||res.applied!==true) return {ok:false, reason:'fail', match};
-    return {ok:true, reason:'saved', match:applyPersistedEvent(res.match||match, ev)};
-  }};
+  return {
+    async add(match, ev, key, fetchImpl, now){
+      if(!entryAllowed(match, ev.p, ev.k, ev.t)) return {ok:false, reason:'reject', match:match};
+      const tap=ev.p+'|'+ev.k+'|'+ev.t;
+      const g=tapGuard(guard, tap, now==null?Date.now():now);
+      if(!g.ok) return {ok:false, reason:g.reason, match:match};
+      guard=g.state;
+      let res;
+      try{ res=await saveRecord(match, ev, key, fetchImpl); }
+      catch(e){ res={ok:false, match:match, error:String(e&&e.message||e)}; }
+      guard=finishGuard(guard, !!(res&&res.ok));
+      if(!res.ok) return {ok:false, reason:'fail', match:match, error:res.error};
+      return {ok:true, reason:'saved', match:res.match, request:res.request};
+    }
+  };
 }
 // RECORD-LOGIC-END
-// FX-BEGIN
-function fxTone(k){return (k==='골'||k==='자책골'||k==='상대골')?'goal':'soft'}
-function fxAdmit(e, seen, force, started){
-  const id=e&&e.eid; const cur=seen||{};
-  if(!id) return {play:false, seen:cur};
-  if(cur[id]) return {play:false, seen};
-  const next=Object.assign({}, cur); next[id]=1;
-  if(!force && (!(e.ts>0) || e.ts<started)) return {play:false, seen:next};
-  return {play:true, seen:next, tone:fxTone(e.k)};
-}
-function scoreSide(e){if(!e)return '';if(e.k==='골')return e.t==='A'?'A':'B';if(e.k==='자책골')return e.t==='A'?'B':'A';if(e.k==='상대골')return 'B';return e.t==='B'?'B':'A'}
-// FX-END
-const FXSTART=Date.now();
-let FXSEEN={},M=null,SW=false,SEL=null,ASST=null,SHEET=false;
-try{SW=localStorage.getItem('achuk_preview_sw')==='1'}catch(e){}
-const REC=createRecorder();
-function previewSeed(){
-  const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10);
-  return {id:'preview-board',date:today,type:'internal',kick:Date.now()-12*60*1000,A:{name:'블랙',players:['김','이','박']},B:{name:'블루',players:['최','정','한']},goals:[
-    {eid:'seed-a',p:'김',k:'골',t:'A',ts:Date.now()-8*60*1000},
-    {eid:'seed-b',p:'최',k:'골',t:'B',ts:Date.now()-4*60*1000}
-  ]};
-}
-async function postJSON(body){
-  if(window.__mode==='fail') return {ok:false, error:'mock'};
-  if(body.op==='addEvent'){
-    const goals=(M.goals||[]).concat([{p:body.p,k:body.k,t:body.t,eid:body.eventId,ts:Date.now()}]);
-    return {ok:true, applied:true, match:Object.assign({}, M, {goals})};
-  }
-  if(body.op==='removeEvent'){
-    return {ok:true, applied:true, match:Object.assign({}, M, {goals:(M.goals||[]).filter(g=>g.eid!==body.eventId)})};
-  }
-  return {ok:false, applied:false};
-}
-function newEid(){const a='-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';const b=crypto.getRandomValues(new Uint8Array(20));let s='';for(let i=0;i<20;i++)s+=a[b[i]%a.length];return s}
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY=()=>new Date(Date.now()+9*36e5).toISOString().slice(0,10),Q=new URLSearchParams(location.search);
+let KEY=(new URLSearchParams(location.hash.slice(1))).get('k')||'';
+try{if(KEY){localStorage.setItem('achuk_k',KEY);history.replaceState(null,'',location.pathname+location.search)}else KEY=localStorage.getItem('achuk_k')||''}catch(e){}
+function keyForm(msg){$('#app').innerHTML=`<div class="keyf"><b>🔑 처음 한 번만 키를 입력해 주세요</b>${msg?`<div class="err">${msg}</div>`:''}<input id="kin" type="password" autocomplete="off" placeholder="키 또는 #k= 링크 붙여넣기"><button id="kok">저장하고 열기</button><small>이 기기에만 저장돼요</small></div>`;
+ $('#kok').onclick=()=>{let v=$('#kin').value.trim();const m=v.match(/[#&]k=([^&]+)/);if(m)v=decodeURIComponent(m[1]);if(!v)return;try{localStorage.setItem('achuk_k',v)}catch(e){}KEY=v;load()}}
+let DB={},M=null,EV={},RM={},F=null,d=null,space='',KICK=0;
+async function get(){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({key:KEY,op:'get',matches:{}})});const j=await r.json();if(!j.ok)throw new Error(j.error||'server');DB=j.matches||{}}
+function pick(){const q=Q.get('m');if(q&&/^pv-/.test(q))return{id:q,date:TODAY(),A:{name:'블랙'},B:{name:'블루'},goals:[]};
+ if(q&&DB[q])return DB[q];const t=Q.get('d')||TODAY();return Object.values(DB).filter(x=>x&&!x.deleted&&String(x.date).slice(0,10)===t).sort((a,b)=>(+String(b.id).slice(2)||0)-(+String(a.id).slice(2)||0))[0]||null}
+function events(){if(!M)return [];return persistedEvents(M,EV,RM)}
+function score(){return scoreFromEvents(events(), M)}
+let LAST=null,SW=false;try{SW=localStorage.getItem('achuk_board_sw')==='1'}catch(e){}
+function canRec(){if(!M||!STORE||M.deleted||String(M.id).startsWith('pv-'))return false;if(String(M.date||'').slice(0,10)<TODAY())return false;if(M.type==='external')return true;return ((M.A&&M.A.players)||[]).length+((M.B&&M.B.players)||[]).length>0}
+function newEid(){const alphabet='-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';const bytes=crypto.getRandomValues(new Uint8Array(20));let s='';for(let i=0;i<20;i++)s+=alphabet[bytes[i]%alphabet.length];return s}
 function toast(msg,undo){const el=$('#toast');if(!el)return;el.hidden=false;el.innerHTML=`<span>${esc(msg)}</span>`+(undo?'<button type="button" id="undob">되돌리기</button>':'');clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true},undo?6000:2200);if(undo){const b=$('#undob');if(b)b.onclick=undo}}
-function playFx(e, force){const r=fxAdmit(e, FXSEEN, !!force, FXSTART);FXSEEN=r.seen;if(!r.play)return;showFx(e, r.tone)}
-function showFx(e, tone){const el=$('#fx');if(!el||!M)return;const side=scoreSide(e);const word=side==='B'?'블루':'블랙';
- el.hidden=false;el.className=tone==='goal'?'goal':'soft';el.querySelector('b').textContent=`${recLabel(e.k)} · ${e.p||''} · ${word}`;
- if(tone==='goal'){const sc=side==='B'?$('#sb'):$('#sa');if(sc){sc.classList.remove('pop');void sc.offsetWidth;sc.classList.add('pop')}}
- clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true;el.className=''},1600)}
+async function postJSON(body){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});let j=null;try{j=await r.json()}catch(e){throw new Error('bad-response')}return j}
+function publishLive(ev){if(!F||!d||!space||!M)return;const payload=livePayload(ev);F.set(F.ref(d,`achuk/${space}/live/${M.id}/events/${ev.eid}`),Object.assign({},payload,{ts:F.serverTimestamp()})).catch(()=>{});F.runTransaction(F.ref(d,`achuk/${space}/live/${M.id}/seq`),n=>(n||0)+1).catch(()=>{})}
+function publishRemoved(eventId){if(!F||!d||!space||!M)return;if(!/^[-_A-Za-z0-9]{20}$/.test(eventId))return;F.set(F.ref(d,`achuk/${space}/live/${M.id}/removed/${eventId}`),F.serverTimestamp()).catch(()=>{})}
+const REC=createRecorder();
+let SEL=null,ASST=null,SHEET=false;
 function paintSheet(){const el=$('#sheet');if(!el||!M)return;if(!SHEET){el.hidden=true;return}el.hidden=false;
- const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('');
+ const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('')||'<div class="hint">선수 없음</div>';
  const kinds=REC_KINDS.map(k=>`<button type="button" data-k="${k}">${esc(recLabel(k))}</button>`).join('');
- const as=ASST&&ASST.until>Date.now()?`<div class="hint">${esc(ASST.scorer)} 골. 어시스트는 점수에 더하지 않아요.</div>${(M[ASST.t].players||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
- el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록</h3><div class="hint">선수를 고른 뒤 종류를 누르세요. 점수는 저장 후에만 바뀝니다.</div><div class="cols"><div><div class="tl">블랙</div>${chips('A')}</div><div><div class="tl">블루</div>${chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p):'선수'}</div><div class="row"><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
+ const opp=M.type==='external'?'<button type="button" class="pc B" id="opp">⚽ 상대팀 득점</button>':'';
+ const as=ASST&&ASST.until>Date.now()?`<div class="hint">⚽ ${esc(ASST.scorer)} 골 · 어시스트는? (점수는 그대로)</div>${((M[ASST.t]&&M[ASST.t].players)||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
+ el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록 등록</h3><div class="hint">선수를 고른 뒤 종류를 누르면 저장돼요. 점수는 저장이 끝난 뒤에만 바뀌어요.</div><div class="cols"><div><div class="tl">⚫ ${esc(M.A&&M.A.name||'A')}</div>${chips('A')}</div><div><div class="tl" style="color:#60a5fa">🔵 ${esc(M.B&&M.B.name||'B')}</div>${M.type==='external'?opp:chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p)+' 선택됨 · 종류를 누르면 저장':'선수를 먼저 고르세요'}</div><div class="row"><span></span><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
  el.onclick=e=>{if(e.target===el){SHEET=false;el.hidden=true}};
  const panel=el.querySelector('.panel');if(panel)panel.onclick=e=>e.stopPropagation();
  el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,t=b.dataset.t;SEL=SEL&&SEL.p===p&&SEL.t===t?null:{p,t};paintSheet()});
  el.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>chooseKind(b.dataset.k));
  el.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{const p=b.dataset.as,t=ASST&&ASST.t;ASST=null;if(p&&t)commitRec(p,'어시',t);else paintSheet()});
  const none=$('#asnone');if(none)none.onclick=()=>{ASST=null;paintSheet()};
- $('#sheetx').onclick=()=>{SHEET=false;el.hidden=true}}
-async function commitRec(p,k,t){if(!M)return;const ev={eid:newEid(),p,k,t,ts:Date.now()};const res=await REC.add(M,ev,'preview',postJSON,Date.now());
- if(!res.ok){if(res.reason==='fail')toast('저장되지 않았어요. 점수는 그대로입니다.');return}
- M=res.match;render();playFx(ev,true);SEL=null;
- if(k==='골'){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
+ const oppB=$('#opp');if(oppB)oppB.onclick=()=>commitRec(M.B&&M.B.name||'상대팀','상대골','B');
+ const x=$('#sheetx');if(x)x.onclick=()=>{SHEET=false;el.hidden=true}}
+async function commitRec(p,k,t){if(!M)return;const ev={eid:newEid(),p,k,t,ts:Date.now()};const res=await REC.add(M,ev,KEY,postJSON,Date.now());
+ if(!res.ok){if(res.reason==='fail')toast('저장되지 않았어요. 점수는 그대로입니다.');else if(res.reason==='reject')toast('이 기록은 저장할 수 없어요');const st=$('#rst');if(st&&res.reason==='fail')st.textContent='저장 실패 · 점수 유지';return}
+ M=res.match;if(M&&M.id)DB[M.id]=M;render();publishLive(ev);SEL=null;
+ if(k==='골'&&M[t]&&(M[t].players||[]).length>1){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
  if(SHEET)paintSheet();
- toast('저장됐어요',async()=>{const rm=await postJSON({op:'removeEvent',id:M.id,eventId:ev.eid});if(!rm.ok||!rm.applied){toast('삭제되지 않았어요. 점수는 그대로입니다.');return}M=rm.match;if(ASST&&ASST.scorer===p)ASST=null;render();if(SHEET)paintSheet();toast('되돌렸어요')})}
-function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');return}commitRec(SEL.p,k,SEL.t)}
-function render(){if(!M)return;const [a,b]=scoreFromEvents(M.goals||[],M);
- if(!$('#sa')){$('#app').innerHTML=`<header class="util"><span>아축</span><span><b id="clk">00:00</b> 경과</span><span>미리보기 · 실제 경기에는 저장되지 않아요</span></header><div class="board${SW?' sw':''}" id="brd"><section class="side A"><h2>${esc(M.A.name)}</h2><div class="sc" id="sa">0</div></section><div class="sep" aria-hidden="true">:</div><section class="side B"><h2>${esc(M.B.name)}</h2><div class="sc" id="sb">0</div></section></div><div id="fx" hidden><b></b></div><button id="swb" type="button" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button><button id="recb" type="button" aria-label="기록 등록">기록</button><div id="sheet" hidden></div><div id="toast" hidden></div>`;
-  $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_preview_sw',SW?'1':'')}catch(e){}$('#brd').classList.toggle('sw',SW)};
-  $('#recb').onclick=()=>{SHEET=!SHEET;paintSheet()}}
- [['sa',a],['sb',b]].forEach(([id,v])=>{const el=$('#'+id);if(el&&el.textContent!==String(v))el.textContent=v})}
-function tick(){const el=$('#clk');if(!el||!M)return;const s=Math.max(0,Math.floor((Date.now()-M.kick)/1000));el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
-setInterval(tick,1000);
-M=previewSeed();(M.goals||[]).forEach(e=>{if(e.eid)FXSEEN[e.eid]=1});render();tick();
+ toast('저장됐어요',async()=>{const rm=await deleteRecord(M,ev.eid,KEY,postJSON);if(!rm.ok){toast('삭제되지 않았어요. 점수는 그대로입니다.');return}M=rm.match;if(M&&M.id)DB[M.id]=M;RM[ev.eid]=1;delete EV[ev.eid];if(ASST&&ASST.scorer===p)ASST=null;render();publishRemoved(ev.eid);if(SHEET)paintSheet();toast('되돌렸어요')})}
+function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');const st=$('#rst');if(st)st.textContent='선수를 먼저 고르세요';return}commitRec(SEL.p,k,SEL.t)}
+function render(){if(!M){$('#app').innerHTML=`<div class="msg">오늘(${TODAY()}) 경기가 아직 없어요<br><small>경기가 만들어지면 다시 열어 주세요</small></div>`;return}
+ const [a,b]=score();if(!$('#sa')){$('#app').innerHTML=`<div class="top"><span>⚽ ${esc(String(M.date).slice(0,10))}</span><span id="live" class="live">⚪ 연결 중…</span></div>
+ <div class="board${SW?' sw':''}" id="brd"><div class="team A"><h2>${esc(M.A&&M.A.name||'A')}</h2><div class="sc" id="sa">0</div></div><div class="mid"><div class="colon">:</div><div class="clk" id="clk"></div></div><div class="team B"><h2>${esc(M.B&&M.B.name||'B')}</h2><div class="sc" id="sb">0</div></div></div><button id="swb" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button>${canRec()?'<button id="recb" type="button" aria-label="기록 등록">기록</button>':''}<div id="sheet" hidden></div><div id="toast" hidden></div>`;
+  $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_board_sw',SW?'1':'')}catch(e){}$('#brd').classList.toggle('sw',SW)};
+  const rb=$('#recb');if(rb)rb.onclick=()=>{SHEET=!SHEET;paintSheet()}}
+ [['sa',a],['sb',b]].forEach(([id,v])=>{const el=$('#'+id);if(el.textContent!==String(v)){el.textContent=v;if(LAST){el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),400)}}});LAST=[a,b];
+ const ts=events().map(e=>+e.ts).filter(Boolean);KICK=+M.kick||(ts.length?Math.min(...ts):0)}
+function tick(){const el=$('#clk');if(!el)return;if(!KICK||String(M.date).slice(0,10)!==TODAY()){el.textContent='';return}const s=Math.max(0,Math.floor((Date.now()-KICK)/1000));if(s>3*3600){el.textContent='';return}el.textContent=(s>=6000?'':'')+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+setInterval(tick,1000); // 화면 시계만 (데이터 폴링 아님)
+function status(s){const el=$('#live');if(el)el.textContent=s==='on'?'🟢 실시간':s==='re'?'🟡 재연결 중…':'⚪ 연결 중…'}
+async function live(fb){const V='10.14.1';const [A,AU,DBm]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`)]);
+ F=DBm;const app=A.initializeApp(fb,'achuk-board');const au=AU.getAuth(app);d=F.getDatabase(app);
+ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+KEY));space='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+ await AU.signInAnonymously(au);let first=true;F.onValue(F.ref(d,'.info/connected'),s=>{if(s.val()){first=false;status('on')}else status(first?'':'re')});
+ const P=`achuk/${space}/live/${M.id}`;
+ F.onChildAdded(F.ref(d,P+'/events'),s=>{EV[s.key]=Object.assign({eid:s.key},s.val());render();window.__rx&&window.__rx(s.key)});
+ F.onChildAdded(F.ref(d,P+'/removed'),s=>{RM[s.key]=1;render()})}
+let BASE='../',FB=null;
+async function load(){if(!KEY){keyForm('');return}
+ try{const r=await fetch(BASE+'cfg.enc.json?_='+Date.now(),{cache:'no-store'});const c=await decryptDoc(await r.json(),KEY);STORE=c.store||'';FB=c.fb||null}
+ catch(e){if(e.badKey){try{localStorage.removeItem('achuk_k')}catch(_){}KEY='';keyForm('키가 맞지 않아요');return}$('#app').innerHTML='<div class="msg">설정을 불러오지 못했어요</div>';return}
+ try{if(STORE)await get()}catch(e){if(!/^pv-/.test(Q.get('m')||'')){$('#app').innerHTML='<div class="msg">서버 연결 실패 · 다시 열어 주세요</div>';return}}
+ M=pick();render();if(M&&FB)live(FB).catch(e=>status(''))}
+load();
 </script></body></html>
