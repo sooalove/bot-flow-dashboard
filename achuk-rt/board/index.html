@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261104210941';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('bvr')!==j.b){sessionStorage.setItem('bvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261107080000';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('bvr')!==j.b){sessionStorage.setItem('bvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><title>아축 점수판</title>
 <style>*{box-sizing:border-box;margin:0}html,body{height:100%;background:#05080f;color:#e6edf3;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
 #app{height:100%;display:flex;flex-direction:column;padding:2vh 4vw 9vh}
 .top{display:flex;justify-content:space-between;align-items:center;font-size:2.2vh;color:#6b7891;height:3.5vh}
@@ -19,9 +19,31 @@
 .msg{margin:auto;text-align:center;font-size:4vh;color:#8aa}
 .keyf{margin:auto;width:min(560px,90vw);background:#0e1626;padding:28px;border-radius:16px;display:flex;flex-direction:column;gap:12px;font-size:18px}
 .keyf input,.keyf button{font-size:20px;padding:12px;border-radius:10px;border:1px solid #2c3d58;background:#05080f;color:#e6edf3}.keyf button{background:#1e2a3d;font-weight:700}.err{color:#ff6b6b}
+#recb{position:fixed;right:max(2vw,env(safe-area-inset-right));bottom:max(1.5vh,env(safe-area-inset-bottom));z-index:6;background:#39ff88;color:#05080f;border:0;font-size:2.6vh;font-weight:800;padding:1.2vh 2.6vh;border-radius:99px;box-shadow:0 .4vh 1.4vh rgba(0,0,0,.6);font-family:inherit;touch-action:manipulation}
+#recb:active{transform:scale(.96)}
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(5,8,15,.55);display:flex;align-items:flex-end;justify-content:center}
+#sheet[hidden]{display:none}
+#sheet .panel{width:min(980px,100%);max-height:62vh;overflow:auto;-webkit-overflow-scrolling:touch;background:#0e1626;border-radius:2.2vh 2.2vh 0 0;padding:2.2vh 3vw calc(2.2vh + env(safe-area-inset-bottom));box-shadow:0 -1vh 4vh rgba(0,0,0,.45)}
+#sheet h3{font-size:3vh;margin:0 0 .6vh}
+#sheet .hint{color:#8aa;font-size:1.8vh;margin:0 0 1.2vh;line-height:1.35}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:2vw}
+#sheet .tl{font-weight:800;font-size:2.2vh;margin-bottom:1vh}
+#sheet .pc{min-height:6.4vh;font-size:2.4vh;font-weight:800;border-radius:1.4vh;border:2px solid transparent;margin:0 .6vh .8vh 0;padding:1vh 1.6vh;font-family:inherit;touch-action:manipulation}
+#sheet .pc.A{background:#e6edf3;color:#05080f}
+#sheet .pc.B{background:#3b82f6;color:#fff}
+#sheet .pc.sel{outline:3px solid #39ff88;outline-offset:2px}
+#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:1vh;margin-top:1.2vh}
+#sheet .kinds button{min-height:7.2vh;font-size:2.3vh;font-weight:800;border-radius:1.4vh;border:1px solid #2c3d58;background:#1e2a3d;color:#e6edf3;font-family:inherit;touch-action:manipulation}
+#sheet .kinds button:active,#sheet .pc:active{filter:brightness(1.12)}
+#sheet .row{display:flex;justify-content:space-between;align-items:center;gap:1vh;margin-top:1.2vh}
+#sheet .ghost{background:transparent;color:#e6edf3;border:1px solid #2c3d58;border-radius:99px;padding:1.1vh 2vh;font-weight:800;font-family:inherit;font-size:2vh;touch-action:manipulation}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:12vh;z-index:40;background:#111827;color:#e6edf3;border:1px solid #39ff88;border-radius:1.4vh;padding:1.2vh 1.8vh;font-weight:800;font-size:2vh;display:flex;gap:1vh;align-items:center;max-width:92vw}
+#toast[hidden]{display:none}
+#toast button{background:#39ff88;color:#05080f;border:0;border-radius:1vh;padding:1vh 1.4vh;font-weight:800;font-family:inherit;touch-action:manipulation}
+@media (orientation:portrait){#recb{font-size:2vh}#sheet .kinds{grid-template-columns:repeat(2,1fr)}#sheet .pc{min-height:5.6vh;font-size:2vh}#sheet .panel{max-height:70vh}}
 </style></head><body><div id="app"><div class="msg">불러오는 중…</div></div>
 <script>
-// 아축 아이패드 점수판 v1 (읽기 전용). 점수 = 서버 기록 + Firebase RTDB 실시간 push (폴링 없음)
+// 아축 아이패드 점수판. 점수 = 저장된 경기 기록(골·자책골·상대골)만. 어시·슈퍼세이브는 득점 없음. 폴링 없음.
 let STORE='';
 // CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
 // File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
@@ -44,6 +66,115 @@ async function decryptDoc(doc, pass){
   return JSON.parse(new TextDecoder().decode(pt));
 }
 // CRYPTO-END
+// RECORD-LOGIC-BEGIN
+const REC_KINDS=['골','어시','자책골','세이브','유효슈팅','철벽수비'];
+function recLabel(k){return k==='세이브'?'슈퍼세이브':k}
+function assertAnon(obj){
+  const bad=['uid','user','writer','device','deviceId','by'];
+  for(const k of bad) if(obj&&Object.prototype.hasOwnProperty.call(obj,k)) throw new Error('identity');
+  return obj;
+}
+function scoreFromEvents(ev, match){
+  if(match&&match.base) return [+match.sa||0, +match.sb||0];
+  const seen={}; let a=0,b=0;
+  (ev||[]).forEach(g=>{
+    if(!g) return;
+    const id=g.eid||g.eventId||'';
+    if(id){ if(seen[id]) return; seen[id]=1; }
+    if(g.k==='골'){ if(g.t==='A') a++; else b++; }
+    else if(g.k==='자책골'){ if(g.t==='A') b++; else a++; }
+    else if(g.k==='상대골') b++;
+  });
+  return [a,b];
+}
+function persistedEvents(match, live, removed){
+  const rm=Object.assign({}, (match&&match.removedEvents)||{}, removed||{});
+  const out={};
+  ((match&&match.goals)||[]).forEach((g,i)=>{
+    const eid=g&&(g.eid||g.eventId||('legacy-'+i));
+    if(!eid||rm[eid]) return;
+    out[eid]=Object.assign({}, g, {eid});
+  });
+  Object.keys(live||{}).forEach(k=>{
+    const e=live[k]; if(!e) return;
+    const eid=e.eid||e.eventId||k;
+    if(!eid||rm[eid]||out[eid]||e.saved===false) return;
+    out[eid]=Object.assign({}, e, {eid});
+  });
+  return Object.values(out);
+}
+function applyPersistedEvent(match, ev){
+  const m=JSON.parse(JSON.stringify(match||{}));
+  const goals=Array.isArray(m.goals)?m.goals:[];
+  if(!goals.some(g=>g&&(g.eid===ev.eid||g.eventId===ev.eid))) goals.push({p:ev.p,k:ev.k,t:ev.t,eid:ev.eid,ts:ev.ts||0});
+  m.goals=goals;
+  if(!m.base){ const sc=scoreFromEvents(goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return m;
+}
+function addEventRequest(key, match, ev){
+  return assertAnon({key:key, op:'addEvent', id:match.id, eventId:ev.eid, p:ev.p, k:ev.k, t:ev.t});
+}
+function removeEventRequest(key, match, eventId){
+  return assertAnon({key:key, op:'removeEvent', id:match.id, eventId:eventId});
+}
+function livePayload(ev){ return assertAnon({p:ev.p, k:ev.k, t:ev.t}); }
+function entryAllowed(match, p, k, t){
+  if(!match||match.deleted||String(match.id||'').startsWith('pv-')) return false;
+  if(k==='상대골') return match.type==='external' && t==='B';
+  if(REC_KINDS.indexOf(k)<0) return false;
+  if(t!=='A'&&t!=='B') return false;
+  const roster=(match[t]&&match[t].players)||[];
+  return roster.indexOf(p)>=0;
+}
+function tapGuard(state, key, now){
+  const s=state||{busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  if(s.busyKey) return {ok:false, reason:'busy', state:s};
+  if(s.lastOk && s.lastKey===key && now-s.lastTs<800) return {ok:false, reason:'dup', state:s};
+  return {ok:true, state:{busyKey:key, lastKey:key, lastTs:now, lastOk:false}};
+}
+function finishGuard(state, ok){
+  return {busyKey:null, lastKey:state.lastKey, lastTs:state.lastTs, lastOk:!!ok};
+}
+async function saveRecord(match, ev, key, fetchImpl){
+  const request=addEventRequest(key, match, ev);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const base=(j.match&&typeof j.match==='object')?j.match:match;
+  return {ok:true, match:applyPersistedEvent(base, ev), request:request};
+}
+async function deleteRecord(match, eventId, key, fetchImpl){
+  const request=removeEventRequest(key, match, eventId);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const m=JSON.parse(JSON.stringify((j.match&&typeof j.match==='object')?j.match:match));
+  m.removedEvents=Object.assign({}, m.removedEvents, {[eventId]:1});
+  m.goals=(m.goals||[]).filter(g=>g&&g.eid!==eventId);
+  if(!m.base){ const sc=scoreFromEvents(m.goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return {ok:true, match:m, request:request};
+}
+function createRecorder(){
+  let guard={busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  return {
+    async add(match, ev, key, fetchImpl, now){
+      if(!entryAllowed(match, ev.p, ev.k, ev.t)) return {ok:false, reason:'reject', match:match};
+      const tap=ev.p+'|'+ev.k+'|'+ev.t;
+      const g=tapGuard(guard, tap, now==null?Date.now():now);
+      if(!g.ok) return {ok:false, reason:g.reason, match:match};
+      guard=g.state;
+      let res;
+      try{ res=await saveRecord(match, ev, key, fetchImpl); }
+      catch(e){ res={ok:false, match:match, error:String(e&&e.message||e)}; }
+      guard=finishGuard(guard, !!(res&&res.ok));
+      if(!res.ok) return {ok:false, reason:'fail', match:match, error:res.error};
+      return {ok:true, reason:'saved', match:res.match, request:res.request};
+    }
+  };
+}
+// RECORD-LOGIC-END
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const TODAY=()=>new Date(Date.now()+9*36e5).toISOString().slice(0,10),Q=new URLSearchParams(location.search);
 let KEY=(new URLSearchParams(location.hash.slice(1))).get('k')||'';
@@ -54,13 +185,43 @@ let DB={},M=null,EV={},RM={},F=null,d=null,space='',KICK=0;
 async function get(){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({key:KEY,op:'get',matches:{}})});const j=await r.json();if(!j.ok)throw new Error(j.error||'server');DB=j.matches||{}}
 function pick(){const q=Q.get('m');if(q&&/^pv-/.test(q))return{id:q,date:TODAY(),A:{name:'블랙'},B:{name:'블루'},goals:[]};
  if(q&&DB[q])return DB[q];const t=Q.get('d')||TODAY();return Object.values(DB).filter(x=>x&&!x.deleted&&String(x.date).slice(0,10)===t).sort((a,b)=>(+String(b.id).slice(2)||0)-(+String(a.id).slice(2)||0))[0]||null}
-function events(){const s=M,rmS=s.removedEvents||{},out={};(s.goals||[]).forEach((g,i)=>{const eid=g.eid||('legacy-'+i);out[eid]=Object.assign({},g,{eid})});
- Object.values(EV).forEach(e=>{if(!out[e.eid])out[e.eid]=e});return Object.values(out).filter(e=>!RM[e.eid]&&!rmS[e.eid])}
-function score(){let a=0,b=0;events().forEach(g=>{if(g.k==='골')g.t==='A'?a++:b++;else if(g.k==='자책골')g.t==='A'?b++:a++;else if(g.k==='상대골')b++});return[a,b]}
+function events(){if(!M)return [];return persistedEvents(M,EV,RM)}
+function score(){return scoreFromEvents(events(), M)}
 let LAST=null,SW=false;try{SW=localStorage.getItem('achuk_board_sw')==='1'}catch(e){}
+function canRec(){if(!M||!STORE||M.deleted||String(M.id).startsWith('pv-'))return false;if(String(M.date||'').slice(0,10)<TODAY())return false;if(M.type==='external')return true;return ((M.A&&M.A.players)||[]).length+((M.B&&M.B.players)||[]).length>0}
+function newEid(){const alphabet='-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';const bytes=crypto.getRandomValues(new Uint8Array(20));let s='';for(let i=0;i<20;i++)s+=alphabet[bytes[i]%alphabet.length];return s}
+function toast(msg,undo){const el=$('#toast');if(!el)return;el.hidden=false;el.innerHTML=`<span>${esc(msg)}</span>`+(undo?'<button type="button" id="undob">되돌리기</button>':'');clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true},undo?6000:2200);if(undo){const b=$('#undob');if(b)b.onclick=undo}}
+async function postJSON(body){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});let j=null;try{j=await r.json()}catch(e){throw new Error('bad-response')}return j}
+function publishLive(ev){if(!F||!d||!space||!M)return;const payload=livePayload(ev);F.set(F.ref(d,`achuk/${space}/live/${M.id}/events/${ev.eid}`),Object.assign({},payload,{ts:F.serverTimestamp()})).catch(()=>{});F.runTransaction(F.ref(d,`achuk/${space}/live/${M.id}/seq`),n=>(n||0)+1).catch(()=>{})}
+function publishRemoved(eventId){if(!F||!d||!space||!M)return;if(!/^[-_A-Za-z0-9]{20}$/.test(eventId))return;F.set(F.ref(d,`achuk/${space}/live/${M.id}/removed/${eventId}`),F.serverTimestamp()).catch(()=>{})}
+const REC=createRecorder();
+let SEL=null,ASST=null,SHEET=false;
+function paintSheet(){const el=$('#sheet');if(!el||!M)return;if(!SHEET){el.hidden=true;return}el.hidden=false;
+ const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('')||'<div class="hint">선수 없음</div>';
+ const kinds=REC_KINDS.map(k=>`<button type="button" data-k="${k}">${esc(recLabel(k))}</button>`).join('');
+ const opp=M.type==='external'?'<button type="button" class="pc B" id="opp">⚽ 상대팀 득점</button>':'';
+ const as=ASST&&ASST.until>Date.now()?`<div class="hint">⚽ ${esc(ASST.scorer)} 골 · 어시스트는? (점수는 그대로)</div>${((M[ASST.t]&&M[ASST.t].players)||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
+ el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록 등록</h3><div class="hint">선수를 고른 뒤 종류를 누르면 저장돼요. 점수는 저장이 끝난 뒤에만 바뀌어요.</div><div class="cols"><div><div class="tl">⚫ ${esc(M.A&&M.A.name||'A')}</div>${chips('A')}</div><div><div class="tl" style="color:#60a5fa">🔵 ${esc(M.B&&M.B.name||'B')}</div>${M.type==='external'?opp:chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p)+' 선택됨 · 종류를 누르면 저장':'선수를 먼저 고르세요'}</div><div class="row"><span></span><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
+ el.onclick=e=>{if(e.target===el){SHEET=false;el.hidden=true}};
+ const panel=el.querySelector('.panel');if(panel)panel.onclick=e=>e.stopPropagation();
+ el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,t=b.dataset.t;SEL=SEL&&SEL.p===p&&SEL.t===t?null:{p,t};paintSheet()});
+ el.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>chooseKind(b.dataset.k));
+ el.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{const p=b.dataset.as,t=ASST&&ASST.t;ASST=null;if(p&&t)commitRec(p,'어시',t);else paintSheet()});
+ const none=$('#asnone');if(none)none.onclick=()=>{ASST=null;paintSheet()};
+ const oppB=$('#opp');if(oppB)oppB.onclick=()=>commitRec(M.B&&M.B.name||'상대팀','상대골','B');
+ const x=$('#sheetx');if(x)x.onclick=()=>{SHEET=false;el.hidden=true}}
+async function commitRec(p,k,t){if(!M)return;const ev={eid:newEid(),p,k,t,ts:Date.now()};const res=await REC.add(M,ev,KEY,postJSON,Date.now());
+ if(!res.ok){if(res.reason==='fail')toast('저장되지 않았어요. 점수는 그대로입니다.');else if(res.reason==='reject')toast('이 기록은 저장할 수 없어요');const st=$('#rst');if(st&&res.reason==='fail')st.textContent='저장 실패 · 점수 유지';return}
+ M=res.match;if(M&&M.id)DB[M.id]=M;render();publishLive(ev);SEL=null;
+ if(k==='골'&&M[t]&&(M[t].players||[]).length>1){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
+ if(SHEET)paintSheet();
+ toast('저장됐어요',async()=>{const rm=await deleteRecord(M,ev.eid,KEY,postJSON);if(!rm.ok){toast('삭제되지 않았어요. 점수는 그대로입니다.');return}M=rm.match;if(M&&M.id)DB[M.id]=M;RM[ev.eid]=1;delete EV[ev.eid];if(ASST&&ASST.scorer===p)ASST=null;render();publishRemoved(ev.eid);if(SHEET)paintSheet();toast('되돌렸어요')})}
+function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');const st=$('#rst');if(st)st.textContent='선수를 먼저 고르세요';return}commitRec(SEL.p,k,SEL.t)}
 function render(){if(!M){$('#app').innerHTML=`<div class="msg">오늘(${TODAY()}) 경기가 아직 없어요<br><small>경기가 만들어지면 다시 열어 주세요</small></div>`;return}
  const [a,b]=score();if(!$('#sa')){$('#app').innerHTML=`<div class="top"><span>⚽ ${esc(String(M.date).slice(0,10))}</span><span id="live" class="live">⚪ 연결 중…</span></div>
- <div class="board${SW?' sw':''}" id="brd"><div class="team A"><h2>${esc(M.A&&M.A.name||'A')}</h2><div class="sc" id="sa">0</div></div><div class="mid"><div class="colon">:</div><div class="clk" id="clk"></div></div><div class="team B"><h2>${esc(M.B&&M.B.name||'B')}</h2><div class="sc" id="sb">0</div></div></div><button id="swb" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button>`;$('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_board_sw',SW?'1':'')}catch(e){}$('#brd').classList.toggle('sw',SW)}}
+ <div class="board${SW?' sw':''}" id="brd"><div class="team A"><h2>${esc(M.A&&M.A.name||'A')}</h2><div class="sc" id="sa">0</div></div><div class="mid"><div class="colon">:</div><div class="clk" id="clk"></div></div><div class="team B"><h2>${esc(M.B&&M.B.name||'B')}</h2><div class="sc" id="sb">0</div></div></div><button id="swb" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button>${canRec()?'<button id="recb" type="button" aria-label="기록 등록">기록</button>':''}<div id="sheet" hidden></div><div id="toast" hidden></div>`;
+  $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_board_sw',SW?'1':'')}catch(e){}$('#brd').classList.toggle('sw',SW)};
+  const rb=$('#recb');if(rb)rb.onclick=()=>{SHEET=!SHEET;paintSheet()}}
  [['sa',a],['sb',b]].forEach(([id,v])=>{const el=$('#'+id);if(el.textContent!==String(v)){el.textContent=v;if(LAST){el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),400)}}});LAST=[a,b];
  const ts=events().map(e=>+e.ts).filter(Boolean);KICK=+M.kick||(ts.length?Math.min(...ts):0)}
 function tick(){const el=$('#clk');if(!el)return;if(!KICK||String(M.date).slice(0,10)!==TODAY()){el.textContent='';return}const s=Math.max(0,Math.floor((Date.now()-KICK)/1000));if(s>3*3600){el.textContent='';return}el.textContent=(s>=6000?'':'')+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
