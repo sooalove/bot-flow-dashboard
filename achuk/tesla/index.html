@@ -1,0 +1,477 @@
+<!doctype html><html lang="ko"><head><meta http-equiv="Cache-Control" content="no-cache"><script id="vchk">(()=>{const B='anon-20261105122551';const base=location.pathname.replace(/tesla\/?$/,'').replace(/[^/]*$/,'');const chk=()=>fetch(base+'version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('vr')!==j.b){sessionStorage.setItem('vr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><title>⚽ 아축</title>
+<style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#0b0f17;color:#e6edf3;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+.hd{position:sticky;top:0;z-index:5;padding:14px 16px;background:#111827;border-bottom:2px solid #39ff88;display:flex;justify-content:space-between;align-items:center}.logo{font-weight:800;color:#39ff88;font-size:18px}.sub{color:#8aa;font-size:11px}
+.wrap{padding:12px;display:grid;gap:12px;max-width:560px;margin:0 auto}.card{background:#141c2b;border:1px solid #223047;border-radius:14px;padding:12px}
+h3{margin:0 0 8px;font-size:14px;color:#9fe}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kpi{background:#141c2b;border:1px solid #223047;border-radius:12px;padding:10px}.kpi b{display:block;font-size:22px;color:#39ff88}.kpi span{color:#8aa;font-size:11px}
+table{border-collapse:collapse;width:100%;font-size:12px}td,th{padding:6px 3px;text-align:center;border-bottom:1px solid #1e2a3d}th{color:#8aa;font-weight:500}tr.me td{color:#39ff88;font-weight:700}td.n{text-align:left}
+.bar{display:flex;align-items:center;gap:6px;font-size:12px;margin:5px 0}.bar .nm{width:44px}.bar .tr{flex:1;height:14px;background:#1e2a3d;border-radius:7px;overflow:hidden}.bar .f{height:100%}.bar .v{width:78px;text-align:right;color:#9ab}
+.ai{border-color:#39ff88;background:#10241a;font-size:13px;line-height:1.65}.ai ul{margin:4px 0;padding-left:18px}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#111827;border-top:1px solid #2c3d58;padding-bottom:env(safe-area-inset-bottom);z-index:5}.nav button{flex:1;background:none;border:none;padding:10px 0 12px;font-size:11px;color:#8aa;font-family:inherit}.nav i{display:block;font-style:normal;font-size:18px}.nav .on{color:#39ff88}
+.chip{display:inline-block;padding:8px 12px;margin:3px;border-radius:16px;background:#1e2a3d;font-size:13px;border:none;color:#e6edf3;font-family:inherit}
+.chip.on{background:#39ff88;color:#000;font-weight:700}.chip.A{background:#e6edf3;color:#0b0f17;font-weight:700}.chip.B{background:#3b82f6;color:#fff;font-weight:700}.chip.lock{opacity:.35;text-decoration:line-through}.chip small{font-size:9px;margin-left:3px}
+.seg{display:flex;gap:6px;margin-bottom:8px}.seg button{flex:1;padding:9px;border-radius:10px;border:1px solid #2c3d58;background:#0b0f17;color:#9ab;font-family:inherit;font-size:13px}.seg button.on{background:#39ff88;color:#000;font-weight:700}.seg button.on.A{background:#e6edf3}.seg button.on.B{background:#3b82f6;color:#fff}
+.score{display:flex;justify-content:center;align-items:center;gap:18px;font-size:40px;font-weight:800}.score small{font-size:11px;color:#8aa;display:block;text-align:center;font-weight:400}
+.goal{display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:#0f1522;margin:5px 0;font-size:13px;border-left:5px solid #39ff88}.del{margin-left:auto;background:none;border:1px solid #444;color:#f77;border-radius:8px;padding:3px 8px;font-family:inherit}
+.big{width:100%;padding:13px;border-radius:12px;border:none;background:#39ff88;color:#000;font-weight:800;font-size:15px;font-family:inherit}.ghost{background:#1e2a3d;color:#e6edf3}
+input,select,textarea{background:#0b0f17;border:1px solid #2c3d58;color:#e6edf3;padding:9px;border-radius:8px;font-size:15px;width:100%;font-family:inherit}textarea{min-height:56px}
+.step{font-size:12px;color:#ffb020;margin:6px 0}.hist{padding:8px 0;border-bottom:1px solid #1e2a3d;font-size:13px;display:flex;gap:8px;align-items:center}.tag{font-size:10px;padding:1px 6px;border-radius:6px;background:#ffb020;color:#000}
+#msg{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#39ff88;color:#000;padding:8px 14px;border-radius:10px;font-weight:700;display:none;z-index:9}.err{color:#ff6b6b}
+body.tesla{zoom:1.3;padding-bottom:110px}body.tesla .wrap{max-width:none;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));align-items:start;padding:16px 20px}
+body.tesla .nav button{font-size:16px;padding:14px 0 16px}body.tesla .nav i{font-size:28px}body.tesla .chip{padding:14px 20px;font-size:17px;margin:5px}body.tesla .seg button{padding:15px;font-size:17px}
+body.tesla .big{padding:20px;font-size:19px}body.tesla table{font-size:15px}body.tesla td,body.tesla th{padding:9px 4px}body.tesla h3{font-size:17px}body.tesla .goal,body.tesla .hist{font-size:16px;padding:12px}
+body.tesla .del{padding:8px 14px}body.tesla .kpi b{font-size:30px}body.tesla .kpi span{font-size:14px}body.tesla .logo{font-size:24px}body.tesla .sub{font-size:14px}body.tesla .ai{font-size:16px}body.tesla .bar{font-size:15px}body.tesla .bar .tr{height:20px}
+.keyf{display:grid;gap:10px}
+.wrap>*,.card{min-width:0;max-width:100%}input,select,textarea{display:block;min-width:0;max-width:100%;box-sizing:border-box}
+input[type=date]{-webkit-appearance:none;appearance:none;min-height:42px;line-height:1.3;overflow:hidden}input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1)}
+body.tesla input,body.tesla select{font-size:20px;padding:14px;min-height:58px}
+.live{font-size:11px;padding:3px 8px;border-radius:10px;background:#1e2a3d;margin-left:auto;margin-right:8px}.live.on{color:#39ff88}.live.re{color:#ffb020}.live.off{color:#ff6b6b}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.tcol{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;min-width:0}.tl{width:100%}.tl{font-weight:800;font-size:13px}
+.pc{min-height:40px;border-radius:20px;border:2px solid transparent;font-size:14px;font-weight:700;font-family:inherit;padding:6px 12px;touch-action:manipulation;flex:0 0 auto;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc.sel{outline:3px solid #39ff88;outline-offset:2px;box-shadow:0 0 12px #39ff88}.pc.A{background:#e6edf3;color:#0b0f17}.pc.B{background:#3b82f6;color:#fff}.pc.dim{opacity:.45}.pc:active{transform:scale(.96)}.pc.skip{background:#1e2a3d;color:#e6edf3}.pc small{font-size:10px}
+.asst{background:#10241a;border:1px solid #39ff88;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}.asst>div{width:100%;font-size:13px}.asst .pc{min-height:40px;flex:0 0 auto}
+.ev.pending{opacity:.7}.ev.fail{border-color:#ff6b6b!important}.ev .st{font-size:11px;color:#8aa;margin-left:6px}
+.kinds button{min-height:56px;font-size:17px;font-weight:800}.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#undo{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;background:#111827;border:1px solid #39ff88;border-radius:12px;padding:8px 10px;display:none;gap:10px;align-items:center;z-index:9;font-size:14px;max-width:94vw}#undo button{background:#39ff88;border:none;border-radius:8px;padding:10px 14px;font-weight:800;font-family:inherit}
+body.tesla .pc{min-height:56px;font-size:19px;padding:8px 18px;border-radius:28px}body.tesla .kinds button{min-height:80px;font-size:24px}body.tesla .teams{gap:14px}body.tesla .tl{font-size:19px}body.tesla #undo{font-size:20px;bottom:120px}body.tesla #undo button{padding:16px 22px;font-size:20px}body.tesla .wrap>.entry{grid-column:span 2}body.tesla .live{font-size:15px}
+
+.pc{position:relative;padding:6px 14px 6px 24px;border-radius:16px;font-weight:500;font-size:13px;box-shadow:none;transition:background .12s,border-color .12s}
+.pc::before{content:"";position:absolute;left:10px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%}
+.pc.A{background:#1e2a3d;border:1px solid #2c3d58;color:#e6edf3}.pc.A::before{background:#e6edf3}
+.pc.B{background:#1e2a3d;border:1px solid #2c3d58;color:#e6edf3}.pc.B::before{background:#3b82f6}
+.pc.sel{outline:none;box-shadow:none}.pc.A.sel{background:#e6edf3;color:#0b0f17;border-color:#e6edf3;font-weight:700}.pc.A.sel::before{background:#0b0f17}
+.pc.B.sel{background:#3b82f6;color:#fff;border-color:#3b82f6;font-weight:700}.pc.B.sel::before{background:#fff}.pc.sel::after{content:" ✓";font-weight:800}
+.pc.skip{padding-left:14px}.pc.skip::before{display:none}.tl{font-size:12px;font-weight:500;color:#8aa}
+.teams{margin-bottom:10px}.kinds{margin-top:4px}
+body.tesla .pc{padding:8px 22px 8px 34px}body.tesla .pc::before{left:14px;width:10px;height:10px;margin-top:-5px}
+body.tesla .pc{font-size:18px}
+.kinds{gap:8px}.kinds .kd{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#141c2b;border:1px solid #223047;border-radius:14px;color:#9ab;font-weight:700;transition:all .12s}
+.kinds .kd i{font-style:normal;font-size:18px;line-height:1}.kinds .kd[data-off]{opacity:.45}
+.kinds.ready .k0{border-color:#39ff88;color:#39ff88;background:#10241a}.kinds.ready .k1{border-color:#60a5fa;color:#93c5fd;background:#101b2e}
+.kinds.ready .k2{border-color:#ff6b6b;color:#ff8f8f;background:#2a1418}.kinds.ready .k3{border-color:#ffb020;color:#ffc65a;background:#2a2010}
+.kinds.ready .kd:active{transform:scale(.97)}body.tesla .kinds .kd i{font-size:28px}
+.kinds{margin:8px 0 4px}.teams{margin-top:10px}
+
+.kinds{display:grid;grid-template-columns:repeat(3,1fr)}
+.kinds.ready .k4{border-color:#2dd4bf;color:#5eead4;background:#0e2624}.kinds.ready .k5{border-color:#a78bfa;color:#c4b5fd;background:#1e1530}
+body.tesla .kinds{grid-template-columns:repeat(6,1fr)}
+.kx{font-size:11px;color:#8aa;margin-left:6px}
+.dlink{display:inline-block;cursor:pointer;border-bottom:1px dashed #5b6b85;padding-bottom:1px}.dlink:after{content:' ▾';font-size:.75em;color:#8aa}.dhid{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;border:0;padding:0}
+.tm{color:#5eead4;margin-right:4px;font-variant-numeric:tabular-nums}.kick{margin:0 0 8px;font-size:13px;color:#9ab}.kick button{padding:8px 12px;border-radius:10px;font-size:13px;width:auto;display:inline-block}
+.tsf{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}.tsf select,#tsa select{width:auto;display:inline-block;padding:6px;font-size:13px}#tsa h4{margin:14px 0 6px;font-size:14px;color:#cfe}
+.tsb{cursor:pointer}.tsd{font-size:13px;color:#ffc65a;margin:6px 0}.mom{display:flex;gap:3px;margin-top:8px}.mc{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0}
+.mt,.mb{height:40px;width:100%;display:flex}.mt{align-items:flex-end;border-bottom:1px solid #2c3d58}.mb{align-items:flex-start}.mt span,.mb span{display:block;width:100%;border-radius:3px}.mc small{font-size:10px;color:#8aa}
+body.tesla #tsa h4{font-size:19px}body.tesla .tsf select{font-size:17px}
+</style><style id="f4css">.kick{display:block!important}.kick .kbtn{display:flex!important;flex-direction:column!important;width:100%!important;max-width:none!important;margin:0!important}.kick .kbtn>span,.kick .kbtn>small{display:block!important;width:100%}.kbtn{gap:2px;padding:9px 12px;line-height:1.25;text-align:center;cursor:pointer;font-family:inherit}.kbtn>span{font-size:14px;font-weight:700}.kbtn small{font-size:12px;color:#9ab}.kbtn.on{background:#1d3329;color:#e6edf3}.kbtn.on b{color:#39ff88;font-variant-numeric:tabular-nums}.kbtn:active{filter:brightness(1.15)}body.tesla .kbtn{padding:14px}body.tesla .kbtn>span{font-size:20px}body.tesla .kbtn small{font-size:16px}.dwrap{position:relative;display:inline-block}.dov{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;font-size:16px;border:0;padding:0;margin:0;background:transparent;color:transparent;z-index:3;cursor:pointer;-webkit-appearance:none;appearance:none;min-height:0!important}.mdl{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50}.mdl .bx{background:#141c2b;border:1px solid #2a3a55;border-radius:16px;padding:20px;width:min(340px,88vw);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}.mdl h4{margin:0 0 6px;font-size:18px;color:#ff8f8f}.mdl p{margin:0 0 16px;color:#cbd5e1;font-size:14px}.mdl .r{display:flex;gap:10px}.mdl button{flex:1;padding:12px;border-radius:10px;font-weight:800;font-size:15px;border:1px solid #334}.mdl .no{background:#1e293b;color:#e2e8f0}.mdl .yes{background:#ef4444;color:#fff;border-color:#ef4444}body.tesla .mdl .bx{width:520px;padding:32px}body.tesla .mdl h4{font-size:28px}body.tesla .mdl p{font-size:22px}body.tesla .mdl button{font-size:24px;padding:20px}.robn{background:#2a2010;border:1px solid #ffb020;color:#ffc65a;border-radius:10px;padding:8px 12px;margin:0 0 10px;font-weight:700;font-size:14px}body.tesla .robn{font-size:22px}body.ro .pc{pointer-events:none}</style></head><body>
+<div class="hd"><span class="logo">⚽ 아축</span><span id="live" class="live">⚪ 연결 중…</span><span class="sub" id="hdsub" title="">불러오는 중…</span></div>
+<div class="wrap" id="v"></div><div id="msg"></div>
+<div class="nav"><button data-t="all" class="on"><i>📊</i>전체 보기</button><button data-t="me"><i>👤</i>개인 분석</button><button data-t="in"><i>✏️</i>경기 입력</button><button data-t="split"><i>⚖️</i>편 추천</button></div>
+<script>
+// 데이터는 전부 서버 DB(POST ./store)에 저장. 브라우저 저장소(localStorage 등)는 쓰지 않음. 키 = 링크의 #k= (서버로 전송되는 건 요청 본문뿐)
+const VER='v3 · 2026-11-03', ME='기영', WEAK=['왼발 드리블·돌파','주변 살피기(스캔)','공간 찾아 이동하기(오프더볼)'];
+const TESLA=/\/(achuk\/tesla|t)\/?$/.test(location.pathname)||new URLSearchParams(location.search).get('view')==='tesla', BASE=/\/tesla\/?$/.test(location.pathname)?'../':'';
+if(TESLA)document.body.classList.add('tesla');
+let STORE=new URLSearchParams(location.search).get('store')||'';
+// CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
+// File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
+// Passphrase = #k=<key> from the URL fragment (fragments are never sent to the server).
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const KEYC = {salt:null, iter:0, pass:null, key:null};
+async function aesKey(pass, salt, iter){
+  if(KEYC.key && KEYC.salt===salt && KEYC.iter===iter && KEYC.pass===pass) return KEYC.key; // derive once
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(salt), iterations:iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  Object.assign(KEYC, {salt, iter, pass, key}); return key;
+}
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const key = await aesKey(pass, doc.salt, doc.iter);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+// 저장소 URL: ?store= 우선, 없으면 cfg.enc.json(키로 암호화된 {store})에서, 그것도 없으면 같은 서버의 ./store
+// 2026-11-03: #k= 키는 이 기기 localStorage에 저장 → 이후 키 없는 짧은 주소로 열림. 저장 후 주소창에서 #k= 제거.
+let KEY=(new URLSearchParams(location.hash.slice(1))).get('k')||'';
+try{if(KEY){localStorage.setItem('achuk_k',KEY);history.replaceState(null,'',location.pathname+location.search)}else KEY=localStorage.getItem('achuk_k')||''}catch(e){}
+function keyForm(msg){$('#v').innerHTML=`<div class="card keyf"><h3>🔑 처음 한 번만 키를 입력해 주세요</h3>${msg?`<div class="err">${msg}</div>`:''}<input id="kin" type="password" autocomplete="off" placeholder="키 또는 #k= 링크 붙여넣기"><button class="big" id="kok">저장하고 열기</button><div class="sub">이 기기에만 저장돼요</div></div>`;
+ $('#kok').onclick=()=>{let v=$('#kin').value.trim();const m=v.match(/[#&]k=([^&]+)/);if(m)v=decodeURIComponent(m[1]);if(!v)return;try{localStorage.setItem('achuk_k',v)}catch(e){}KEY=v;load()}}
+let DB={}, TAB='all', SEL=null, D=null, BUSY=false;
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast=t=>{const m=$('#msg');m.textContent=t;m.style.display='block';clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',1800)};
+async function api(op,matches,extra){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({key:KEY,op,matches:matches||{}},extra||{}))});const j=await r.json();if(!j.ok)throw new Error(j.error||'server');DB=j.matches;if(D&&D.id)syncKick(D);Object.keys(DB||{}).forEach(id=>{if(!DB[id].kick){try{localStorage.removeItem('achuk_kick_'+id)}catch(e){}}});return j}
+async function op(o,extra){try{const j=await api(o,null,extra);if(!j.applied){alert('서버 저장소가 아직 이전 버전이에요 (Apps Script 새 버전 배포 필요)');return false}return true}catch(e){alert('실패: '+e.message);return false}}
+async function put(m){m.updatedAt=Date.now();try{await api('put',{[m.id]:m});toast('서버에 저장됐어요');return true}catch(e){alert('저장 실패: '+e.message+' (연결 확인 후 다시 눌러 주세요)');return false}}
+const list=()=>Object.values(DB).filter(m=>!m.deleted).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.id<b.id?-1:1));
+const isReal=p=>p&&!/^용병|^지인|^CTL$|그날FC|\+$/.test(p);
+function res(m,side){const a=side==='A'?m.sa:m.sb,b=side==='A'?m.sb:m.sa;return a>b?'W':a<b?'L':'D'}
+const TODAY=()=>new Date(Date.now()+9*36e5).toISOString().slice(0,10);
+// ===== 경기 전 AI 예상 분석 (2026-11-04): 과거 기록(이벤트)만 사용 · 투표/후기 미사용 · 경기 시작(킥오프/첫 기록) 시 숨김 =====
+function PRED(D,EV){try{
+ if(!D||!D.confirmed||D.type==='external'||(typeof isRO==='function'&&isRO()))return '';
+ const man=(syncKick(D),D.kick||(DB[D.id]&&DB[D.id].kick)||0);if(man||(EV&&EV.length))return '';
+ const A=D.A.players.filter(isReal),B=D.B.players.filter(isReal);if(!A.length||!B.length)return '';
+ const W={골:3,어시:2,유효슈팅:1,세이브:2,철벽수비:2},ms=list().filter(m=>m.type!=='external'&&m.id!==D.id&&String(m.date).slice(0,10)<=String(D.date).slice(0,10)&&m.A&&m.B);
+ const S={};let G=0,TG=0;const st=p=>S[p]=S[p]||{g:0,w:0,d:0,gf:0,ga:0,pts:0,pg:0};
+ ms.forEach(m=>{G++;TG+=(+m.sa||0)+(+m.sb||0);const ev=(m.goals||[]).length>0;['A','B'].forEach(sd=>{const r=res(m,sd),f=sd==='A'?+m.sa||0:+m.sb||0,a=sd==='A'?+m.sb||0:+m.sa||0;(m[sd].players||[]).filter(isReal).forEach(p=>{const s=st(p);s.g++;s.gf+=f;s.ga+=a;if(r==='W')s.w++;else if(r==='D')s.d++;if(ev)s.pg++})});
+  (m.goals||[]).forEach(e=>{if(isReal(e.p))st(e.p).pts+=W[e.k]||0})});
+ const all=Object.values(S),N=all.reduce((a,s)=>a+s.g,0)||1,NP=all.reduce((a,s)=>a+s.pg,0),avgGF=all.reduce((a,s)=>a+s.gf,0)/N||1,avgP=NP?all.reduce((a,s)=>a+s.pts,0)/NP:0,avgTG=G?TG/G/2:5,k=3;
+ const R=p=>{const s=S[p]||{g:0,w:0,d:0,gf:0,ga:0,pts:0,pg:0};return{p,g:s.g,wr:(s.w+.5*s.d+k*.5)/(s.g+k),gf:(s.gf+k*avgGF)/(s.g+k),ga:(s.ga+k*avgGF)/(s.g+k),gd:s.g?(s.gf-s.ga)/s.g:0,ppg:NP?(s.pts+k*avgP)/(s.pg+k):0,rp:s.pg?s.pts/s.pg:null}};
+ const ra=A.map(R),rb=B.map(R),mean=(a,f)=>a.reduce((x,y)=>x+f(y),0)/a.length;
+ const str=r=>mean(r,x=>x.wr-.5)*2+mean(r,x=>x.gf-x.ga)/avgGF*.5+(NP?mean(r,x=>x.ppg-avgP)/Math.max(.5,avgP)*.4:0);
+ const nA=D.A.players.length,nB=D.B.players.length,sz=Math.sqrt(Math.max(nA,nB)/Math.min(nA,nB));
+ const ga=avgTG*(mean(ra,x=>x.gf)+mean(rb,x=>x.ga))/(2*avgGF)*(nA>=nB?sz:1/sz),gb=avgTG*(mean(rb,x=>x.gf)+mean(ra,x=>x.ga))/(2*avgGF)*(nB>=nA?sz:1/sz);;
+ const diff=str(ra)-str(rb)+(ga-gb)/Math.max(1,avgTG)*1.5,pa0=1/(1+Math.exp(-diff*3)),dr=Math.max(.06,.18-Math.abs(pa0-.5)*.25);
+ const pA=Math.round(pa0*(1-dr)*100),pD=Math.round(dr*100),pB=100-pA-pD;
+ const rng=x=>{const s=Math.max(1,Math.round(Math.sqrt(x)));return `${Math.max(0,Math.round(x)-s)}~${Math.round(x)+s}`};
+ const sc=x=>x.wr+(x.g?x.gd/(avgGF*4):0)+(x.rp!=null?(x.ppg-avgP)/Math.max(1,avgP)*.2:0);
+ const keys=r=>r.filter(x=>x.g>=3).sort((a,b)=>sc(b)-sc(a)).slice(0,2);
+ const ka=keys(ra),kb=keys(rb),few=[...ra,...rb].filter(x=>x.g<3).map(x=>x.p);
+ const kl=K=>K.length?K.map(x=>`<b>${esc(x.p)}</b> <span class="sub">(승률 ${Math.round(x.wr*100)}% · 득실 ${x.gd>=0?'+':''}${x.gd.toFixed(1)}${x.rp!=null?` · ${x.rp.toFixed(1)}P`:''})</span>`).join(', '):'<span class="sub">기록 부족</span>';
+ const fav=pA-pB,cm=Math.abs(fav)<8?'전력이 팽팽해요 · 초반 선제골이 승부를 가를 듯':fav>0?`${esc(D.A.name)} 우세 예상 · ${esc(D.B.name)}은 ${kb[0]?esc(kb[0].p)+' 중심의 반격이 관건':'조직력이 관건'}`:`${esc(D.B.name)} 우세 예상 · ${esc(D.A.name)}은 ${ka[0]?esc(ka[0].p)+' 중심의 반격이 관건':'조직력이 관건'}`;
+ const bar=`<div style="display:flex;height:10px;border-radius:5px;overflow:hidden;margin:6px 0"><span style="width:${pA}%;background:#e6edf3"></span><span style="width:${pD}%;background:#55627a"></span><span style="width:${pB}%;background:#3b82f6"></span></div>`;
+ return `<div class="card" id="pred"><h3>🤖 경기 전 AI 예상 분석</h3>
+  <div style="display:flex;justify-content:space-between;font-weight:700"><span>${esc(D.A.name)} ${pA}%</span><span class="sub">무 ${pD}%</span><span style="color:#60a5fa">${esc(D.B.name)} ${pB}%</span></div>${bar}
+  <div>예상 스코어 <b>${rng(ga)} : ${rng(gb)}</b> <span class="sub">(${nA} vs ${nB}명 · 용병은 평균값)</span></div>
+  <div style="margin-top:4px">⚫ 주목: ${kl(ka)}</div><div>🔵 주목: ${kl(kb)}</div>
+  <div style="margin-top:6px;color:#ffc65a">💬 ${cm}</div>
+  <div class="sub" style="margin-top:6px">지난 ${G}경기 기록(승률·득실·공격포인트) 기반 추정 · 참고용${few.length?` · 기록 적은 선수(${few.map(esc).join(', ')})는 평균값으로 계산`:''} · 경기가 시작되면 사라져요</div></div>`}catch(e){return ''}}
+// ===== 팀 세팅 완료 + 푸시 (2026-11-04) =====
+function teamText(D){const d=String(D.date).slice(5,10).replace('-','/'),sides=['A','B'].sort((x,y)=>(D[x].name==='블루'?0:1)-(D[y].name==='블루'?0:1));
+ const L=[d,'스코어 -:-',...sides.map(sd=>D[sd].name+' : '+D[sd].players.join(' '))];
+ if([...D.A.players,...D.B.players].some(p=>!isReal(p)))L.push('','*용병은 지인과 우선적으로 동일팀에 배치');return L.join('\n')}
+function teamHash(D){return JSON.stringify([D.A.players,D.B.players])}
+function TSET(D,EV){try{if(!D||!D.confirmed||D.type==='external'||(typeof isRO==='function'&&isRO()))return '';
+ const man=(syncKick(D),D.kick||(DB[D.id]&&DB[D.id].kick)||0);if(man||(EV&&EV.length))return '';
+ const h=teamHash(D),done=D.teamsSet&&D.teamsSet.h===h;
+ return `<div class="card" id="tset"><button class="big" id="tsetb" style="${done?'background:#24304a;color:#9fb3c8':''}">${done?'✓ 팀 세팅 완료 · 알림 보냄 (바꾸면 다시 보낼 수 있어요)':(D.teamsSet?'🔔 바뀐 팀으로 다시 알림 보내기':'🔔 팀 세팅 완료 · 알림 보내기')}</button></div>`}catch(e){return ''}}
+document.addEventListener('click',async e=>{if(e.target.closest&&e.target.closest('#tsetb')&&D){const h=teamHash(D);if(D.teamsSet&&D.teamsSet.h===h)return toast('바뀐 게 없어 다시 보내지 않아요');
+  const t=teamText(D),prev=D.teamsSet;D.teamsSet={h,ts:Date.now(),text:t};if(!await put(clean(D))&&typeof sandbox!=='function'){D.teamsSet=prev;return}
+  toast('팀 세팅 완료 · 알림을 보냈어요');render()}});
+function syncKick(m){if(!m||!m.id)return m;const s=DB[m.id];
+ if(s&&s.kick){m.kick=+s.kick;try{localStorage.setItem('achuk_kick_'+m.id,m.kick)}catch(e){}}
+ else if(s){delete m.kick;try{localStorage.removeItem('achuk_kick_'+m.id)}catch(e){}}
+ return m}
+function kickOf(m,ev){if(m&&m.kick)return +m.kick;
+ // 스토어에 킥오프가 없으면 기기 캐시는 무효(다른 기기에서 취소된 경우)
+ if(m&&m.id&&DB[m.id]&&!DB[m.id].kick){try{localStorage.removeItem('achuk_kick_'+m.id)}catch(e){}}
+ else{try{const k=+localStorage.getItem('achuk_kick_'+(m&&m.id));if(k)return k}catch(e){}}
+ const t=(ev||(m&&m.goals)||[]).map(e=>+e.ts).filter(Boolean);return t.length?Math.min(...t):0}
+function evTs(e){return +e.ts||(e.st==='pending'?Date.now():0)}
+function mmss(ms){const s=Math.max(0,Math.floor(ms/1000));return Math.floor(s/60)+"'"+String(s%60).padStart(2,'0')+'"'}
+function matchEndOf(m,ev){if(m&&m.end)return +m.end;const k=kickOf(m,ev);return k?k+2*36e5:0}
+function matchEnded(m,ev){const e=matchEndOf(m,ev);return !!(e&&Date.now()>=e)}
+function DAYAN(D,EV){try{if(!D||!D.confirmed||D.type==='external')return '';
+ const S=typeof aomState==='function'?aomState(D):null;const aom=(S&&S.closed&&(S.win||''))||(String(D.aom||'').split('·').filter(Boolean)[0]||'');
+ if(!aom||!(S&&S.closed))return '';
+ const ev=EV||[],g=ev.filter(e=>e.k==='골').length,a=ev.filter(e=>e.k==='어시').length,s=ev.filter(e=>e.k==='세이브').length,d=ev.filter(e=>e.k==='철벽수비').length;
+ return `<div class="card" id="dayan"><h3>📊 금일 경기 분석</h3>
+  <div><b>${esc(D.A.name)} ${D.sa}:${D.sb} ${esc(D.B.name)}</b> <span class="sub">· 기록 ${ev.length}건 (골 ${g} · 어시 ${a} · 슈퍼세이브 ${s} · 철벽 ${d})</span></div>
+  <div style="margin-top:8px;font-size:18px;font-weight:800;color:#ffc65a">🏆 AOM: ${esc(aom)}</div></div>`}catch(e){return ''}}
+function evMin(m,e,ev){const k=kickOf(m,ev),t=evTs(e);return k&&t?Math.max(0,(t-k)/60000):null}
+function _g2(){}
+function prefDate(){const t=TODAY();try{const d=localStorage.getItem('achuk_date');return d&&d>=t?d:t}catch(e){return t}}
+{const _nd=newDraft;newDraft=function(){const d=_nd();d.date=prefDate();return d}}
+function pickDate(id){const i=document.getElementById(id);if(!i)return;i.min=TODAY();try{if(i.showPicker){i.showPicker();return}}catch(e){}i.focus();i.click()}
+function switchDate(v){if(!v)return;if(v<TODAY()){toast('지난 날짜는 선택할 수 없어요');render();return}if(window.__dsw)return;window.__dsw=1;
+ try{localStorage.setItem('achuk_date',v);localStorage.removeItem('achuk_cur')}catch(e){}
+ const u=new URL(location.href);u.searchParams.set('d',v);u.searchParams.set('tab','in');u.searchParams.delete('v');toast(v+' 로 이동해요…');setTimeout(()=>location.replace(u.toString()),150);setTimeout(()=>location.reload(),900)}
+function bindDate(id){const i=document.getElementById(id);if(!i)return;const base=D&&D.date||'';let t=null;
+ const go=()=>{clearTimeout(t);const v=i.value;if(v&&v!==base)switchDate(v)};
+ const later=()=>{clearTimeout(t);t=setTimeout(go,700)};
+ i.addEventListener('change',later);i.addEventListener('input',later);i.addEventListener('blur',go)}
+(()=>{try{const u=new URL(location.href);if(u.searchParams.get('tab')==='in'){TAB='in';u.searchParams.delete('tab');history.replaceState(null,'',u.toString())}}catch(e){}})();
+(()=>{try{const q=new URLSearchParams(location.search).get('d');if(q&&/^\d{4}-\d{2}-\d{2}$/.test(q)){if(q>=TODAY())localStorage.setItem('achuk_date',q);else{localStorage.removeItem('achuk_date');const u=new URL(location.href);u.searchParams.delete('d');history.replaceState(null,'',u.toString())}}}catch(e){}})();
+let TSF={p:'',k:'',b:5,d:'',m:'',bk:''};
+function tsData(){const out=[];let skip=0;const ms=list().slice();if(typeof SBX!=='undefined'&&D&&String(D.id).startsWith('pv-')&&!ms.find(x=>x.id===D.id))ms.push(D);
+ ms.forEach(m=>{const ev=(typeof LIVE!=='undefined'&&D&&m.id===D.id)?LIVE.events(m.id):(m.goals||[]);const tev=ev.filter(e=>+e.ts);if(!tev.length){skip++;return}const k=kickOf(m,tev);tev.forEach(e=>{const mi=(+e.ts-k)/60000;if(mi<0||mi>240)return;out.push({mid:m.id,date:m.date,p:e.p,k:e.k,t:e.t,mi})})});return{out,skip,n:ms.length}}
+function renderTSA(pFix){const el=document.getElementById('tsa');if(!el)return;TSF.p=pFix||'';const PM=!!pFix;const {out,skip,n}=tsData(),B=+TSF.b||5;
+ const opt=(arr,cur,all)=>`<option value="">${all}</option>`+arr.map(x=>`<option value="${esc(x[0])}" ${String(x[0])===String(cur)?'selected':''}>${esc(x[1])}</option>`).join('');
+ const players=[...new Set(out.map(x=>x.p))].sort(),kinds=[...new Set(out.map(x=>x.k))],dates=[...new Set(out.map(x=>x.date))].sort(),mids=[...new Set(out.map(x=>x.mid))];
+ const f=out.filter(x=>(!TSF.p||x.p===TSF.p)&&(!TSF.k||x.k===TSF.k)&&(!TSF.d||x.date===TSF.d));
+ const nb=Math.max(4,...f.map(x=>Math.floor(x.mi/B)+1)),cnt=Array(nb).fill(0);f.forEach(x=>cnt[Math.floor(x.mi/B)]++);const mx=Math.max(1,...cnt);
+ const fb=TSF.bk,sel=fb===''?[]:f.filter(x=>Math.floor(x.mi/B)===+fb);
+ const bars=cnt.map((c,i)=>`<div class="bar tsb" data-bk="${i}"><span class="nm">${i*B}–${(i+1)*B}'</span><span class="tr"><span class="f" style="display:block;width:${c/mx*100}%;background:${String(i)===String(fb)?'#ffb020':'#2dd4bf'}"></span></span><span class="v">${c}</span></div>`).join('');
+ const G={};out.filter(x=>x.k===(TSF.k||'골')&&(!TSF.d||x.date===TSF.d)).forEach(x=>(G[x.p]=G[x.p]||[]).push(x.mi));
+ const tend=Object.entries(G).map(([p,a])=>[p,a.reduce((s,v)=>s+v,0)/a.length,a.length]).sort((a,b)=>a[1]-b[1]);
+ const med=tend.length?tend[Math.floor(tend.length/2)][1]:0;
+ const mid=TSF.m&&mids.includes(TSF.m)?TSF.m:mids[mids.length-1],mo=out.filter(x=>x.mid===mid);let mom='';
+ if(mid){const n2=Math.max(4,...mo.map(x=>Math.floor(x.mi/B)+1)),a=Array(n2).fill(0),b=Array(n2).fill(0),W={'골':3,'유효슈팅':1,'어시':1};
+  mo.forEach(x=>{const i=Math.floor(x.mi/B);if(x.k==='자책골')(x.t==='A'?b:a)[i]+=3;else if(x.k==='상대골')b[i]+=3;else if(W[x.k])(x.t==='A'?a:b)[i]+=W[x.k]});const mm=Math.max(1,...a,...b);
+  mom=`<div class="mom">${a.map((v,i)=>`<div class="mc"><div class="mt"><span style="height:${v/mm*100}%;background:#e6edf3"></span></div><div class="mb"><span style="height:${b[i]/mm*100}%;background:#3b82f6"></span></div><small>${i*B}'</small></div>`).join('')}</div><div class="sub">위 ⚫블랙 · 아래 🔵블루 · 골3 · 유효슈팅/어시 1 (자책골은 상대 +3)</div>`}
+ const T={};f.forEach(x=>T[x.date]=(T[x.date]||0)+1);const tmx=Math.max(1,...Object.values(T));
+ const mname=id=>{const m=DB[id]||(D&&D.id===id?D:null);return m?(m.date+' '+(m.type==='external'?'외부전':'내부전')+(String(id).startsWith('pv-')?' (미리보기)':'')):id};
+ el.innerHTML=`<h3>⏱ 시간대 분석 (${PM?esc(TSF.p)+' 개인':'팀 전체'})</h3>
+ <div class="tsf"><select data-f="k">${opt(kinds.map(x=>[x,(KI[x]||'')+' '+x]),TSF.k,'전체 종류')}</select><select data-f="b">${[5,10,15].map(x=>`<option value="${x}" ${x===B?'selected':''}>${x}분 단위</option>`).join('')}</select><select data-f="d">${opt(dates.map(x=>[x,x]),TSF.d,'전체 날짜')}</select></div>
+ <div class="sub">시각이 기록된 ${n-skip}경기 · 기록 ${out.length}개 분석 · 기존 ${skip}경기는 발생 시각이 없어 제외</div>
+ <h4>시간대별 기록 수 <span class="sub">(막대를 누르면 해당 시간대 상세)</span></h4>${f.length?bars:'<div class="sub">조건에 맞는 기록이 없어요</div>'}
+ ${sel.length?`<div class="tsd">${fb*B}–${(+fb+1)*B}' : ${sel.map(x=>`${Math.floor(x.mi)}' ${KI[x.k]||''}${esc(x.p)}`).join(' · ')}</div>`:''}
+ ${PM?`<h4>${esc(TSF.p)} 타이밍 (${esc(TSF.k||'골')} 평균 시점 · 팀 중앙값 ${Math.round(med)}')</h4>${tend.filter(r=>r[0]===TSF.p).map(([p,av,c])=>`<div class="hist"><span>${esc(p)}</span><span>평균 ${Math.round(av)}' · ${c}회 <b style="color:${av<=med?'#5eead4':'#c4b5fd'}">${tend.length>1?(av<=med?'초반형':'후반형'):''}</b></span></div>`).join('')||'<div class="sub">데이터 부족</div>'}`:''}
+ <h4>${PM?'경기 흐름 (팀)':'경기 흐름'} (모멘텀)</h4><select data-f="m">${mids.map(x=>`<option value="${esc(x)}" ${x===mid?'selected':''}>${esc(mname(x))}</option>`).join('')}</select>${mom||'<div class="sub">데이터 부족</div>'}
+ <h4>날짜별 추이 (현재 필터)</h4>${Object.keys(T).sort().map(d=>`<div class="bar"><span class="nm">${d.slice(5)}</span><span class="tr"><span class="f" style="display:block;width:${T[d]/tmx*100}%;background:#a78bfa"></span></span><span class="v">${T[d]}</span></div>`).join('')||'<div class="sub">데이터 부족</div>'}`;
+ el.querySelectorAll('[data-f]').forEach(s=>s.onchange=()=>{TSF[s.dataset.f]=s.value;if(s.dataset.f!=='m')TSF.bk='';renderTSA(PM?TSF.p:'')});
+ el.querySelectorAll('[data-bk]').forEach(b=>b.onclick=()=>{TSF.bk=String(TSF.bk)===b.dataset.bk?'':b.dataset.bk;renderTSA(PM?TSF.p:'')})}
+const kLab=k=>k==='세이브'?'슈퍼세이브':k;
+const KI={'골':'⚽','어시':'👟','자책골':'↩️','세이브':'🧤','유효슈팅':'🎯','철벽수비':'🛡️','상대골':'⚽'};
+function stats(){const S={};const ms=list();ms.forEach(m=>['A','B'].forEach(sd=>{(m[sd].players||[]).forEach(p=>{if(!isReal(p))return;const s=S[p]||(S[p]={g:0,w:0,d:0,l:0,gd:0,aom:0,goal:0,ast:0,own:0,sot:0,dfd:0,hist:[],mates:{}});const r=res(m,sd);s.g++;s[r==='W'?'w':r==='D'?'d':'l']++;s.gd+=(sd==='A'?m.sa-m.sb:m.sb-m.sa);if((m.aom||'').split('·').includes(p))s.aom++;s.hist.push({d:m.date,r,gd:(sd==='A'?m.sa-m.sb:m.sb-m.sa)});(m[sd].players||[]).forEach(q=>{if(q!==p&&isReal(q)){const t=s.mates[q]||(s.mates[q]=[0,0]);t[1]++;if(r==='W')t[0]++}})});}));
+ ms.forEach(m=>(m.goals||[]).forEach(g=>{const s=S[g.p];if(!s)return;if(g.k==='골')s.goal++;else if(g.k==='어시')s.ast++;else if(g.k==='자책골')s.own++;else if(g.k==='유효슈팅')s.sot++;else if(g.k==='철벽수비')s.dfd++}));return S}
+const pct=(a,b)=>b?Math.round(a/b*1000)/10:0;
+function coach(p,S){const s=S[p];if(!s)return '<li>기록이 아직 없어요.</li>';const L=[];const r5=s.hist.slice(-5),w5=r5.filter(x=>x.r==='W').length;
+ L.push(`${s.g}경기 ${s.w}승 ${s.d}무 ${s.l}패 (승률 ${pct(s.w,s.g)}%), 경기당 득실 ${(s.gd/s.g).toFixed(2)}, 최근 5경기 ${w5}승.`);
+ const ms=Object.entries(s.mates).filter(x=>x[1][1]>=5).map(x=>[x[0],x[1][0]/x[1][1]]).sort((a,b)=>b[1]-a[1]);if(ms.length)L.push(`호흡: ${ms[0][0]}와 같은 팀일 때 승률이 가장 높아요(${Math.round(ms[0][1]*100)}%). 낮은 조합: ${ms[ms.length-1][0]}.`);
+ if(s.goal+s.ast)L.push(`기록된 공격 포인트: 골 ${s.goal} · 어시 ${s.ast}.`);else L.push('골·어시는 입력된 경기가 쌓이면 분석에 반영돼요.');
+ if(p===ME){L.push(`약점 집중: ① ${WEAK[0]} — 왼발 아웃사이드 접고 치고 나가기 20회, 콘 사이 왼발만 드리블 ② ${WEAK[1]} — 공 받기 전 어깨 너머 2번 보기(받기 전 "체크" 습관) ③ ${WEAK[2]} — 패스 후 바로 빈 공간(수비 사이/뒤)으로 3걸음 이동.`);
+  const my=list().filter(m=>[...m.A.players,...m.B.players].includes(ME));const an=my.flatMap(m=>(m.reviews_anon||[]).map(r=>({d:m.date,t:r.text}))).slice(-12);
+  if(an.length){const kw=[['왼발',/왼발|돌파|드리블/],['주변 살피기',/살피|스캔|시야|보고/],['공간 이동',/공간|움직|침투|오프/]];const hit=kw.map(k=>[k[0],an.filter(r=>k[1].test(r.t)).length]).filter(x=>x[1]);
+   L.push(`익명 경기 후기 ${an.length}건 반영${hit.length?' — 자주 언급: '+hit.map(x=>x[0]+' '+x[1]+'회').join(', '):''}. 최근: "${esc(an[an.length-1].t).slice(0,70)}"`)}
+  else{const rv=list().filter(m=>m.reviews&&m.reviews[ME]).slice(-1)[0];if(rv)L.push(`최근 후기(${rv.date}): "${esc(rv.reviews[ME]).slice(0,80)}"`)}}
+ return L.map(x=>'<li>'+x+'</li>').join('')}
+function last10Best(S){let c=Object.entries(S).map(([p,s])=>{const h=s.hist.slice(-10);return {p,n:h.length,w:h.filter(x=>x.r==='W').length,gd:h.reduce((a,x)=>a+(x.gd||0),0),g:s.g}}).filter(x=>x.n>0);
+ if(!c.length)return ME;const mx=c.some(x=>x.n>=10)?10:Math.max(...c.map(x=>x.n));c=c.filter(x=>x.n>=mx);
+ c.sort((a,b)=>b.w-a.w||b.gd-a.gd||b.g-a.g||(a.p<b.p?-1:a.p>b.p?1:0));return c[0].p}
+function teamAI(S){const ms=list(),n=ms.length;if(!n)return '<li>경기 기록이 아직 없어요.</li>';const L=[];
+ const ex=ms.filter(m=>m.type==='external'),inn=ms.filter(m=>m.type!=='external');
+ if(ex.length){const w=ex.filter(m=>m.sa>m.sb).length,d=ex.filter(m=>m.sa===m.sb).length,gf=ex.reduce((a,m)=>a+m.sa,0),ga=ex.reduce((a,m)=>a+m.sb,0);
+  L.push(`외부 경기 ${ex.length}전 ${w}승 ${d}무 ${ex.length-w-d}패 (승률 ${pct(w,ex.length)}%) · 득점 ${gf} / 실점 ${ga} (경기당 ${(gf/ex.length).toFixed(1)} / ${(ga/ex.length).toFixed(1)})`)}
+ if(inn.length){const bk=inn.filter(m=>m.sa>m.sb).length,bl=inn.filter(m=>m.sb>m.sa).length,ga=inn.reduce((a,m)=>a+m.sa,0),gb=inn.reduce((a,m)=>a+m.sb,0);
+  L.push(`내부 경기 ${inn.length}경기: 블랙 ${bk}승 · 블루 ${bl}승 · 무 ${inn.length-bk-bl} (블랙 승률 ${pct(bk,inn.length)}%) · 총득점 블랙 ${ga} / 블루 ${gb}`)}
+ const avg=a=>a.length?a.reduce((x,m)=>x+m.sa+m.sb,0)/a.length:0,cl=a=>a.length?pct(a.filter(m=>Math.abs(m.sa-m.sb)<=1).length,a.length):0;
+ const r=ms.slice(-10),o=ms.slice(0,-10);
+ if(o.length)L.push(`추세: 최근 10경기 평균 총득점 ${avg(r).toFixed(1)} (이전 ${avg(o).toFixed(1)}) · 1골차 접전 ${cl(r)}% (이전 ${cl(o)}%) → ${avg(r)>avg(o)?'공격 흐름이 살아나는 중':'득점이 줄어드는 추세, 공격 전개 보완 필요'}.`);
+ const tot=ms.reduce((a,m)=>a+m.sa+m.sb,0);L.push(`전체 ${n}경기 평균 총득점 ${(tot/n).toFixed(1)}, 접전 ${cl(ms)}%.`);
+ const top=Object.entries(S).filter(x=>x[1].g>=10).sort((a,b)=>pct(b[1].w,b[1].g)-pct(a[1].w,a[1].g));
+ const sg=[];if(inn.length&&Math.abs(pct(inn.filter(m=>m.sa>m.sb).length,inn.length)-pct(inn.filter(m=>m.sb>m.sa).length,inn.length))>=10)sg.push('블랙·블루 승률 차가 커요 — 팀 나눌 때 승률 상위('+top.slice(0,3).map(x=>x[0]).join(', ')+')를 양 팀에 분산');else sg.push('팀 밸런스 양호 — 승률 상위('+top.slice(0,3).map(x=>x[0]).join(', ')+') 분산 배치 유지');
+ if(cl(r)>=30)sg.push('최근 접전이 많아요 — 막판 5분 수비 전환·시간 관리 연습');sg.push('경기 후 골·어시·익명 후기를 입력하면 분석 정확도가 올라가요 (익명 후기 누적 '+ms.reduce((a,m)=>a+(m.reviews_anon||[]).length,0)+'건)');
+ L.push('팀 제안: '+sg.join(' · '));return L.map(x=>`<li>${x}</li>`).join('')}
+function teamCoach(S){const ms=list(),n=ms.length,tot=ms.reduce((a,m)=>a+m.sa+m.sb,0),close=ms.filter(m=>Math.abs(m.sa-m.sb)<=1).length;
+ const top=Object.entries(S).filter(x=>x[1].g>=10).sort((a,b)=>pct(b[1].w,b[1].g)-pct(a[1].w,a[1].g));
+ return `<li>${n}경기 평균 총득점 ${(tot/n).toFixed(1)}, 1골차 이하 접전 ${pct(close,n)}% → 막판 운영(수비 전환·시간 관리)이 승부를 가릅니다.</li><li>익명 후기 누적 ${ms.reduce((a,m)=>a+(m.reviews_anon||[]).length,0)}건 · 결과는 AI 분석에 활용됩니다.</li><li>승률 상위(10경기+): ${top.slice(0,3).map(x=>x[0]).join(', ')} — 팀 나눌 때 분산 배치 권장.</li>`}
+function render(){if(BUSY)return;const S=stats(),ms=list();if(SEL===null&&ms.length)SEL=last10Best(S);$('#hdsub').textContent=VER+' · '+(ms.length?`${ms[0].date.slice(2,7).replace('-','.')}~${ms[ms.length-1].date.slice(2,7).replace('-','.')} · ${ms.length}경기`:'');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===TAB));const v=$('#v');
+ if(TAB==='all'){const ext=ms.filter(m=>m.type==='external').length,inn=ms.filter(m=>m.type!=='external');const bk=inn.filter(m=>m.sa>m.sb).length,bl=inn.filter(m=>m.sb>m.sa).length;
+  const rows=Object.entries(S).filter(x=>x[1].g>=10).sort((a,b)=>pct(b[1].w,b[1].g)-pct(a[1].w,a[1].g)||b[1].g-a[1].g);
+  v.innerHTML=`<div class="card ai" id="ai"><h3>🤖 AI 코칭 분석 · 팀 전체</h3><ul>${teamAI(S)}</ul></div>
+  <div class="kpis"><div class="kpi"><b>${ms.length}</b><span>총 경기 (외부전 ${ext})</span></div><div class="kpi"><b>${(ms.reduce((a,m)=>a+m.sa+m.sb,0)/(ms.length||1)).toFixed(1)}</b><span>경기당 평균 총득점</span></div><div class="kpi"><b>${bk}승</b><span>블랙 (내부전)</span></div><div class="kpi"><b>${bl}승</b><span>블루 (내부전) · 무 ${inn.length-bk-bl}</span></div></div>
+  <div class="card"><h3>선수 순위 (10경기+, 승률순)</h3><table><tr><th>#</th><th class="n">이름</th><th>경기</th><th>승무패</th><th>승률</th><th>골/어시</th><th>🎯/🛡️</th></tr>${rows.map((x,i)=>`<tr class="${x[0]===SEL?'me':''}"><td>${i+1}</td><td class="n">${esc(x[0])}</td><td>${x[1].g}</td><td>${x[1].w}-${x[1].d}-${x[1].l}</td><td>${Math.round(pct(x[1].w,x[1].g))}%</td><td>${x[1].goal}/${x[1].ast}</td><td>${x[1].sot}/${x[1].dfd}</td></tr>`).join('')}</table></div>
+  ${(setTimeout(()=>renderTSA(),0),'')}<div class="card" id="tsa"></div><div class="card"><h3>경기 이력 (최신순)</h3>${ms.slice().reverse().map(m=>`<div class="hist"><span style="color:#8aa;width:72px">${m.date.slice(2)}</span>${m.type==='external'?'<span class="tag">외부전</span>':''}<span>${esc(m.A.name)} <b>${m.sa}:${m.sb}</b> ${esc(m.B.name)}${(()=>{const c=k=>(m.goals||[]).filter(g=>g.k===k).length,a=c('유효슈팅'),b=c('철벽수비');return a+b?`<span class="kx">🎯${a} 🛡️${b}</span>`:''})()}</span><button class="del ghost" style="color:#9fe" data-edit="${m.id}">${String(m.date).slice(0,10)<TODAY()?'보기':'수정'}</button></div>`).join('')}</div>`}
+ else if(TAB==='me'){const s=S[SEL]||{g:0,w:0,d:0,l:0,gd:0,aom:0,goal:0,ast:0,own:0,sot:0,dfd:0,hist:[],mates:{}};const names=Object.keys(S).sort((a,b)=>S[b].g-S[a].g);
+  const mates=Object.entries(s.mates).filter(x=>x[1][1]>=5).sort((a,b)=>b[1][0]/b[1][1]-a[1][0]/a[1][1]);const revs=list().filter(m=>m.reviews&&m.reviews[SEL]).reverse();
+  v.innerHTML=`<div class="card ai"><h3>🤖 AI 코칭: ${esc(SEL)}</h3><ul>${coach(SEL,S)}</ul></div><div class="card"><select id="psel">${names.map(n=>`<option ${n===SEL?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
+  <div class="kpis"><div class="kpi"><b>${s.w}-${s.d}-${s.l}</b><span>${s.g}경기 승-무-패</span></div><div class="kpi"><b>${pct(s.w,s.g)}%</b><span>승률</span></div><div class="kpi"><b>${s.g?(s.gd/s.g).toFixed(2):0}</b><span>평균 득실</span></div><div class="kpi"><b>${s.goal} / ${s.ast}</b><span>골 / 어시 · AOM ${s.aom}</span></div><div class="kpi"><b>${s.sot} / ${s.dfd}</b><span>🎯유효슈팅 / 🛡️철벽수비</span></div></div>
+  <div class="card"><h3>같은 팀일 때 승률 (5경기+)</h3>${mates.map(x=>{const p=Math.round(x[1][0]/x[1][1]*100);return `<div class="bar"><span class="nm">${esc(x[0])}</span><span class="tr"><span class="f" style="display:block;width:${p}%;background:${p>=50?'#39ff88':p>=40?'#ffb020':'#ff5a4a'}"></span></span><span class="v">${p}% (${x[1][0]}/${x[1][1]})</span></div>`}).join('')||'<span class="sub">데이터 부족</span>'}</div>${(setTimeout(()=>renderTSA(SEL),0),'')}<div class="card" id="tsa"></div>
+  <div class="card"><h3>예전 개인 후기 (읽기 전용)</h3>${revs.map(m=>`<div class="hist"><span style="color:#8aa;width:72px">${m.date.slice(2)}</span><span>${esc(m.reviews[SEL])}</span></div>`).join('')||'<span class="sub">아직 후기가 없어요</span>'}</div>`;
+  $('#psel').onchange=e=>{SEL=e.target.value;render()}}
+ else if(TAB==='split')renderSplit(S);
+ else renderIn(S)}
+function newDraft(){const d=new Date(Date.now()+9*36e5).toISOString().slice(0,10);return{id:'m-'+Date.now(),date:d,type:'internal',A:{name:'블랙',players:[]},B:{name:'블루',players:[]},sa:0,sb:0,aom:'',goals:[],reviews:{},confirmed:false,side:'A',gk:'골'}}
+
+// ===== 편 추천 (2026-11-03) =====
+const KAKAO_JS_KEY=''; // Kakao Developers JavaScript 키 (도메인 제한된 공개키). 비어 있으면 공유 버튼은 설정 안내만 표시.
+let ATT=new Set(), SPL=null;
+function rating(p,S){const s=S[p];if(!s||!s.g)return 0.5;const h=s.hist.slice(-5);const wr=(s.w+0.5*s.d+2)/(s.g+4);const gd=Math.max(-1,Math.min(1,s.gd/s.g/5));const form=h.length?h.filter(x=>x.r==='W').length/h.length:0.5;return 0.5*wr+0.25*(0.5+gd/2)+0.25*form}
+function chem(a,b,S){const t=S[a]&&S[a].mates[b];if(!t||t[1]<3)return 0;return (t[0]+1)/(t[1]+2)-0.5}
+function teamVal(T,S){let r=0,c=0,n=0;T.forEach(p=>r+=rating(p,S));for(let i=0;i<T.length;i++)for(let j=i+1;j<T.length;j++){c+=chem(T[i],T[j],S);n++}return r/T.length+(n?0.3*c/n:0)}
+function splitCost(A,B,S){return Math.abs(teamVal(A,S)-teamVal(B,S))}
+function suggest(ps,S){const best=[];const seen=new Set();for(let it=0;it<300;it++){const a=[...ps].sort(()=>Math.random()-.5);const h=Math.ceil(a.length/2);let A=a.slice(0,h),B=a.slice(h);let c=splitCost(A,B,S),imp=true;
+  while(imp){imp=false;for(let i=0;i<A.length&&!imp;i++)for(let j=0;j<B.length&&!imp;j++){const A2=[...A],B2=[...B];[A2[i],B2[j]]=[B2[j],A2[i]];const c2=splitCost(A2,B2,S);if(c2<c-1e-9){A=A2;B=B2;c=c2;imp=true}}}
+  A.sort();B.sort();const k=[A.join(),B.join()].sort().join('|');if(!seen.has(k)){seen.add(k);best.push({A,B,c})}}
+ best.sort((x,y)=>x.c-y.c);return best.slice(0,2).map(o=>Object.assign(o,{score:Math.max(0,Math.round(100-o.c*2000)),va:teamVal(o.A,S),vb:teamVal(o.B,S)}))}
+function splitText(o,i){const d=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);return `⚽ 아축 ${d} 편 추천${i!=null?' (안 '+(i+1)+')':''}\n\n⚫ 블랙(${o.A.length}): ${o.A.join(', ')}\n🔵 블루(${o.B.length}): ${o.B.join(', ')}\n\n밸런스 ${o.score}/100 · 승률·득실·호흡·최근폼 기준 자동 추천`}
+async function copyText(t){try{await navigator.clipboard.writeText(t);toast('복사됐어요')}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();if(ok)toast('복사됐어요');else prompt('아래 텍스트를 길게 눌러 복사하세요',t)}}
+function loadKakao(){return new Promise((ok,no)=>{if(window.Kakao)return ok();const sc=document.createElement('script');sc.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';sc.crossOrigin='anonymous';sc.onload=ok;sc.onerror=()=>no(new Error('SDK 로드 실패'));document.head.appendChild(sc)})}
+async function kakaoShare(t){if(!KAKAO_JS_KEY){alert('카카오톡 공유는 아직 설정 전이에요 (Kakao Developers 앱의 JavaScript 키 + 사이트 도메인 등록 필요). 지금은 [복사] 후 카톡에 붙여넣어 주세요.');return}
+ try{await loadKakao();if(!Kakao.isInitialized())Kakao.init(KAKAO_JS_KEY);const u=location.origin+location.pathname;Kakao.Share.sendDefault({objectType:'text',text:t.slice(0,200),link:{mobileWebUrl:u,webUrl:u}})}catch(e){alert('카카오 공유 실패: '+e.message+' · [복사]를 이용해 주세요')}}
+function renderSplit(S){const v=$('#v');const roster=Object.keys(S).filter(p=>S[p].g>=2).sort((a,b)=>S[b].g-S[a].g);[...ATT].forEach(p=>{if(!roster.includes(p))roster.push(p)});
+ v.innerHTML=`<div class="card"><h3>⚖️ 오늘 참석자 선택 (${ATT.size}명)</h3><div>${roster.map(p=>`<button class="chip ${ATT.has(p)?'on':''}" data-at="${esc(p)}">${esc(p)}</button>`).join('')}<button class="chip" id="atadd">+ 추가</button></div>
+ <div class="seg" style="margin-top:10px"><button id="atclr">선택 해제</button><button id="atgo" class="on">편 추천 받기</button></div></div>
+ ${SPL?SPL.map((o,i)=>`<div class="card"><h3>안 ${i+1} · 밸런스 ${o.score}/100</h3><div class="goal" style="border-left-color:#e6edf3">⚫ 블랙 (${o.A.length}) · 전력 ${(o.va*100).toFixed(0)}<br>${o.A.map(esc).join(', ')}</div><div class="goal" style="border-left-color:#3b82f6">🔵 블루 (${o.B.length}) · 전력 ${(o.vb*100).toFixed(0)}<br>${o.B.map(esc).join(', ')}</div>
+ <pre style="white-space:pre-wrap;font-size:12px;background:#0b0f17;padding:8px;border-radius:8px">${esc(splitText(o,i))}</pre><div class="seg"><button data-cp="${i}" class="on">📋 복사</button><button data-ks="${i}" style="background:#fee500;color:#000">💬 카카오톡 공유</button></div></div>`).join(''):''}
+ <div class="card sub">전력 = 승률(보정)·경기당 득실·최근 5경기 폼 + 같은 편 호흡(같은 팀 승률, 3경기+). 기록은 바꾸지 않아요.</div>`;
+ v.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{const p=b.dataset.at;ATT.has(p)?ATT.delete(p):ATT.add(p);SPL=null;render()});
+ $('#atadd').onclick=()=>{const n=(prompt('이름')||'').trim();if(n){ATT.add(n);SPL=null;render()}};$('#atclr').onclick=()=>{ATT.clear();SPL=null;render()};
+ $('#atgo').onclick=()=>{if(ATT.size<4)return alert('4명 이상 골라 주세요');SPL=suggest([...ATT],S);render()};
+ v.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>copyText(splitText(SPL[+b.dataset.cp],+b.dataset.cp)));
+ v.querySelectorAll('[data-ks]').forEach(b=>b.onclick=()=>kakaoShare(splitText(SPL[+b.dataset.ks],+b.dataset.ks)))}
+let NEWM=null;function curRestore(){try{const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),ok=m=>m&&!m.deleted&&String(m.date).slice(0,10)===today;let m=DB[localStorage.getItem('achuk_cur')||''];const want=prefDate();if(!(m&&!m.deleted&&String(m.date).slice(0,10)===want))m=Object.values(DB).filter(x=>x&&!x.deleted&&String(x.date).slice(0,10)===want).sort((a,b)=>(+String(b.id).slice(2)||0)-(+String(a.id).slice(2)||0))[0];if(m){const d=Object.assign(JSON.parse(JSON.stringify(m)),{confirmed:true,side:'A',gk:'골'});d.reviews=d.reviews||{};d.goals=d.goals||[];return d}}catch(e){}return null}
+function renderIn(S){if(!D||(D.id!==NEWM&&!D.confirmed&&!DB[D.id]&&!D.A.players.length&&!D.B.players.length)){const r=curRestore();if(r)D=r;else if(!D)D=newDraft()}if(D&&DB[D.id]&&!DB[D.id].deleted)try{localStorage.setItem('achuk_cur',D.id)}catch(e){};const v=$('#v'),pool=Object.keys(S).filter(p=>S[p].g>=3).sort((a,b)=>S[b].g-S[a].g);[...D.A.players,...D.B.players].forEach(p=>{if(!pool.includes(p))pool.push(p)});
+ const ext=D.type==='external',other=D.side==='A'?'B':'A';
+ if(!D.confirmed){v.innerHTML=`<div class="card"><h3>경기 정보</h3><div class="dwrap" style="margin:4px 0"><div class="dlink" id="dtl" style="font-size:17px;font-weight:700">${D.date}</div><input type="date" class="dov" id="dt" min="${TODAY()}" value="${D.date<TODAY()?TODAY():D.date}" aria-label="날짜 변경"></div><div class="seg" style="margin-top:8px"><button data-ty="internal" class="${!ext?'on':''}">내부전</button><button data-ty="external" class="${ext?'on':''}">외부 팀전</button></div>
+  ${ext?`<input id="opp" placeholder="상대팀 이름" value="${esc(D.B.name==='블루'?'':D.B.name)}">`:''}</div>
+  <div class="card"><h3>① 팀 선택</h3>${ext?`<div class="step">우리 팀 인원을 고르세요</div>`:`<div class="seg"><button data-sd="A" class="A ${D.side==='A'?'on':''}">⚫ 블랙 ${D.A.players.length}명</button><button data-sd="B" class="B ${D.side==='B'?'on':''}">🔵 블루 ${D.B.players.length}명</button></div><div class="step">${D.side==='A'?'블랙':'블루'} 선수를 탭하세요 · 흐린 칩은 상대팀 배정</div>`}
+  <div id="chips">${pool.map(p=>{const mine=D[D.side].players.includes(p),lock=!ext&&D[other].players.includes(p);return `<button class="chip ${mine?D.side:''} ${lock?'lock':''}" data-p="${esc(p)}" ${lock?'disabled':''}>${esc(p)}${mine?' ✓':''}${lock?`<small>🔒${other==='A'?'블랙':'블루'}</small>`:''}</button>`}).join('')}<button class="chip" id="addp">+ 용병/새 선수</button></div></div>
+  <button class="big" id="conf">명단 확정 → 이력 저장</button>`;
+  $('#dt').onclick=ovPick;bindDate('dt');v.querySelectorAll('[data-ty]').forEach(b=>b.onclick=()=>{D.type=b.dataset.ty;D.side='A';if(D.type==='external'){D.B={name:'',players:[]}}else D.B={name:'블루',players:[]};render()});
+  if($('#opp'))$('#opp').oninput=e=>D.B.name=e.target.value;v.querySelectorAll('[data-sd]').forEach(b=>b.onclick=()=>{D.side=b.dataset.sd;render()});
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const a=D[D.side].players,p=b.dataset.p;if(!ext&&D[other].players.includes(p))return;const i=a.indexOf(p);if(i<0){a.push(p);render();return}askDel(p+' 선수를 명단에서 빼요').then(ok=>{if(ok){const j=a.indexOf(p);if(j>=0)a.splice(j,1)}render()})});
+  $('#addp').onclick=()=>{const n=(prompt('이름 (용병은 "용병(이름)")')||'').trim();if(n){D[D.side].players.push(n);render()}};
+  $('#conf').onclick=async()=>{if(ext&&!D.B.name.trim())return alert('상대팀 이름을 입력해 주세요');if(!D.A.players.length||(!ext&&!D.B.players.length))return alert('양 팀 인원을 골라 주세요');D.confirmed=true;if(await put(clean(D)))render();else D.confirmed=false};return}
+ // ===== 경기 입력 (실시간) (자동 저장 · 팀 자동 · 어시 제안 · 즉시 되돌리기) =====
+ syncKick(D);const K=['골','어시','자책골','세이브','유효슈팅','철벽수비'];if(DB[D.id]){const m=DB[D.id];D.votes=m.votes;D.reviews_anon=m.reviews_anon;D.aom=m.aom||D.aom}
+ const EV=LIVE.events(D.id);D.goals=EV.map(e=>({p:e.p,k:e.k,t:e.t,eid:e.eid}));derive(D);
+ const all=[...D.A.players,...D.B.players].filter(isReal),V=D.votes||{},vmax=Math.max(0,...Object.values(V)),top=(D.aom||'').split('·').filter(Boolean),saved=!!DB[D.id];
+ const both=p=>D.A.players.includes(p)&&D.B.players.includes(p);
+ const chips=sd=>D[sd].players.map(p=>`<button class="pc ${sd} ${D.selP&&D.selP.p===p&&D.selP.sd===sd?'sel':''}" data-g="${esc(p)}" data-gt="${sd}">${esc(p)}${both(p)?'<small> ⚠️양팀</small>':''}</button>`).join('');
+ const as=D.asst&&D.asst.until>Date.now()?D.asst:null;
+ v.innerHTML=`<div class="card"><h3><span class="dwrap"><span class="dlink" id="hdl">${D.date}</span><input type="date" class="dov" id="hdt" min="${TODAY()}" value="${D.date<TODAY()?TODAY():D.date}" aria-label="날짜 변경"></span> · ${ext?'외부전 vs '+esc(D.B.name):'내부전'} <span class="tag" style="background:#39ff88">자동 저장</span></h3>
+  <div class="score"><div><small>${esc(D.A.name)}</small>${D.sa}</div>:<div style="color:#3b82f6"><small>${esc(D.B.name)}</small>${D.sb}</div></div><div class="sub" style="text-align:center">${D.base?'기존 기록 점수 (변경 안 함) · 기록은 개인 통계에만 반영':'점수 = 골 +1 · 자책골은 상대 +1 (이벤트에서 자동 계산)'}</div></div>
+  ${TSET(D,EV)}${PRED(D,EV)}<div class="card entry"><h3>② 기록</h3><div class="sub" style="margin:-4px 0 8px">선수 고르기 → 종류 누르면 바로 저장</div><div class="kick">${(()=>{const k=kickOf(D,EV),man=D.kick||(()=>{try{return +localStorage.getItem('achuk_kick_'+D.id)}catch(e){return 0}})();const ended=matchEnded(D,EV);return man?`<button type="button" class="ghost kbtn on" id="kbx" data-k="${k}"><span>⏱ 킥오프 ${new Date(k+9*36e5).toISOString().slice(11,16)}${ended?" · 종료":""}</span><small>${ended?`경기 종료 ${new Date(matchEndOf(D,EV)+9*36e5).toISOString().slice(11,16)}`:`경과 <b id="kel">${mmss(Date.now()-k)}</b>`}</small></button>`:`<button class="ghost kbtn" id="kickb"><span>⏱ 킥오프 · 경기 시작 시각 기록</span><small>${k?'미기록 → 첫 기록 시각 기준':'미기록 시 첫 기록 시각 기준'}</small></button>`})()}</div>
+  <div class="teams"><div class="tcol"><div class="tl">⚫ ${esc(D.A.name)}</div>${chips('A')}</div>
+  <div class="tcol"><div class="tl" style="color:#60a5fa">🔵 ${esc(D.B.name)}</div>${ext?`<button class="pc B" data-opp="1">⚽ 상대팀 득점 +1</button>`:chips('B')}</div></div>
+  <div class="seg kinds ${D.selP?'ready':''}">${K.map(k=>`<button data-k="${k}" class="kd k${K.indexOf(k)}" ${D.selP?'':'data-off="1"'}><i>${KI[k]}</i>${kLab(k)}</button>`).join('')}</div>
+  <div class="step">${D.selP?`<b>${esc(D.selP.p)}</b> 선택됨 — 종류를 탭하면 바로 저장 (팀 자동)`:'먼저 선수를 고르세요. 저장 후 선택이 풀려요 (실수 방지)'}</div>
+  ${as?`<div class="asst"><div><b>⚽ ${esc(as.scorer)} 골!</b> 어시스트는? <span class="sub">(같은 팀 · 8초 후 자동 닫힘)</span></div>${D[as.t].players.filter(p=>p!==as.scorer).map(p=>`<button class="pc ${as.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button class="pc skip" data-as="">어시 없음</button></div>`:''}
+  <div class="evl">${EV.slice().reverse().map(e=>`<div class="goal ev ${e.st}" style="border-color:${e.t==='A'?'#e6edf3':'#3b82f6'}">${(x=>x==null?'':`<b class="tm">${Math.floor(x)}'</b>`)(evMin(D,e,EV))}${KI[e.k]||''} ${kLab(e.k)} · ${esc(e.p)} <span class="st">${e.st==='pending'?'⏳ 저장 중':e.st==='fail'?'⚠️ 재시도 대기':'✓ 저장됨'}</span><button class="del" data-dg="${e.eid}">삭제</button></div>`).join('')||'<div class="sub">아직 기록 없음</div>'}</div></div>
+  <div class="card" id="vote"><h3>③ AOM 익명 투표</h3><div class="step">한 사람당 한 번, 오늘의 선수를 탭하세요</div>
+  ${all.map(p=>`<button class="chip ${top.includes(p)?'on':''}" data-v="${esc(p)}" ${saved?'':'disabled'}>${esc(p)}${V[p]?' '+V[p]+'표':''}</button>`).join('')}
+  <div style="margin-top:6px;font-weight:700;color:#39ff88">${top.length>1?'🏆 공동 AOM: '+top.map(esc).join(', '):top.length?'🏆 AOM: '+esc(top[0]):'아직 투표 없음'}</div></div>
+  ${DAYAN(D,EV)}<div class="card" id="rvw"><h3>④ 경기 후기 (익명)</h3><div class="step">결과는 AI 분석에 활용됩니다</div><div class="sub" style="margin:-2px 0 6px">후기는 익명이라 작성자는 표시되지 않아요. 결과 분석에 쓰여요.</div><textarea id="rvt" placeholder="오늘 경기에서 좋았던 점 / 아쉬운 점&#10;Tip. 음성변환(STT) 활용하여 간편하게 입력해 보세요~"></textarea><button class="big ghost" style="margin-top:6px" id="rvs">후기 제출</button>
+  ${(D.reviews_anon||[]).slice().reverse().map(r=>`<div class="hist"><span>💬 ${esc(r.text)}</span></div>`).join('')}
+  ${Object.keys(D.reviews||{}).length?'<div class="sub" style="margin-top:8px">예전 개인 후기 (읽기 전용)</div>'+Object.entries(D.reviews).map(x=>`<div class="hist"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join(''):''}</div>
+  ${D.base?'':'<button class="big ghost" style="margin-top:8px;color:#f77" id="delm">이 경기 삭제</button>'}`;
+ if($('#kickb'))$('#kickb').onclick=async()=>{D.kick=Date.now();try{localStorage.setItem('achuk_kick_'+D.id,D.kick)}catch(e){}if(DB[D.id]&&!String(D.id).startsWith('pv-'))await put(D);render()};if($('#hdt'))$('#hdt').onclick=ovPick;bindDate('hdt');
+ v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>tapKind(b.dataset.k));
+ v.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const p=b.dataset.g,sd=b.dataset.gt;D.selP=D.selP&&D.selP.p===p&&D.selP.sd===sd?null:{p,sd};render()});
+ if($('[data-opp]'))$('[data-opp]').onclick=()=>{const eid=LIVE.add(D.id,{p:D.B.name||'상대팀',k:'상대골',t:'B'});showUndo(eid,'상대골');render()};
+ v.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{const a=D.asst;D.asst=null;if(a&&b.dataset.as){const eid=LIVE.add(D.id,{p:b.dataset.as,k:'어시',t:a.t});showUndo(eid,'어시 · '+b.dataset.as)}render()});
+ v.querySelectorAll('[data-dg]').forEach(b=>b.onclick=async()=>{if(isRO())return;const row=b.closest('.ev');const lb=row?row.textContent.replace(/⏳ 저장 중|⚠️ 재시도 대기|✓ 저장됨|삭제/g,'').trim():'';if(!await askDel(lb+' 기록을 삭제해요'))return;LIVE.remove(D.id,b.dataset.dg);render()});
+ v.querySelectorAll('[data-v]').forEach(b=>b.onclick=async()=>{if(VOTED[D.id]&&!confirm('이미 투표했어요. 한 번 더 할까요?'))return;if(await op('vote',{id:D.id,player:b.dataset.v})){VOTED[D.id]=1;toast('투표 완료');render()}});
+ $('#rvs').onclick=async()=>{const t=$('#rvt').value.trim();if(!t)return;if(await op('review',{id:D.id,text:t})){toast('후기 제출 완료');BUSY=false;render()}};
+ if($('#delm'))$('#delm').onclick=async()=>{if(await askDel('이 경기 기록 전체를 삭제해요')){D.deleted=true;await put(clean(D));D=null;TAB='all';render()}}}
+// ===== features4: 삭제 확인 + 지난 경기 보기 전용 =====
+function askDel(what){return new Promise(res=>{const m=document.createElement('div');m.className='mdl';m.innerHTML=`<div class="bx"><h4>정말 삭제할까요?</h4><p>${esc(what||'')}</p><div class="r"><button class="no">취소</button><button class="yes">삭제</button></div></div>`;document.body.appendChild(m);const done=v=>{m.remove();res(v)};m.querySelector('.no').onclick=()=>done(false);m.querySelector('.yes').onclick=()=>done(true);m.onclick=e=>{if(e.target===m)done(false)}})}
+const isRO=()=>!!(D&&D.confirmed&&String(D.date).slice(0,10)<TODAY());
+const _renderIn4=renderIn;renderIn=function(S){_renderIn4(S);const ro=isRO();document.body.classList.toggle('ro',ro);if(!ro)return;const v=$('#v');
+ v.querySelectorAll('.kinds,.step,.asst,#kickb,#delm,[data-dg],[data-opp],[data-v],#rvt,#rvs,[data-k]').forEach(e=>e.remove());
+ v.querySelectorAll('.st,h3 .tag').forEach(e=>e.remove());const u=$('#undo');if(u)u.style.display='none';
+ v.querySelectorAll('h3').forEach(h=>{if(/후기 남기|후기 제출|익명 후기/.test(h.textContent)&&!h.parentNode.querySelector('.hist'))h.parentNode.remove()});
+ const c=v.querySelector('.card');if(c)c.insertAdjacentHTML('afterbegin','<div class="robn">🔒 지난 경기 · 보기 전용 (수정·삭제 불가)</div>')};
+const _tapKind4=tapKind;tapKind=function(k){if(isRO())return toast('지난 경기는 보기 전용이에요');return _tapKind4(k)};
+
+function ovPick(e){try{if(e.target.showPicker&&!/iPhone|iPad|iPod/.test(navigator.userAgent))e.target.showPicker()}catch(_){}}
+setInterval(()=>{const x=document.getElementById('kbx'),e=document.getElementById('kel');if(x&&e&&+x.dataset.k)e.textContent=mmss(Date.now()-x.dataset.k)},1000);
+let LASTTAP=null;
+function tapKind(k){if(!D.selP){toast('먼저 선수를 탭하세요');const t=$('.teams');if(t){t.classList.remove('shake');void t.offsetWidth;t.classList.add('shake')}return}
+ const {p,sd}=D.selP,key=p+'|'+k+'|'+sd,now=Date.now();if(LASTTAP&&LASTTAP.key===key&&now-LASTTAP.ts<800)return;LASTTAP={key,ts:now}; // 연타 방지
+ const eid=LIVE.add(D.id,{p,k,t:sd});if(!eid)return;D.selP=null;D.gk=null;
+ if(k==='골'&&D[sd].players.length>1){D.asst={t:sd,scorer:p,eid,until:now+8000};setTimeout(()=>{if(D&&D.asst&&D.asst.eid===eid){D.asst=null;render()}},8100)}else D.asst=null;
+ showUndo(eid,kLab(k)+' · '+p);render()}
+function showUndo(eid,label){let u=$('#undo');if(!u){u=document.createElement('div');u.id='undo';document.body.appendChild(u)}
+ u.innerHTML=`<span>✓ ${esc(label)}</span><button>↶ 되돌리기</button>`;u.style.display='flex';u.querySelector('button').onclick=async()=>{if(!await askDel(label+' 기록을 되돌려(삭제)요'))return;LIVE.remove(D.id,eid);if(D.asst&&D.asst.eid===eid)D.asst=null;u.style.display='none';toast('되돌렸어요');render()};
+ clearTimeout(u._t);u._t=setTimeout(()=>u.style.display='none',6000)}
+
+const VOTED={};
+function derive(m){if(m.base)return;let a=0,b=0;(m.goals||[]).forEach(g=>{if(g.k==='골')g.t==='A'?a++:b++;else if(g.k==='자책골')g.t==='A'?b++:a++;else if(g.k==='상대골')b++});m.sa=a;m.sb=b}
+function clean(d){const m=JSON.parse(JSON.stringify(d));delete m.side;delete m.gk;delete m.votes;delete m.reviews_anon;return m}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{TAB=b.dataset.t;render();scrollTo(0,0)});
+document.addEventListener('click',e=>{const id=e.target.dataset&&e.target.dataset.edit;if(id){D=Object.assign(JSON.parse(JSON.stringify(DB[id])),{confirmed:true,side:'A',gk:'골'});D.reviews=D.reviews||{};D.goals=D.goals||[];TAB='in';render();scrollTo(0,0)}});
+document.addEventListener('focusin',e=>{if(e.target.matches('textarea,input'))BUSY=true});document.addEventListener('focusout',()=>BUSY=false);
+// ===== 실시간 (Firebase push) + 영구 저장 (Apps Script v3 addEvent/removeEvent). 폴링 없음 =====
+let FBCFG=null;
+async function evApi(o,extra){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({key:KEY,op:o},extra))});const j=await r.json();
+ if(!j.ok)throw Object.assign(new Error(j.error||'server'),{hard:['player','kind','eventId','match'].includes(j.error)});if(!j.applied)throw new Error('store-v2');if(j.match)DB[extra.id]=j.match;return j}
+const LIVE=(()=>{let d=null,F=null,uid=null,space=null;const mem={},M=id=>mem[id]||(mem[id]={ev:{},rm:{},w:false});
+ const status=s=>{const el=$('#live');if(!el)return;el.className='live '+s;el.textContent=s==='on'?'🟢 실시간':s==='re'?'🟡 재연결 중…':s==='off'?'🔴 오프라인 · 기기에 대기':'⚪ 연결 중…'};
+ const P=id=>`achuk/${space}/live/${id}`;
+ // 영구 저장 큐: 실패/오프라인이면 localStorage 에 보관 → 온라인 복귀·재연결·화면 복귀 '이벤트' 때만 재시도 (타이머 없음)
+ const QK='achuk_q';let Q=[];try{Q=JSON.parse(localStorage.getItem(QK)||'[]')}catch(e){}
+ const qsave=()=>{try{localStorage.setItem(QK,JSON.stringify(Q))}catch(e){}};let busy=false;
+ function enq(x){if(Q.some(q=>q.op===x.op&&q.eventId===x.eventId))return;Q.push(x);qsave();flush()}
+ async function flush(){if(busy||!Q.length||!STORE)return;busy=true;
+  try{while(Q.length){const x=Q[0];try{await evApi(x.op,x)}catch(e){if(!e.hard){if(e.message==='store-v2')toast('서버 저장소 업데이트 필요 (Apps Script v3)');break}}Q.shift();qsave();const m=mem[x.id];if(m&&m.ev[x.eventId])m.ev[x.eventId].sv=1}}
+  finally{busy=false;if(TAB==='in')render()}}
+ addEventListener('online',flush);
+ async function init(fb,key){const V='10.14.1';const [A,AU,DB_]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`)]);
+  F=DB_;const app=A.initializeApp(fb,'achuk-live');const au=AU.getAuth(app);d=F.getDatabase(app);
+  const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+key));space='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+  const c=await AU.signInAnonymously(au);uid=c.user.uid;
+  let first=true;F.onValue(F.ref(d,'.info/connected'),s=>{if(s.val()){first=false;status('on');flush()}else status(first?'':(navigator.onLine?'re':'off'))});
+  if(D&&D.confirmed)watch(D.id);flush()}
+ const inServer=(id,eid)=>{const m=DB[id];return !!m&&((m.goals||[]).some(g=>g.eid===eid)||!!(m.removedEvents||{})[eid])};
+ function watch(id){const m=M(id);if(m.w||!d)return;m.w=true;
+  F.onChildAdded(F.ref(d,P(id)+'/events'),s=>{const v=s.val(),o=m.ev[s.key];m.ev[s.key]=Object.assign({eid:s.key},v,{st:o&&o.st==='pending'?'pending':'ok',sv:o&&o.sv});
+   // 다른 기기가 저장 전에 끊긴 이벤트 복구: 30초 이상 지났는데 서버에 없으면 이 기기가 대신 저장 (eventId 멱등)
+   if(!o&&typeof v.ts==='number'&&Date.now()-v.ts>30000&&!inServer(id,s.key))enq({op:'addEvent',id,eventId:s.key,p:v.p,k:v.k,t:v.t});
+   window.__rx&&window.__rx(s.key);if(TAB==='in')render()});
+  F.onChildAdded(F.ref(d,P(id)+'/removed'),s=>{m.rm[s.key]=1;if(typeof s.val()==='number'&&Date.now()-s.val()>30000&&inServer(id,s.key)&&!(DB[id].removedEvents||{})[s.key])enq({op:'removeEvent',id,eventId:s.key});if(TAB==='in')render()})}
+ function add(id,e){if(!d){toast('실시간 연결 전이에요 · 잠시 후 다시');return null}watch(id);const r=F.push(F.ref(d,P(id)+'/events'));const eid=r.key;M(id).ev[eid]=Object.assign({eid,st:'pending'},e);
+  F.set(r,{p:e.p,k:e.k,t:e.t,ts:F.serverTimestamp(),uid}).then(()=>{M(id).ev[eid].st='ok';if(TAB==='in')render()}).catch(err=>{M(id).ev[eid].st='fail';toast('실시간 거부: '+err.code);if(TAB==='in')render()});
+  F.runTransaction(F.ref(d,P(id)+'/seq'),n=>(n||0)+1).catch(()=>{});enq({op:'addEvent',id,eventId:eid,p:e.p,k:e.k,t:e.t});return eid}
+ function remove(id,eid){M(id).rm[eid]=1;if(d&&/^[-_A-Za-z0-9]{20}$/.test(eid)){F.set(F.ref(d,P(id)+'/removed/'+eid),F.serverTimestamp()).catch(()=>{});F.runTransaction(F.ref(d,P(id)+'/seq'),n=>(n||0)+1).catch(()=>{})}
+  enq({op:'removeEvent',id,eventId:eid})}
+ function events(id){watch(id);const m=M(id),s=DB[id]||{},rmS=s.removedEvents||{},out={};
+  (s.goals||[]).forEach((g,i)=>{const eid=g.eid||('legacy-'+String(i).padStart(4,'0'));out[eid]=Object.assign({},g,{eid,st:'ok',sv:1})});
+  Object.values(m.ev).forEach(e=>{if(!out[e.eid])out[e.eid]=e});
+  const L=Object.values(out).filter(e=>!m.rm[e.eid]&&!rmS[e.eid]);
+  return L.sort((a,b)=>{const la=a.eid.startsWith('legacy-'),lb=b.eid.startsWith('legacy-');return la!==lb?(la?-1:1):a.eid<b.eid?-1:a.eid>b.eid?1:0})}
+ const pending=()=>Q.length;
+ return{init,add,remove,events,status,watch,flush,pending}})();
+// 대시보드 갱신은 '이벤트'로만: 화면 복귀/포커스 시 1회 읽기 (주기 폴링 없음)
+let LASTGET=0;function refresh(){if(document.hidden||BUSY||!STORE||Date.now()-LASTGET<5000)return;LASTGET=Date.now();api('get').then(()=>{if(TAB!=='in')render()}).catch(()=>{});LIVE.flush()}
+document.addEventListener('visibilitychange',refresh);addEventListener('focus',refresh);
+async function load(){if(!KEY){keyForm('');return}
+ try{if(!FBCFG){try{const r=await fetch(BASE+'cfg.enc.json?_='+Date.now(),{cache:'no-store'});if(r.ok){const c=await decryptDoc(await r.json(),KEY);STORE=STORE||c.store;FBCFG=c.fb||null}}catch(e){if(e.badKey){try{localStorage.removeItem('achuk_k')}catch(_){}KEY='';keyForm('키가 맞지 않아요');return}}if(!STORE)STORE='./store'}
+  await api('get');LASTGET=Date.now();render()}catch(e){$('#v').innerHTML=`<div class="card err">서버 연결 실패 (${esc(e.message)}) · 잠시 후 다시 시도해요</div>`;return}
+ if(FBCFG){LIVE.status('');LIVE.init(FBCFG,KEY).catch(e=>{LIVE.status('off');toast('실시간 연결 실패: '+(e.code||e.message))})}}
+
+// ===== AOM 투표 v3 (2026-11-05): 1인 1표·마감 전 변경 가능·전원 투표 또는 경기종료(킥오프+2h) 후 30분 마감 =====
+const AOMW={골:3,어시:2,유효슈팅:1,세이브:2,철벽수비:2};
+const VT=(()=>{let F=null,d=null,sp=null,ready=null;const data={},on={},myK={};
+ async function init(){if(ready)return ready;ready=(async()=>{const V='10.14.1';const A=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),AU=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);F=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+  let app=null;for(let i=0;i<60&&!app;i++){app=A.getApps().find(a=>/^achuk/.test(a.name));if(!app)await new Promise(r=>setTimeout(r,250))}if(!app)throw new Error('no-app');
+  const au=AU.getAuth(app);if(!au.currentUser)await new Promise(r=>{const u=AU.onAuthStateChanged(au,x=>{if(x){u();r()}})});d=F.getDatabase(app);
+  const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+KEY));sp='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40)})();return ready}
+ // 익명 투표 키: 기기에만 있는 경기별 무작위 비밀값의 해시 (계정 uid·기기 id 미사용 → 기록·다른 경기와 연결 불가)
+ const b64=a=>btoa(String.fromCharCode(...a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+ async function key(id){if(myK[id])return myK[id];let s;try{s=localStorage.getItem('achuk_vs_'+id)}catch(e){}if(!s){s=b64(crypto.getRandomValues(new Uint8Array(24)));try{localStorage.setItem('achuk_vs_'+id,s)}catch(e){}}
+  const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+'|'+id));return myK[id]=b64(new Uint8Array(h)).slice(0,14)}
+ const path=id=>`achuk/${sp}/live/vv_${id}/removed`;
+ const R=m=>[...m.A.players,...m.B.players].filter(isReal).sort((a,b)=>a.localeCompare(b,'ko'));
+ function watch(id){if(on[id])return;on[id]=1;key(id).then(()=>{if(TAB==='in'&&D&&D.id===id)renderVote()});init().then(()=>F.onValue(F.ref(d,path(id)),s=>{const v=s.val()||{};data[id]=Object.keys(v).filter(k=>typeof v[k]==='number').map(k=>({vk:k.slice(0,14),i:parseInt(k.slice(14,16),36),ts:v[k]}));if(TAB==='in'&&D&&D.id===id)renderVote()})).catch(()=>{on[id]=0})}
+ async function cast(m,p){await init();const i=R(m).indexOf(p);if(i<0)throw new Error('player');const k=(await key(m.id))+i.toString(36).padStart(2,'0')+b64(crypto.getRandomValues(new Uint8Array(3)));
+  await F.set(F.ref(d,path(m.id)+'/'+k),F.serverTimestamp())}
+ return{watch,cast,get:(id,m)=>(data[id]||[]).map(v=>({ts:v.ts,uid:v.vk,p:R(m)[v.i]})),me:id=>myK[id]||''}})();
+function aomState(m){const id=m.id,ev=(typeof LIVE!=='undefined'?LIVE.events(id):[]),roster=[...m.A.players,...m.B.players].filter(isReal);
+ let kick=+m.kick||0;if(!kick&&DB[id]&&DB[id].kick)kick=+DB[id].kick;if(!kick){try{localStorage.removeItem('achuk_kick_'+id)}catch(e){}}else{try{kick=kick||+localStorage.getItem('achuk_kick_'+id)||0}catch(e){}}
+ const first=ev.map(e=>+e.ts).filter(Boolean).sort((a,b)=>a-b)[0],made=+(String(id).match(/^m-(\d{13})$/)||[])[1]||0;
+ const anchor=kick||first||made||0,anchorBy=kick?'킥오프':first?'첫 기록':made?'경기 생성':'';
+ const endAt=m.end?+m.end:(kick?kick+2*36e5:0),deadline=endAt?endAt+30*6e4:0;
+ const vs=VT.get(id,m).filter(v=>v.p).slice().sort((a,b)=>a.ts-b.ts),last={},firstHit={};let closedAt=0,why='';
+ for(const v of vs){if(deadline&&v.ts>deadline)break;if(!roster.includes(v.p))continue;last[v.uid]=v.p;if(Object.keys(last).length>=roster.length){closedAt=v.ts;why='전원 투표';break}}
+ const now=Date.now(),past=String(m.date).slice(0,10)<TODAY();if(!closedAt&&deadline&&now>deadline){closedAt=deadline;why='종료 후 30분'}
+ const tally={};Object.values(last).forEach(p=>tally[p]=(tally[p]||0)+1);
+ const pts=p=>ev.filter(e=>e.p===p).reduce((s,e)=>s+(AOMW[e.k]||0),0);
+ const mx=Math.max(0,...Object.values(tally)),top=Object.keys(tally).filter(p=>tally[p]===mx&&mx>0);
+ let win='',tb='';if(top.length===1)win=top[0];else if(top.length>1){top.sort((a,b)=>pts(b)-pts(a)||a.localeCompare(b,'ko'));win=top[0];tb=`동률 ${top.length}명 → 공격·수비 포인트 ${top.map(p=>p+' '+pts(p)).join(' / ')}${pts(top[0])===pts(top[1])?' → 동점이라 이름순':''}`}
+ return{roster,anchor,anchorBy,endAt,deadline,closed:!!closedAt||past,closedAt,why:why||(past?'지난 경기':''),tally,voters:Object.keys(last).length,mine:last[VT.me(id)]||'',win,tb,hasNew:vs.length>0}}
+const hm=t=>new Date(t+9*36e5).toISOString().slice(11,16);
+let AOMPUT={};
+function renderVote(){const el=document.getElementById('vote');if(!el||!D||!D.confirmed)return;const m=D;VT.watch(m.id);const S=aomState(m),ro=typeof isRO==='function'&&isRO();
+ const legacy=!S.hasNew&&(DB[m.id]||{}).votes;const closed=S.closed||ro;
+ const rule='익명 · 투표자 추적 불가 · 한 사람 1표 · AOM 선정 전까지 변경 가능 · 전원 투표 또는 경기 종료(킥오프+2시간) 후 30분 마감';
+ const left=S.deadline?Math.max(0,S.deadline-Date.now()):0;
+ const tline=closed?(S.closedAt?`마감 ${hm(S.closedAt)} (${S.why})`:'마감'):S.deadline?`⏳ ${hm(S.deadline)} 마감 · 남은 시간 ${Math.floor(left/36e5)}:${String(Math.floor(left%36e5/6e4)).padStart(2,'0')} (종료 ${S.endAt?hm(S.endAt):'-'} 후 30분) · 투표 ${S.voters}/${S.roster.length}명`:`투표 ${S.voters}/${S.roster.length}명 · 킥오프 후 2시간 종료 · 종료 30분 뒤 AOM 마감`;
+ let res;if(legacy){const top=String(DB[m.id].aom||'').split('·').filter(Boolean);res=top.length?'🏆 AOM: '+top.map(esc).join(', ')+' <span class="sub">(이전 방식 집계)</span>':'투표 없음'}
+ else if(S.win)res=(closed?'🏆 AOM: ':'현재 1위: ')+esc(S.win)+` (${S.tally[S.win]}표)`+(S.tb?`<div class="sub">${esc(S.tb)}</div>`:'');
+ else res=closed?(m.aom?'🏆 AOM: '+esc(String(m.aom).split('·').join(', ')):'투표 없이 마감'):'아직 투표 없음';
+ const T=legacy?Object.assign({},DB[m.id].votes):S.tally;
+ el.innerHTML=`<h3>③ AOM 익명 투표 ${closed?'<span class="tag" style="background:#ffb020">마감</span>':''}</h3><div class="step">${rule}</div><div class="sub" style="margin:2px 0 8px">${tline}</div>
+  ${S.roster.map(p=>`<button class="chip ${S.mine===p?'on':''}" data-v2="${esc(p)}" ${closed||legacy?'disabled':''}>${esc(p)}${T[p]?' '+T[p]+'표':''}${S.mine===p?' ✓':''}</button>`).join('')}
+  <div style="margin-top:8px;font-weight:700;color:#39ff88">${res}</div>${!closed&&S.mine?`<div class="sub">내 투표: ${esc(S.mine)} · 다른 선수를 누르면 변경돼요</div>`:''}`;
+ el.querySelectorAll('[data-v2]').forEach(b=>b.onclick=async()=>{const p=b.dataset.v2;if(p===S.mine)return;const S2=aomState(D);if(S2.closed)return toast('AOM 투표가 마감됐어요');try{await VT.cast(D,p);toast(S.mine?'투표를 '+p+'(으)로 바꿨어요':'투표 완료')}catch(e){toast('투표 실패: '+(e.code||e.message))}});
+ if(closed&&S.win&&!legacy&&!String(m.id).startsWith('pv-')&&DB[m.id]&&!DB[m.id].votes&&DB[m.id].aom!==S.win&&!AOMPUT[m.id]){AOMPUT[m.id]=1;const c=JSON.parse(JSON.stringify(DB[m.id]));c.aom=S.win;put(c).then(ok=>{if(ok){DB[m.id].aom=S.win}})}}
+{const _r=renderIn;renderIn=function(S){_r(S);try{renderVote()}catch(e){console.error(e)}}}
+setInterval(()=>{if(TAB==='in'&&document.getElementById('vote')&&!BUSY)renderVote()},30000);
+
+// ===== 익명 후기 → 선수 언급 (주관적 의견 · 참고용, 낮은 비중) =====
+function peerMentions(p){if(!p||p.length<2)return[];const names=Object.keys(stats()).filter(n=>n!==p&&n.includes(p));const out=[];
+ list().forEach(m=>{if(![...m.A.players,...m.B.players].includes(p))return;(m.reviews_anon||[]).forEach(r=>{const t=String(r.text||'');
+  const sents=t.split(/(?<=[.!?。\n])\s*|\s*[\/·]\s*/).filter(x=>x.includes(p)&&!names.some(n=>x.includes(n)&&x.replace(new RegExp(n,'g'),'').indexOf(p)<0));
+  sents.forEach(x=>out.push({d:m.date,t:x.trim()}))})});return out}
+function peerBlock(p){const M=peerMentions(p);if(!M.length)return'';const pos=/좋|잘|최고|굿|훌륭|든든|대박|👍|칭찬|덕분/,neg=/아쉽|실수|못|부족|놓|느리|흔들/;
+ const np=M.filter(x=>pos.test(x.t)).length,nn=M.filter(x=>neg.test(x.t)).length;
+ return `<li style="opacity:.85"><b>동료 후기 언급 (주관적 의견 · 참고용)</b> — 익명 후기 ${M.length}건에서 언급${np||nn?` (긍정 ${np} · 아쉬움 ${nn})`:''}. 개인의 주관적 의견이며 객관적 평가가 아니라 분석 비중은 낮게 반영해요.${M.slice(-2).reverse().map(x=>`<br><span class="sub">· ${esc(x.d)} "${esc(x.t.slice(0,60))}"</span>`).join('')}</li>`}
+{const _c=coach;coach=function(p,S){return _c(p,S)+peerBlock(p)}}
+
+load();
+</script></body></html>
