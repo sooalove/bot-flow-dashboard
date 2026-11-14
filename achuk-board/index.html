@@ -1,0 +1,125 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="#0b0f17"><title>⚽ 아축 · 점수판</title>
+<style>*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:radial-gradient(ellipse at top,#121b2c,#0b0f17 60%);color:#e6edf3;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;overflow:hidden}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:1.2vmin;padding:1.6vmin 2vmin calc(1.6vmin + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;gap:1.5vmin;background:#111827;border:1px solid #223047;border-bottom:2px solid #39ff88;border-radius:1.6vmin;padding:1vmin 1.6vmin;font-size:clamp(12px,2.2vmin,22px)}
+.logo{font-weight:800;color:#39ff88;white-space:nowrap}.sp{flex:1}
+select,button{font:inherit;color:#e6edf3;background:#1e2a3d;border:1px solid #2c3d58;border-radius:1vmin;padding:.6vmin 1.2vmin}button{cursor:pointer}
+.live{white-space:nowrap;padding:.4vmin 1.2vmin;border-radius:99px;background:#1e2a3d}.live.on{color:#39ff88}.live.re{color:#ffd23f}.live.off{color:#ff6b6b}
+.sb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:#141c2b;border:1px solid #223047;border-radius:2.4vmin;padding:2vmin;position:relative;overflow:hidden;min-height:0}
+.tm{text-align:center;min-width:0}.tm .nm{font-weight:800;font-size:clamp(22px,7vmin,96px);display:inline-flex;align-items:center;gap:1.5vmin}.tm .dot{width:.9em;height:.9em;border-radius:50%;border:3px solid #fff3}
+.tm .sc{font-weight:900;font-size:clamp(80px,34vmin,440px);line-height:1;font-variant-numeric:tabular-nums;transition:transform .3s}
+.A .dot{background:#05070b;border-color:#9aa}.A .nm{color:#f3f6fa}.A .sc{color:#f3f6fa;text-shadow:0 0 3vmin #fff2}
+.B .dot{background:#2f7bff}.B .nm{color:#6aa8ff}.B .sc{color:#6aa8ff;text-shadow:0 0 3vmin #2f7bff55}
+.col{font-size:clamp(40px,16vmin,200px);color:#3b4a63;font-weight:800;padding:0 2vmin}
+.meta{position:absolute;top:1.4vmin;left:0;right:0;text-align:center;color:#8aa;font-size:clamp(11px,2vmin,20px)}
+.pop{transform:scale(1.18)}
+.flash{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;opacity:0;background:radial-gradient(circle,#39ff8855,#0b0f17ee 70%)}
+.flash.go{animation:fl 2.6s ease}.flash b{font-size:clamp(50px,20vmin,260px);color:#39ff88;text-shadow:0 0 4vmin #39ff88}.flash span{font-size:clamp(20px,6vmin,80px);font-weight:800}
+@keyframes fl{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.05)}25%{transform:scale(1)}80%{opacity:1}100%{opacity:0}}
+.feed{background:#141c2b;border:1px solid #223047;border-radius:1.6vmin;padding:1vmin 1.6vmin;display:flex;gap:1.2vmin;overflow:hidden;max-height:22vh;flex-wrap:wrap;align-content:flex-start;font-size:clamp(13px,2.6vmin,30px)}
+.ev{display:flex;align-items:center;gap:.8vmin;background:#1e2a3d;border-radius:1vmin;padding:.6vmin 1.2vmin;border-left:.6vmin solid #2c3d58;white-space:nowrap}.ev.A{border-left-color:#cfd6df}.ev.B{border-left-color:#2f7bff}.ev time{color:#8aa;font-size:.8em;font-variant-numeric:tabular-nums}.ev.new{animation:nw 1.5s}
+@keyframes nw{0%{background:#39ff8855}100%{background:#1e2a3d}}.empty{color:#8aa}
+.keyf{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0b0f17}.keyf div{background:#141c2b;border:1px solid #223047;border-radius:14px;padding:20px;display:grid;gap:10px;width:min(420px,90vw)}.keyf input{font:inherit;padding:10px;border-radius:8px;border:1px solid #2c3d58;background:#0b0f17;color:#e6edf3}.err{color:#ff6b6b}
+@media (orientation:portrait){.sb{grid-template-columns:1fr;gap:1vmin}.col{display:none}.tm .sc{font-size:clamp(80px,24vh,400px)}.feed{max-height:26vh}}
+
+.flash{z-index:20;position:fixed}.flash.as{background:radial-gradient(circle,#ffd23f44,#0b0f17ee 70%)}.flash.as b{color:#ffd23f;text-shadow:0 0 4vmin #ffd23f}
+.flash.og b{color:#ff8a5c;text-shadow:0 0 4vmin #ff8a5c}
+.flash b{display:block;letter-spacing:.04em}.flash.go b{animation:burst 2.8s cubic-bezier(.2,1.6,.4,1)}
+@keyframes burst{0%{transform:scale(.2) rotate(-8deg)}15%{transform:scale(1.25) rotate(3deg)}30%{transform:scale(1)}100%{transform:scale(1.05)}}
+.flash span{animation:rise 2.8s ease}.flash small{display:block;font-size:clamp(16px,3.6vmin,44px);color:#9fe;margin-top:1vmin}
+@keyframes rise{0%,15%{opacity:0;transform:translateY(6vmin)}35%{opacity:1;transform:none}}
+.ring{position:absolute;width:20vmin;height:20vmin;border-radius:50%;border:1.2vmin solid #39ff88;animation:ring 1.4s ease-out forwards;opacity:0}.as .ring{border-color:#ffd23f}
+@keyframes ring{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(6)}}
+.cf{position:fixed;top:-4vh;width:1.4vmin;height:2.4vmin;z-index:21;pointer-events:none;animation:cf linear forwards}
+@keyframes cf{to{transform:translate(var(--dx),110vh) rotate(var(--r));}}
+.tm .sc.flip{animation:flip .7s ease}@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg) scale(1.2);color:#39ff88}100%{transform:rotateX(0)}}
+.sb{perspective:800px}
+/* iPad: 큰 글자 */
+@media (min-width:740px) and (max-width:1400px){.top{font-size:clamp(16px,2.4vmin,26px)}.feed{font-size:clamp(18px,2.9vmin,32px)}}
+@media (orientation:portrait) and (min-width:700px){.app{grid-template-rows:auto 1fr auto}.tm .nm{font-size:7vw}.tm .sc{font-size:min(30vw,26vh)}.feed{max-height:30vh;font-size:3.2vw}.top{font-size:2.6vw}}
+
+.tm .sc.flip{animation:flip .9s cubic-bezier(.3,1.5,.5,1),shake .5s .5s}@keyframes shake{0%,100%{translate:0}20%{translate:-2vmin 0}40%{translate:2vmin 0}60%{translate:-1.2vmin 0}80%{translate:1vmin 0}}
+.sb.glowA{animation:gA 2.8s}.sb.glowB{animation:gB 2.8s}@keyframes gA{0%,100%{box-shadow:none}20%,70%{box-shadow:0 0 0 .6vmin #f3f6fa,0 0 10vmin #f3f6fa88 inset}}@keyframes gB{0%,100%{box-shadow:none}20%,70%{box-shadow:0 0 0 .6vmin #2f7bff,0 0 10vmin #2f7bffaa inset}}
+.flash.go::before{content:'';position:absolute;inset:0;background:#fff;animation:wh .45s ease-out forwards}@keyframes wh{0%{opacity:.85}100%{opacity:0}}
+.flash.go::after{content:'';position:absolute;width:160vmax;height:160vmax;background:repeating-conic-gradient(#39ff8822 0 8deg,transparent 8deg 20deg);animation:spin 3s linear;z-index:-1}.flash.as.go::after{background:repeating-conic-gradient(#ffd23f22 0 8deg,transparent 8deg 20deg)}@keyframes spin{to{transform:rotate(90deg)}}
+.flash span{display:inline-block;padding:1.4vmin 5vmin;border-radius:2vmin;background:linear-gradient(90deg,#39ff88,#2fd0ff);color:#0b0f17;box-shadow:0 0 6vmin #39ff8899;animation:ban 2.8s cubic-bezier(.2,1.4,.4,1)}.flash.as span{background:linear-gradient(90deg,#ffd23f,#ff8a5c);box-shadow:0 0 6vmin #ffd23f99}.flash.og span{background:linear-gradient(90deg,#ff8a5c,#ff4d6d)}.flash span small{color:#0b0f17cc}
+@keyframes ban{0%,12%{opacity:0;transform:translateX(-120vw) skewX(-20deg)}32%{opacity:1;transform:translateX(2vw) skewX(-6deg)}42%{transform:none}88%{opacity:1;transform:none}100%{opacity:0;transform:translateX(120vw) skewX(20deg)}}
+.flash.tA b{color:#fff;text-shadow:0 0 3vmin #fff,0 0 8vmin #9aa}.flash.tB b{color:#6aa8ff;text-shadow:0 0 3vmin #2f7bff,0 0 8vmin #2f7bff}
+.cf,.flash *{will-change:transform,opacity}
+</style></head><body><div class="app"><div class="top"><span class="logo">⚽ 아축 점수판</span><select id="m"></select><span class="sp"></span><span id="live" class="live">⚪ 연결 중…</span><button id="fs" title="전체 화면 + 화면 꺼짐 방지">⛶ 전체화면</button></div>
+<div class="sb" id="sb"><div class="meta" id="meta"></div><div class="tm A"><div class="nm"><i class="dot"></i><span id="na">블랙</span></div><div class="sc" id="sa">0</div></div><div class="col">:</div><div class="tm B"><div class="nm"><i class="dot"></i><span id="nb">블루</span></div><div class="sc" id="sbn">0</div></div></div><div class="flash" id="fl"></div>
+<div class="feed" id="feed"><span class="empty">아직 기록이 없어요</span></div></div>
+<script type="module">
+// CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
+// File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
+// Passphrase = #k=<key> from the URL fragment (fragments are never sent to the server).
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const KEYC = {salt:null, iter:0, pass:null, key:null};
+async function aesKey(pass, salt, iter){
+  if(KEYC.key && KEYC.salt===salt && KEYC.iter===iter && KEYC.pass===pass) return KEYC.key; // derive once
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(salt), iterations:iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  Object.assign(KEYC, {salt, iter, pass, key}); return key;
+}
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const key = await aesKey(pass, doc.salt, doc.iter);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+let KEY=(location.hash.match(/[#&]k=([^&]+)/)||[])[1];KEY=KEY?decodeURIComponent(KEY):'';
+try{if(KEY){localStorage.setItem('achuk_k',KEY);history.replaceState(null,'',location.pathname+location.search)}else KEY=localStorage.getItem('achuk_k')||''}catch(e){}
+const SBX=[['pv-sandbox-1','🧪 미리보기 경기 1'],['pv-sandbox-2','🧪 미리보기 경기 2'],['pv-sandbox-3','🧪 미리보기 경기 3']];
+const qp=new URLSearchParams(location.search),QM=qp.get('m');const QI=SBX.findIndex(x=>x[0]===QM);if(QI>0)SBX.unshift(...SBX.splice(QI,1));
+$('#na').textContent=qp.get('a')||'블랙';$('#nb').textContent=qp.get('b')||'블루';
+const IC={'골':'⚽','어시':'👟','자책골':'↩️','세이브':'🧤','상대골':'⚽'};
+const status=s=>{const el=$('#live');el.className='live '+s;el.textContent=s==='on'?'🟢 실시간':s==='re'?'🟡 재연결 중…':s==='off'?'🔴 오프라인':'⚪ 연결 중…'};
+function keyForm(msg){const k=document.createElement('div');k.className='keyf';k.innerHTML=`<div><b>🔑 처음 한 번만 키를 입력해 주세요</b>${msg?`<span class="err">${msg}</span>`:''}<input id="kin" type="password" autocomplete="off" placeholder="키 또는 링크"><button id="kok">열기</button></div>`;document.body.appendChild(k);
+ $('#kok').onclick=()=>{let v=$('#kin').value.trim();const m=v.match(/[#&]k=([^&]+)/);if(m)v=decodeURIComponent(m[1]);if(!v)return;try{localStorage.setItem('achuk_k',v)}catch(e){}k.remove();KEY=v;start()}}
+// 전체화면 + 화면 꺼짐 방지
+let wl=null;async function lock(){try{if('wakeLock' in navigator){wl=await navigator.wakeLock.request('screen')}}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&wl)lock()});
+$('#fs').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}lock();$('#fs').textContent='🔆 켜짐 유지'};
+let F,d,space,cur=null,unsub=[],EV={},RM={},seen=null;
+function render(fresh){try{const ev=Object.values(EV).filter(e=>!RM[e.eid]).sort((a,b)=>a.eid<b.eid?-1:1);let a=0,b=0;
+ ev.forEach(e=>{if(e.k==='골')e.t==='A'?a++:b++;else if(e.k==='자책골'||e.k==='상대골')e.t==='A'?b++:a++});
+ [[$('#sa'),a],[$('#sbn'),b]].forEach(([el,n])=>{if(+el.textContent!==n){el.textContent=n;if(seen){el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip')}}});
+ const tm=ts=>ts?new Date(ts).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}):'';
+ const rows=[];for(let i=0;i<ev.length;i++){const e=ev[i];let txt=`${IC[e.k]||'•'} <b>${esc(e.p)}</b>`;
+  if(e.k==='골'){const n=ev[i+1];if(n&&n.k==='어시'&&n.t===e.t){txt+=` · 👟 ${esc(n.p)}`;i++}}else txt+=` <small>${esc(e.k)}</small>`;
+  rows.push(`<div class="ev ${e.t==='B'?'B':'A'}${fresh===e.eid?' new':''}"><time>${tm(e.ts)}</time>${txt}</div>`)}
+ $('#feed').innerHTML=rows.length?rows.reverse().join(''):'<span class="empty">아직 기록이 없어요</span>';
+ $('#meta').textContent=`${ev.length}개 기록`}catch(err){console.error('render',err)}}
+const TN=t=>(t==='A'?$('#na'):$('#nb')).textContent;let AQ=[],busy=false;
+function celebrate(e){AQ.push(e);if(!busy)nextFx()}
+function nextFx(){const e=AQ.shift();if(!e){busy=false;return}busy=true;const f=$('#fl'),as=e.k==='어시',og=e.k==='자책골'||e.k==='상대골';
+ const team=og?(e.t==='A'?'B':'A'):e.t;
+ f.className='flash'+(as?' as':og?' og':'')+' t'+team;const sb=$('#sb');sb.classList.remove('glowA','glowB');void sb.offsetWidth;sb.classList.add('glow'+(as?e.t:team));
+ f.innerHTML=`<i class="ring"></i><i class="ring" style="animation-delay:.25s"></i><b>${as?'👟 ASSIST':og?'↩️ OWN GOAL':'⚽ GOAL!'}</b><span>${esc(e.p)}<small>${esc(TN(as?e.t:team))}${as?' · 도움':og?' 득점 (자책골)':' 득점'}</small></span>`;
+ void f.offsetWidth;f.classList.add('go');
+ {const col=as?['#ffd23f','#ff8a5c','#fff']:team==='A'?['#f3f6fa','#39ff88','#9aa']:['#2f7bff','#6aa8ff','#39ff88'];const N=as?50:(innerWidth<900?90:140);for(let i=0;i<N;i++){const c=document.createElement('i');c.className='cf';
+  c.style.cssText=`left:${Math.random()*100}vw;background:${col[i%3]};--dx:${(Math.random()-.5)*30}vw;--r:${Math.random()*1080}deg;animation-duration:${1.8+Math.random()*1.6}s;animation-delay:${Math.random()*.5}s;border-radius:${i%2?'50%':'2px'}`;
+  document.body.appendChild(c);setTimeout(()=>c.remove(),4200)}}
+ setTimeout(()=>{f.className='flash';nextFx()},as?2000:2800)}
+function watch(id){unsub.forEach(u=>u());unsub=[];EV={};RM={};seen=null;cur=id;render();const P=`achuk/${space}/live/${id}`;
+ const t0=Date.now();
+ unsub.push(F.onChildAdded(F.ref(d,P+'/events'),s=>{if(cur!==id)return;const v=Object.assign({eid:s.key},s.val());EV[s.key]=v;render(s.key);
+  window.__board&&window.__board(s.key);if(seen&&v.k!=='세이브')celebrate(v)}));
+ unsub.push(F.onChildAdded(F.ref(d,P+'/removed'),s=>{if(cur!==id)return;RM[s.key]=1;render()}));
+ F.get(F.ref(d,P)).finally(()=>{if(cur===id)seen=true})}   // 초기 스냅샷 이후부터 축하 효과 (1회 읽기, 폴링 아님)
+async function start(){if(!KEY){keyForm('');return}let c;
+ try{const r=await fetch('cfg.enc.json',{cache:'no-store'});c=await decryptDoc(await r.json(),KEY)}catch(e){if(e.badKey){try{localStorage.removeItem('achuk_k')}catch(_){}KEY='';keyForm('키가 맞지 않아요');return}status('off');return}
+ const V='10.14.1';const [A,AU,DB]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`)]);
+ F=DB;const app=A.initializeApp(c.fb,'achuk-board');d=F.getDatabase(app);
+ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+KEY));space='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+ await AU.signInAnonymously(AU.getAuth(app));
+ let first=true;F.onValue(F.ref(d,'.info/connected'),s=>{if(s.val()){first=false;status('on')}else status(first?'':(navigator.onLine?'re':'off'))});
+ $('#m').innerHTML=SBX.map(x=>`<option value="${x[0]}">${esc(x[1])}</option>`).join('');$('#m').onchange=e=>{const u=new URL(location);u.searchParams.set('m',e.target.value);history.replaceState(null,'',u);watch(e.target.value)};
+ watch(SBX[0][0])}
+window.__dbg=()=>({n:Object.keys(EV).length,cur,sp:!!space,d:!!d});start();
+</script></body></html>

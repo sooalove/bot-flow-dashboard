@@ -1,0 +1,2255 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0f1115">
+<title>행복한 우리집</title>
+<style>
+  :root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#eef1f6;--sub:#9aa3b2;--red:#e82127;--ok:#2ecc71;--err:#ff6b6b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overscroll-behavior-y:contain}
+  html,body{overscroll-behavior-y:contain}
+  body{background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+       display:flex;align-items:flex-start;justify-content:center;padding:0}
+  #ptrSheet{width:100%;display:flex;justify-content:center;padding:0 16px 32px;will-change:transform;position:relative;z-index:10;background:var(--bg)}
+  .card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 16px 22px;margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .logo{width:40px;height:40px;border-radius:12px;background:var(--red);display:grid;place-items:center;font-size:22px;flex:none}
+  h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.2px}
+  .lead{color:var(--sub);font-size:14px;margin:4px 0 20px}
+  label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
+  label .opt{color:var(--sub);font-weight:400}
+  input{width:100%;font-size:17px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#0f1218;color:var(--txt);outline:none;-webkit-appearance:none}
+  input:focus{border-color:#4b8bff;box-shadow:0 0 0 3px rgba(75,139,255,.2)}
+  .count{text-align:right;color:var(--sub);font-size:12px;margin-top:4px}
+  button{width:100%;margin-top:18px;font-size:17px;font-weight:700;padding:14px;border:0;border-radius:12px;background:var(--red);color:#fff;cursor:pointer}
+  button:disabled{background:#3a3f4b;color:#9aa3b2;cursor:not-allowed}
+  .status{min-height:24px;margin-top:14px;font-size:15px;text-align:center}
+  .status.ok{color:var(--ok)} .status.err{color:var(--err)} .status.busy{color:var(--sub)}
+  .notice{text-align:center;padding:18px 4px 6px}
+  .notice .big{font-size:40px} .notice p{margin:8px 0 0;color:var(--sub)}
+  .notice b{color:var(--txt);font-size:18px}
+  .foot{color:#6b7382;font-size:12px;text-align:center;margin-top:18px}
+  .row{display:flex;gap:8px;align-items:stretch}
+  .row input{flex:1}
+  .row button{width:auto;margin-top:0;padding:0 18px;flex:none;background:#2b5fd9}
+  .results{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .results li button{width:100%;margin:0;text-align:left;background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--txt);font-weight:400;font-size:15px}
+  .results li button:hover{border-color:#4b5568}
+  .results li button[aria-checked="true"]{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,33,39,.35);background:#1d1416}
+  .results .nm{font-weight:700;font-size:16px;display:flex;gap:8px;align-items:center}
+  .results .cat{font-size:12px;font-weight:600;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:0 7px}
+  .results .ad{color:var(--sub);font-size:13px;margin-top:2px}
+  .picked{margin-top:12px;font-size:14px;color:var(--sub);text-align:center}
+  .picked b{color:var(--txt)}
+  .cur{margin:0 0 4px;padding:12px 14px;border-radius:12px;border:1px solid #2f4a7a;background:#121a2a}
+  .cur .t{font-size:12px;font-weight:700;color:#8fb3ff;letter-spacing:.2px}
+  .cur .nm{font-size:17px;font-weight:700;margin-top:2px;word-break:keep-all}
+  .cur .ad{color:var(--sub);font-size:13px;margin-top:1px}
+  .cur .tm{color:#6b7382;font-size:12px;margin-top:4px}
+  .cur .arr{margin-top:6px;font-size:15px;font-weight:700;line-height:1.35}
+  .cur .arr.good{color:#5fd38d} .cur .arr.low{color:#ffb84d} .cur .arr.short{color:#ff6b6b} .cur .arr.na{color:#9aa3b2;font-weight:600;font-size:13px}
+  .cur .arr .sub{display:block;font-size:12px;font-weight:500;color:#8a93a3;margin-top:1px}
+  .cur{display:flex;gap:12px;align-items:center}
+  .cur .info{flex:1;min-width:0}
+  /* 2026-11-01 swipe-to-delete */
+  .swipe{position:relative;overflow:hidden;border-radius:12px;margin:0 0 4px;touch-action:pan-y}
+  .swipe .cur{margin:0;box-sizing:border-box;width:100%;position:relative;z-index:1;transition:transform .2s ease;will-change:transform}
+  .swipe.dragging .cur{transition:none}
+  .swipe .del{position:absolute;top:0;right:0;bottom:0;width:88px;margin:0;height:auto;min-height:0;padding:0;border:0;border-radius:0 12px 12px 0;background:#e5484d;color:#fff;
+    font-size:22px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer}
+  .swipe .del span{font-size:12px}
+  /* 2026-11-11 pick: same swipe for 예약 rows (.swc = sliding part) */
+  .swipe .swc{margin:0;box-sizing:border-box;width:100%;position:relative;z-index:1;transition:transform .2s ease;will-change:transform}
+  .swipe.dragging .swc{transition:none}
+  .resv ul .swipe{margin:0}
+  .resv ul .swipe .swc.rv{border-radius:12px}
+  .swipe .del:disabled{opacity:.6}
+  /* 2026-11-12 swipe edge: the red 삭제 layer bled through the anti-aliased rounded corner of a closed card/row. It is now
+     invisible unless the row is being dragged or is open (.open is set by bindSwipe / swipeSet); hidden again after the close animation. */
+  .swipe .del{visibility:hidden;transition:visibility 0s linear .2s}
+  .swipe.open .del,.swipe.dragging .del{visibility:visible;transition:none}
+  /* 2026-11-01 responsive: phone landscape / desktop / Tesla browser */
+  @media (min-width:700px){ .card{max-width:560px} }
+  @media (orientation:landscape) and (max-height:500px){
+    #ptrSheet{padding:0 max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left))}
+    .card{max-width:760px;padding:10px 16px 14px} .head{margin-bottom:2px} .lead{margin:2px 0 6px}
+    .cur .nm{font-size:16px} }
+  .cur .resend{width:96px;flex:none;margin:0;padding:10px 8px;font-size:14px;line-height:1.25;border-radius:10px;white-space:nowrap;
+               background:var(--red);touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px}
+  .cur .resend.ok{background:#1f7a46;color:#fff} .cur .resend.err{background:#7a2626;color:#fff}
+  .cur .resend:disabled{background:#3a3f4b;color:#cfd5df}
+  .cur .resend.ok:disabled{background:#1f7a46;color:#fff} .cur .resend.err:disabled{background:#7a2626;color:#fff}
+  /* ---- 2026-10-27 tabs + 홈자동화봇 tab ---- */
+  .tabs{display:flex;gap:6px;margin:-14px -10px 18px;padding:4px;background:#0f1218;border:1px solid var(--line);border-radius:14px}
+  .tabs button{flex:1;width:auto;margin:0;padding:12px 8px;min-height:52px;font-size:16px;font-weight:700;border-radius:10px;
+               background:transparent;color:var(--sub);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .tabs button[aria-selected="true"]{background:#262b36;color:var(--txt);box-shadow:inset 0 -3px 0 var(--tabc,var(--red))}
+  .tabs button#tabHome{--tabc:#1fd1c1}
+  .logo.home{background:#13857a}
+  .hp-lead{color:var(--sub);font-size:14px;margin:4px 0 16px}
+  .hgrp{margin-top:18px}
+  .hgrp h2{font-size:15px;margin:0 0 8px;color:var(--txt);font-weight:700;display:flex;gap:6px;align-items:baseline}
+  .hgrp h2 .rm{color:var(--sub);font-weight:500;font-size:13px}
+  .hlist{display:flex;flex-direction:column;gap:10px}
+  .hrow{background:#0f1218;border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px}
+  .hrow .top{display:flex;align-items:center;gap:10px}
+  .hrow .nm{flex:1;min-width:0;font-size:18px;font-weight:700;word-break:keep-all}
+  .hrow .btns{display:flex;gap:8px;flex:none}
+  .hrow .btns button{width:96px;margin:0;min-height:60px;font-size:18px;border-radius:12px;padding:0 6px;
+                     touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .hrow .btns .on{background:#1f8f5a} .hrow .btns .off{background:#4a5160}
+  .hrow .btns button:disabled{background:#2c313b;color:#7d8594}
+  .hrow .msg{min-height:0;font-size:13px;margin-top:6px;color:var(--sub)}
+  .hrow .msg:empty{display:none}
+  .hrow .msg.ok{color:var(--ok)} .hrow .msg.err{color:var(--err)}
+  .hrow.na .nm{color:#7d8594}
+  .hrow .note{font-size:13px;color:#ffb84d;margin-top:6px}
+  .hfoot{color:#6b7382;font-size:12px;margin-top:14px;text-align:center}
+  @media (min-width:820px){
+    .card.wide{max-width:880px}
+    .card.wide .hgrp .hlist{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+    .card.wide .hrow .btns button{width:116px;min-height:72px;font-size:20px}
+    .card.wide .hrow .nm{font-size:20px}
+  }
+  [hidden]{display:none!important}
+  /* 2026-11-01 history / favorites / confirm / pull-to-refresh */
+  .hist{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
+  .hist h2{font-size:15px;margin:10px 0 8px;color:var(--sub);font-weight:600}
+  .hist ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .hi{display:flex;align-items:stretch;background:#11141a;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .hi .go{flex:1;min-width:0;text-align:left;background:none;border:0;color:var(--txt);padding:10px 12px;font:inherit;cursor:pointer}
+  .hi .go .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hi .go .ad,.hi .go .tm{color:var(--sub);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hi .star{flex:none;width:52px;background:none;border:0;border-left:1px solid var(--line);font-size:20px;cursor:pointer;color:#6b7382}
+  .hi .star.on{color:#f5c518}
+  /* 2026-11-12 histdel: 최근 목적지 rows swipe left → 삭제 (same component as the card / 예약 rows) */
+  /* 2026-11-12 favalias */
+  .hi .go .on{color:var(--sub);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hi .ed{flex:none;width:44px;background:none;border:0;border-left:1px solid var(--line);font-size:16px;cursor:pointer;color:#8fc7ff;margin:0;padding:0;min-height:0;border-radius:0}
+  #faE input{width:100%;box-sizing:border-box;font-size:17px;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0f1218;color:var(--txt);margin:8px 0 4px}
+  .hist ul .swipe{margin:0} .hist ul .swipe .hi.swc{border-radius:12px}
+  .hmore{width:100%;margin-top:10px;padding:10px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--txt);font:inherit}
+  .hempty{color:var(--sub);font-size:13px}
+  .cfm{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .cfm .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;width:100%;max-width:360px}
+  .cfm p{margin:0 0 14px;font-size:15px}
+  .cfm button{display:block;width:100%;padding:13px;margin-top:8px;border-radius:12px;border:1px solid var(--line);font:inherit;font-weight:600;background:#222733;color:var(--txt)}
+  .cfm button.pri{background:var(--red);border-color:var(--red)}
+  .cfm button.ghost{background:none;color:var(--sub)}
+  #ptr{position:fixed;top:0;left:0;right:0;display:flex;justify-content:center;align-items:flex-start;pointer-events:none;z-index:1;opacity:0;transition:opacity .2s}
+  #ptr.on{opacity:1}
+  #ptr .ptr-box{display:flex;flex-direction:column;align-items:center;padding-top:env(safe-area-inset-top,0px)}
+  #ptr .ptr-icon{margin-top:8px;width:34px;height:34px;border-radius:50%;background:var(--card);border:2px solid var(--line);display:grid;place-items:center;font-size:18px;line-height:1;color:var(--txt)}
+  #ptr.ready .ptr-icon{border-color:var(--ok);color:var(--ok)}
+  #ptr.spin .ptr-icon{color:transparent;font-size:0;border-color:var(--line);border-top-color:var(--ok);animation:ptrs .8s linear infinite}
+  #ptr .ptr-msg{margin-top:4px;font-size:12px;font-weight:700;color:var(--sub);letter-spacing:-.2px}
+  #ptr.ready .ptr-msg{color:var(--ok)}
+  @keyframes ptrs{to{transform:rotate(360deg)}}
+  #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);background:#222733;color:var(--txt);
+         border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-size:14px;font-weight:700;z-index:60;opacity:0;
+         pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+  .tm.pend{color:#f5c518}.tm.skip{color:#9ecbff}.tm.fail{color:var(--err)}
+  /* ---- 2026-11-09 🍚 집밥플래너 tab (data: jipbap.enc.json, written by jipbap.py / 집밥플래너봇) ---- */
+  .tabs button#tabJipbap{--tabc:#ffb347}
+  .logo.jb{background:#b86e12}
+  .jseg{display:flex;gap:6px;margin:0 0 14px;overflow-x:auto}
+  .jseg button{flex:1;width:auto;margin:0;padding:9px 6px;min-height:42px;font-size:14px;font-weight:700;border-radius:10px;white-space:nowrap;
+               background:#0f1218;border:1px solid var(--line);color:var(--sub);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .jseg button[aria-selected="true"]{color:var(--txt);border-color:#ffb347;background:#231b10}
+  .jseg .n{font-weight:600;font-size:12px;color:#ffb347;margin-left:3px}
+  .jl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .ji{display:flex;align-items:center;gap:10px;background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .ji .inf{flex:1;min-width:0}
+  .ji .nm{font-weight:700;font-size:16px;word-break:keep-all}
+  .ji .mt{color:var(--sub);font-size:12.5px;margin-top:2px}
+  .ji .loc{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:0 8px;margin-right:6px;border:1px solid var(--line);color:#cfd5df}
+  .ji .loc.냉동{color:#8fc7ff;border-color:#2f4a7a} .ji .loc.냉장{color:#7fe0c4;border-color:#1f5e52} .ji .loc.실온{color:#f0c987;border-color:#6b5426}
+  .dd{flex:none;min-width:54px;text-align:center;font-weight:800;font-size:14px;border-radius:10px;padding:6px 6px;background:#1c2029;color:#cfd5df}
+  .dd.red{background:#5a1a1d;color:#ff8a8a} .dd.orange{background:#4d3412;color:#ffb84d} .dd.exp{background:#e5484d;color:#fff}
+  .dd small{display:block;font-size:11px;font-weight:700}
+  .ji .use{flex:none;width:auto;margin:0;padding:8px 10px;font-size:13px;border-radius:10px;background:#3a3f4b;min-height:40px}
+  .ji .use:disabled{opacity:.6}
+  .ji .acts{display:flex;flex-direction:column;gap:4px;flex:none}
+  .ji .acts .use{min-width:72px;padding:7px 8px;font-size:12.5px;min-height:36px}
+  .ji .use.ice{background:#1a2a44;border:1px solid #2f4a7a;color:#8fc7ff}
+  .jlocsw{display:flex;gap:6px;margin-top:8px}
+  .jlocsw button{flex:1;margin:0;padding:10px 8px;min-height:44px;font-size:14px;font-weight:800;border-radius:10px;
+                 background:#0f1218;border:1px solid var(--line);color:var(--sub)}
+  .jlocsw button[aria-pressed="true"].냉동{color:#8fc7ff;border-color:#2f4a7a;background:#152033}
+  .jlocsw button[aria-pressed="true"].냉장{color:#7fe0c4;border-color:#1f5e52;background:#10231e}
+  .jlocsw button[aria-pressed="true"].실온{color:#f0c987;border-color:#6b5426;background:#231c10}
+  .jlocsw button:disabled{opacity:.6}
+  .jpast{color:#ff8a8a;font-size:13px;font-weight:700;margin-top:8px}
+  .jsoon{color:#ffb84d;font-size:13px;font-weight:700;margin-top:8px}
+  .jtr{width:100%;margin:0;text-align:left;display:flex;align-items:center;gap:10px;background:#0f1218;border:1px solid var(--line);border-radius:12px;
+       padding:12px;color:var(--txt);font-weight:400;font-size:15px}
+  .jtr .inf{flex:1;min-width:0} .jtr .nm{font-weight:700} .jtr .mt{color:var(--sub);font-size:12.5px}
+  .jtr .amt{font-weight:800;font-size:16px;white-space:nowrap} .jtr .chev{color:var(--sub)}
+  .jback{width:auto;margin:0 0 10px;padding:8px 12px;font-size:14px;background:#262b36;border-radius:10px}
+  .jmet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+  .jmet div{background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+  .jmet b{display:block;font-size:17px} .jmet span{color:var(--sub);font-size:12px}
+  .jline{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:15px}
+  .jline .pr{white-space:nowrap;font-weight:700} .jline .nf{color:var(--sub);font-size:12px;margin-left:4px}
+  .jh{font-size:15px;margin:2px 0 10px;font-weight:700}
+  .jnote{color:var(--sub);font-size:12.5px;margin-top:10px}
+  .jbtns{display:flex;gap:8px} .jbtns label{flex:1;margin:0;text-align:center;padding:14px 8px;border-radius:12px;background:#b86e12;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+  .jbtns label.alt{background:#2b5fd9}
+  .jbtns input{display:none}
+  .jprev{margin-top:12px;text-align:center} .jprev img{max-width:100%;max-height:320px;border-radius:12px;border:1px solid var(--line)}
+  .jup .st{font-weight:700;font-size:14px} .jup .st.pend{color:#f5c518} .jup .st.done{color:var(--ok)} .jup .st.fail{color:var(--err)}
+  .jempty{color:var(--sub);font-size:14px;text-align:center;padding:14px 0}
+  /* 2026-11-10 coaching card + item detail */
+  .jcoach{background:#17140e;border:1px solid #5a4320;border-radius:14px;padding:12px 14px;margin-bottom:14px}
+  .jcoach .t{font-weight:800;font-size:15px;color:#ffb347;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .jcoach .t small{color:var(--sub);font-weight:500;font-size:12px}
+  .jcoach .sum{font-size:14px;margin:6px 0 4px;line-height:1.5}
+  .jcoach .due{font-size:12px;color:#f5c518;margin-top:2px}
+  .jcg{margin-top:10px} .jcg h3{margin:0 0 4px;font-size:13px;font-weight:800}
+  .jcg.추천 h3{color:#5fd38d} .jcg.적당히 h3{color:#ffb84d} .jcg.비추천 h3{color:#ff8a8a}
+  .jcg ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5} .jcg li b{font-weight:700}
+  .jcoach .nt{color:var(--sub);font-size:12.5px;margin-top:10px}
+  .jcoach details summary{cursor:pointer;color:#ffb347;font-size:13px;margin-top:6px}
+  .ji .go{flex:1;min-width:0;background:none;border:0;padding:0;margin:0;width:auto;text-align:left;color:var(--txt);font:inherit;font-weight:400;cursor:pointer}
+  .vd{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:0 8px;margin-left:6px}
+  .vd.추천{background:#143d28;color:#5fd38d} .vd.적당히{background:#3d2f12;color:#ffb84d} .vd.비추천{background:#4a1a1d;color:#ff8a8a}
+  .jdet .nm{font-size:19px;font-weight:800;margin:0 0 4px;word-break:keep-all}
+  .jdet .sec{background:#0f1218;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
+  .jdet .sec h3{margin:0 0 6px;font-size:14px;font-weight:800}
+  .jdet table{width:100%;border-collapse:collapse;font-size:14px} .jdet td{padding:5px 2px;border-bottom:1px solid var(--line)}
+  .jdet td:last-child{text-align:right;font-weight:700}
+  .est{display:inline-block;font-size:11.5px;font-weight:700;color:#f5c518;border:1px solid #6b5a12;border-radius:999px;padding:0 7px;margin-left:6px}
+  .jdet .na{color:var(--sub);font-size:13px}
+  /* 2026-11-12 영양성분·원재료 분석 (3관점 코칭) */
+  .v3{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:1px 8px;white-space:nowrap}
+  .v3.ok{background:#143d28;color:#5fd38d} .v3.mid{background:#3d2f12;color:#ffb84d} .v3.bad{background:#4a1a1d;color:#ff8a8a}
+  .p3{border-top:1px solid var(--line);padding:10px 0 2px} .p3:first-of-type{border-top:0;padding-top:2px}
+  .p3 .ph3{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800;font-size:15px}
+  .p3 .sm{margin-top:5px;font-size:14.5px;line-height:1.45} .p3 ul{margin:5px 0 0;padding-left:18px;font-size:13.5px;line-height:1.45;color:#cfd5df}
+  .jn-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px} .jn-chips .v3{font-size:11.5px}
+  .jn-th{width:52px;height:52px;border-radius:9px;object-fit:cover;flex:none;background:#1a1f29;border:1px solid var(--line)}
+  .jn-tab td{vertical-align:middle} .jn-tab td:nth-child(2){text-align:right;font-weight:700;white-space:nowrap}
+  .jn-tab td:last-child{width:96px;text-align:right;font-weight:600;font-size:12.5px;color:var(--sub);white-space:nowrap}
+  .jn-bar{display:inline-block;vertical-align:middle;width:40px;height:6px;border-radius:3px;background:#262c38;margin-left:5px;overflow:hidden}
+  .jn-bar i{display:block;height:100%;background:#5fd38d} .jn-bar i.w{background:#ffb84d} .jn-bar i.h{background:#ff6b6b}
+  .jn-ur{color:#f5c518;font-weight:700}
+  .jn-alg{display:inline-block;font-size:12px;border:1px solid #6b5a12;color:#f5c518;border-radius:999px;padding:0 7px;margin:4px 4px 0 0}
+  .jn-busy{display:flex;align-items:center;gap:10px;background:#1a1609;border:1px solid #6b5a12;border-radius:12px;padding:12px;margin-top:12px;font-size:14px}
+  .jn-busy .sp{width:18px;height:18px;border:3px solid #6b5a12;border-top-color:#f5c518;border-radius:50%;animation:jnsp 1s linear infinite;flex:none}
+  @keyframes jnsp{to{transform:rotate(360deg)}}
+  .jn-warn{background:#2a1416;border:1px solid #6b2a2e;color:#ffb3b3;border-radius:12px;padding:10px 12px;font-size:13.5px;margin-bottom:10px}
+  /* 2026-11-10 product reviews + rebuy */
+  .rb{display:inline-block;font-size:11.5px;font-weight:800;border-radius:999px;padding:0 7px;margin-left:6px;vertical-align:middle}
+  .rb.추천{background:#143d28;color:#5fd38d;border:1px solid #1f5e3a} .rb.비추천{background:#4a1a1d;color:#ff8a8a;border:1px solid #6b2a2e}
+  .jrev .hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .jrev .hist li{background:#141820;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .jrev .hist .hd{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12.5px;color:var(--sub)}
+  .jrev .hist .tx{margin-top:4px;font-size:14px;line-height:1.45;white-space:pre-wrap;word-break:keep-all}
+  .jrev textarea{width:100%;min-height:88px;resize:vertical;background:#0b0e14;color:var(--txt);border:1px solid var(--line);
+                 border-radius:10px;padding:10px;font:inherit;font-size:15px;box-sizing:border-box;margin-top:8px}
+  .jrev .tog{display:flex;gap:8px;margin-top:8px}
+  .jrev .tog button{flex:1;margin:0;padding:10px 8px;min-height:44px;font-size:14px;font-weight:800;border-radius:10px;
+                    background:#0f1218;border:1px solid var(--line);color:var(--sub)}
+  .jrev .tog button[aria-pressed="true"].추천{background:#143d28;border-color:#2a7a4a;color:#5fd38d}
+  .jrev .tog button[aria-pressed="true"].비추천{background:#4a1a1d;border-color:#8a3a40;color:#ff8a8a}
+  .jrev .save{width:100%;margin:10px 0 0;padding:12px;font-size:16px;font-weight:800;border-radius:12px;background:#b86e12}
+  .jrev .save:disabled{opacity:.6}
+  .jrev .stok{color:var(--ok);font-size:13px;font-weight:700;margin-top:8px;text-align:center}
+  .jrev .sterr{color:var(--err);font-size:13px;font-weight:700;margin-top:8px;text-align:center}
+  /* ---- 2026-11-11 ⏰ 목적지 예약 (resv.enc.json ← tesla_resv.py) ---- */
+  .resv-open{background:#2b5fd9;margin-top:10px}
+  .hist-save{background:#2a2f3a;border:1px solid var(--line);color:var(--txt);margin-top:10px}   /* 2026-11-12 최근 목적지에 저장 */
+  .resvf{margin-top:12px;padding:12px 14px;border-radius:12px;border:1px solid #2f4a7a;background:#121a2a}
+  .resvf .t{font-size:14px;font-weight:700;color:#8fb3ff}
+  .resvf .t b{color:var(--txt)}
+  .resvdt{display:flex;gap:8px}
+  .resvdt label{flex:1;min-width:0;margin:10px 0 0;font-size:13px;color:var(--sub)}
+  .resvdt input{min-width:0;margin-top:4px;font-size:16px;padding:11px 10px;min-height:46px;color-scheme:dark}
+  .resvq{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .resvq button{flex:1;width:auto;margin:0;padding:8px 6px;min-height:40px;font-size:13px;font-weight:700;border-radius:10px;background:#0f1218;border:1px solid var(--line);color:var(--sub);white-space:nowrap}
+  .resvf .acts{display:flex;gap:8px}
+  .resvf .acts button{margin-top:12px}
+  .resvf .acts .ghost{flex:none;width:auto;padding:14px 18px;background:#262b36;color:var(--txt)}
+  .resv{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
+  .resv h2{font-size:15px;margin:4px 0 8px;color:var(--txt);font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .resv h2 small{color:var(--sub);font-weight:500;font-size:12px}
+  .resv ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .rv{display:flex;align-items:stretch;background:#11141a;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .rv .inf{flex:1;min-width:0;padding:10px 12px}
+  .rv .when{font-size:13px;font-weight:800;color:#8fb3ff}
+  .rv .nm{font-weight:700;font-size:16px;margin-top:1px;word-break:keep-all}
+  .rv .ad,.rv .mt{color:var(--sub);font-size:12.5px;margin-top:1px}
+  .rv .calb{display:inline-block;font-size:11.5px;font-weight:800;border-radius:999px;padding:0 7px;margin-left:6px;vertical-align:middle;background:#16233a;color:#8fc7ff;border:1px solid #2f4a7a}
+  .rv .stt{font-size:12.5px;font-weight:700;margin-top:4px;color:#f5c518}
+  .rv .stt.done{color:var(--ok)} .rv .stt.skip{color:#9ecbff} .rv .stt.fail{color:var(--err)} .rv .stt.miss{color:#9aa3b2} .rv .stt.need{color:#ffb84d}
+  .rv .x{flex:none;width:56px;margin:0;border-radius:0;border-left:1px solid var(--line);background:none;color:#ff8a8a;font-size:18px;padding:0;min-height:56px}
+  .rv .x:disabled{opacity:.5}
+  .rv.fin{opacity:.72}
+  .rv .cands{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .rv .cands button{margin:0;text-align:left;font-size:13.5px;font-weight:600;padding:9px 10px;border-radius:10px;background:#0f1218;border:1px solid var(--line);color:var(--txt)}
+  .rv .cands button small{display:block;color:var(--sub);font-weight:400;font-size:12px}
+  .rv .cands .srch{background:#262b36;text-align:center}
+  .resvwarn{font-size:12.5px;color:#ffb84d;margin:0 0 8px}
+  /* ---- 2026-11-11 wx: 도착지 날씨 (wx.enc.json ← tesla_wx.py; 아축 경기입력 날씨 카드와 같은 모양) ---- */
+  .wx{margin:8px 0 2px;background:#0f1622;border:1px solid #223047;border-radius:12px;padding:8px 10px}
+  .wxt{font-size:13px;font-weight:700;color:#9fb3c8;margin-bottom:2px;line-height:1.35}
+  .wxt b{color:#e6edf3}
+  .wxa{display:block;font-size:10.5px;font-weight:400;color:#7d8fa6;margin-bottom:4px}
+  .wxm{font-size:13px;color:#9fb3c8;padding:4px 0}
+  .wxg{display:grid;grid-template-columns:58px 1fr;gap:2px 8px;align-items:center}
+  .wxl{font-size:12px;font-weight:700;line-height:1.1}
+  .wxl small{display:block;font-weight:400;color:#7d8fa6;font-size:10px}
+  .wxs{display:block;width:100%;height:auto}
+  .wxv{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;font-size:13px}
+  .wxv b{font-weight:700;color:#e6edf3}
+  .wxh span{font-size:11px;color:#7d8fa6;line-height:1.2}
+  .wxh span i{display:block;font-style:normal;font-size:18px}
+  .wxh span.arr{color:#ffd166;font-weight:800}
+  .wxh span em{display:block;font-style:normal;font-size:10.5px}
+  .cur{flex-wrap:wrap} #curWx{flex:1 0 100%;margin:0}
+  /* ---- 2026-11-12 pin: 지도에서 핀으로 정확한 위치 (Leaflet + OSM, 키 없음) ---- */
+  .pinbtn{display:block;width:100%;margin-top:10px;padding:11px;border-radius:12px;border:1px solid #2f4a7a;background:#121a2a;color:#8fb3ff;font:inherit;font-weight:700;font-size:14px}
+  .rvacts{display:flex;gap:6px;flex-wrap:wrap} .pinsm.now{border-color:#2f7a4a;background:#123222;color:#7fe0a6}
+  .pinsm{width:auto;margin:6px 0 0;padding:5px 10px;min-height:0;font-size:12.5px;border-radius:8px;border:1px solid #2f4a7a;background:#16233a;color:#8fc7ff;font-weight:700}
+  .pinb{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:0 6px;margin-left:6px;background:#16233a;color:#8fc7ff;border:1px solid #2f4a7a;vertical-align:middle}
+  #pinMap{position:fixed;inset:0;z-index:70;background:#0b0e13;display:flex;flex-direction:column}
+  #pinMap[hidden]{display:none}
+  #pinMap .ph{padding:calc(10px + env(safe-area-inset-top,0px)) 14px 8px;border-bottom:1px solid var(--line)}
+  #pinMap .ph b{display:block;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #pinMap .ph small{color:var(--sub);font-size:12.5px}
+  #pinMap .pm{position:relative;flex:1;min-height:0}
+  #pinLeaf{position:absolute;inset:0;background:#1a1f29;isolation:isolate}   /* map's own z-indexes stay under the centre pin / buttons */
+  #pinMap .ctr{position:absolute;left:50%;top:50%;z-index:500;pointer-events:none;transform:translate(-50%,-100%);transition:transform .15s}
+  #pinMap.moving .ctr{transform:translate(-50%,calc(-100% - 10px))}
+  #pinMap .ctr svg{display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.45))}
+  #pinMap .shd{position:absolute;left:50%;top:50%;z-index:499;width:10px;height:4px;margin:-2px 0 0 -5px;border-radius:50%;background:rgba(0,0,0,.45);pointer-events:none}
+  #pinMap .me{position:absolute;right:12px;bottom:12px;z-index:600;width:auto;margin:0;padding:10px 12px;border-radius:12px;background:#fff;color:#111;border:0;font-weight:800;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  #pinMap .rs{right:auto;left:12px}
+  #pinMap .rs[hidden]{display:none}
+  #pinMap .prov{position:absolute;left:12px;top:10px;z-index:600;font-size:11px;color:#333;background:rgba(255,255,255,.8);padding:2px 6px;border-radius:6px;pointer-events:none}
+  #pinMap .prov:empty{display:none}
+  #pinMap .kdot{width:12px;height:12px;border-radius:50%;background:#2b5fd9;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%)}
+  #pinMap .pf{padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--card)}
+  #pinMap .pf .ll{font-size:12.5px;color:var(--sub);margin-bottom:8px}
+  #pinMap .pf .acts{display:flex;gap:8px}
+  #pinMap .pf .acts button{margin:0}
+  #pinMap .pf .acts .ghost{flex:none;width:auto;padding:14px 18px;background:#262b36;color:var(--txt)}
+  .cfmbar{margin-top:10px;padding:8px 12px;border-radius:10px;background:#231b10;border:1px solid #6b5426;color:#f0c987;font-size:13px;display:flex;gap:8px;align-items:center}
+  .cfmbar button{flex:none;width:auto;margin:0;padding:6px 10px;font-size:12.5px;border-radius:8px;background:#3a3f4b}
+</style>
+</head>
+<body>
+<div id="ptr" aria-hidden="true"><div class="ptr-box"><span class="ptr-icon">↓</span><span class="ptr-msg">당겨서 새로고침</span></div></div>
+<div id="ptrSheet">
+<main class="card" id="card">
+  <nav id="tabs" class="tabs" role="tablist" aria-label="페이지 선택" hidden>
+    <button id="tabJipbap" type="button" role="tab" aria-selected="false" aria-controls="jipbapPanel">🍚 집밥플래너</button>
+    <button id="tabTesla" type="button" role="tab" aria-selected="true" aria-controls="form">🚗 기𝕏차 목적지</button>
+    <!-- 2026-11-09: 홈자동화봇 tab hidden (YB doesn't use it lately). Code kept; to restore set HOME_TAB_HIDDEN=false and remove `hidden` below. -->
+    <button id="tabHome" type="button" role="tab" aria-selected="false" aria-controls="homePanel" hidden>🏠 홈자동화봇</button>
+  </nav>
+  <div id="teslaHead"><div class="head"><div class="logo" aria-hidden="true">🚗</div><h1>기𝕏차 목적지 보내기</h1></div>
+  <p class="lead">목적지를 검색해서 고르면 차량 내비게이션에 설정돼요.</p></div>
+
+  <div id="loading" class="notice"><p>불러오는 중…</p></div>
+  <div id="badlink" class="notice" hidden><div class="big">🔒</div><b>링크가 올바르지 않아요</b><p>받은 링크 전체(# 뒤까지)를 그대로 열어 주세요.</p></div>
+  <div id="notready" class="notice" hidden><div class="big">🛠️</div><b>아직 준비 중이에요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+
+  <form id="form" hidden autocomplete="off" novalidate>
+    <div id="cur" class="swipe" hidden aria-live="polite"><button id="curDel" class="del" type="button" aria-label="현재 목적지 삭제">✕<span>삭제</span></button><div id="curCard" class="cur"><div class="info"><div class="t">📍 현재 설정된 목적지</div>
+      <div class="nm" id="curName"></div><div class="ad" id="curAddr" hidden></div><div class="tm" id="curTime"></div>
+      <button id="curPin" class="pinsm" type="button" hidden>📍 위치 수정</button>
+      <div class="arr" id="curArr" hidden></div></div>
+      <button id="resend" class="resend" type="button" aria-label="현재 목적지를 테슬라로 다시 보내기">테슬라로<br>재전송</button><div class="wx" id="curWx" hidden></div></div></div>
+    <label for="dest">목적지</label>
+    <div class="row">
+      <input id="dest" name="destination" maxlength="60" required placeholder="예: 유성고등학교, 대전역, 주소" enterkeyhint="search">
+      <button id="find" type="submit">검색</button>
+    </div>
+    <ul id="results" class="results" role="radiogroup" aria-label="검색 결과" hidden></ul>
+    <div id="picked" class="picked" hidden></div>
+    <button id="pinAdj" class="pinbtn" type="button" hidden>📍 지도에서 정확한 위치 조정</button>
+    <button id="send" type="button" disabled hidden>이 곳으로 보내기</button>
+    <button id="resvOpen" class="resv-open" type="button" hidden>⏰ 이 곳으로 예약하기</button>
+    <button id="histSave" class="hist-save" type="button" hidden>🕘 최근 목적지에 저장</button>
+    <div id="cfmBar" class="cfmbar" hidden><span id="cfmBarTxt" style="flex:1"></span><button id="cfmBarX" type="button">취소</button></div>
+    <div id="resvForm" class="resvf" hidden>
+      <div class="t">⏰ 예약 등록 · <b id="resvPlace"></b></div>
+      <div class="resvdt"><label>날짜<input id="resvDate" type="date"></label><label>시각<input id="resvTime" type="time" step="60"></label></div>
+      <button id="resvPin" class="pinsm" type="button">📍 지도에서 위치 조정</button>
+      <div class="resvq"><button type="button" data-q="30">+30분</button><button type="button" data-q="60">+1시간</button><button type="button" data-q="tm8">내일 오전 8시</button></div>
+      <div class="acts"><button id="resvSave" type="button">예약 등록</button><button id="resvCancel" class="ghost" type="button">취소</button></div>
+      <div class="jnote">그 시각이 되면 차 내비게이션에 목적지를 설정하고 네이버 지도 바로가기에도 반영해요.</div>
+    </div>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <section id="resv" class="resv" hidden>
+      <h2>⏰ 예약된 목적지 <small id="resvSync"></small></h2>
+      <div id="resvWarn" class="resvwarn" hidden>중계 서버 업데이트 대기 중이에요. 업데이트 후 예약 등록을 쓸 수 있어요.</div>
+      <ul id="resvList"></ul>
+      <div id="resvEmpty" class="hempty" hidden>예약이 없어요. 장소를 검색해 고른 뒤 ‘예약하기’를 누르세요. 📅 나의일정·가족일정에 장소가 있는 일정도 자동으로 들어와요.</div>
+    </section>
+    <section id="hist" class="hist" hidden>
+      <div id="favWrap" hidden><h2>⭐ 즐겨찾기</h2><ul id="favList"></ul></div>
+      <h2>최근 목적지</h2><ul id="histList"></ul>
+      <div id="histEmpty" class="hempty" hidden>아직 이력이 없어요.</div>
+      <button id="histMore" class="hmore" type="button" hidden>더보기</button>
+    </section>
+  </form>
+  <section id="homePanel" role="tabpanel" aria-labelledby="tabHome" hidden>
+    <div class="head"><div class="logo home" aria-hidden="true">🏠</div><h1>홈자동화봇</h1></div>
+    <p class="hp-lead" id="homeLead">버튼을 누르면 홈자동화봇이 기기를 켜거나 꺼요.</p>
+    <div id="homeGroups"></div>
+    <div id="homeNotReady" class="notice" hidden><div class="big">🛠️</div><b>홈 기기 목록이 아직 없어요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+    <div class="hfoot">이 화면은 현재 켜짐/꺼짐 상태를 보여주지 않아요. 요청만 보내요.</div>
+  </section>
+  <section id="jipbapPanel" role="tabpanel" aria-labelledby="tabJipbap" hidden>
+    <div class="head"><div class="logo jb" aria-hidden="true">🍚</div><h1>집밥플래너</h1></div>
+    <p class="hp-lead">냉장고 재고와 유통기한, 장 본 이력을 한곳에서 봐요.</p>
+    <div class="jseg" role="tablist" aria-label="집밥플래너 메뉴">
+      <button type="button" data-js="stock" aria-selected="true">재고<span class="n" id="jbNStock"></span></button>
+      <button type="button" data-js="hist" aria-selected="false">장 본 이력</button>
+      <button type="button" data-js="rcpt" aria-selected="false">영수증 등록</button>
+      <button type="button" data-js="nutri" aria-selected="false">성분 분석</button>
+    </div>
+    <div id="jbLoading" class="jempty">불러오는 중…</div>
+    <div id="jbNone" class="notice" hidden><div class="big">🧊</div><b>재고 데이터가 아직 없어요</b><p>조금 뒤에 다시 열어 주세요.</p></div>
+    <div id="jbStock" hidden><div id="jbStockMain"><div id="jbCoach"></div><div class="jh">지금 재고 · 임박한 순</div><ul class="jl" id="jbStockList"></ul>
+      <div class="jnote">제품을 누르면 영양성분·원재료·건강코칭을 볼 수 있어요. 다 먹었으면 ‘소진’을, 오래 둘 거면 ‘냉동보관’을 누르세요. 소진은 재고에서 빠지고 기록은 남아요. 냉동보관은 위치를 냉동으로 바꾸고 유통기한을 다시 잡아요.<br>D-n 배지: 빨강 = 3일 이하·지남, 주황 = 7일 이하.</div></div>
+      <div id="jbItem" class="jdet" hidden></div></div>
+    <div id="jbHist" hidden><div id="jbTrips"></div><div id="jbTrip" hidden></div></div>
+    <div id="jbRcpt" hidden>
+      <div class="jh">영수증 사진으로 재고 등록</div>
+      <div class="jbtns"><label>📷 사진 찍기<input id="jbCam" type="file" accept="image/*" capture="environment"></label>
+        <label class="alt">🖼️ 사진 올리기<input id="jbFile" type="file" accept="image/*"></label></div>
+      <div id="jbPrev" class="jprev" hidden><img id="jbImg" alt="선택한 영수증"><button id="jbSend" type="button">이 영수증 보내기</button></div>
+      <div id="jbStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="jnote">사진을 보내면 집밥플래너봇이 읽어서 재고와 장 본 이력에 넣어요. 끝날 때까지 ‘인식 대기 중’으로 보여요.</div>
+      <div class="jh" style="margin-top:16px">보낸 영수증</div><ul class="jl" id="jbUps"></ul>
+    </div>
+    <div id="jbNutri" hidden><div id="jnMain">
+      <div id="jnWarn" class="jn-warn" hidden></div>
+      <div class="jh">영양성분·원재료 분석</div>
+      <div class="jnote" style="margin:0 0 10px">제품 뒷면의 <b>영양정보</b>와 <b>원재료명</b>이 보이게 찍으면 다이어트·건강·성장기 어린이/청소년 관점으로 코칭해 드려요.</div>
+      <div class="jbtns"><label>📷 사진 찍기<input id="jnCam" type="file" accept="image/*" capture="environment"></label>
+        <label class="alt">🖼️ 사진 올리기<input id="jnFile" type="file" accept="image/*"></label></div>
+      <div id="jnPrev" class="jprev" hidden><img id="jnImg" alt="선택한 제품 사진"><button id="jnSend" type="button">이 사진 분석하기</button></div>
+      <div id="jnStatus" class="status" role="status" aria-live="polite"></div>
+      <div id="jnBusy"></div>
+      <div class="jh" style="margin-top:16px">분석 기록</div><ul class="jl" id="jnList"></ul>
+      <div class="jnote">라벨에서 읽은 값만 보여 줘요. 읽지 못한 값은 ‘판독 불가’예요. %는 1일 영양성분 기준치(2,000kcal) 대비예요.</div></div>
+      <div id="jnDet" class="jdet" hidden></div>
+    </div>
+  </section>
+  <div class="foot">이 링크를 받은 사람만 사용할 수 있어요.</div>
+</main>
+</div>
+<div id="cfm" class="cfm" hidden role="dialog" aria-modal="true"><div class="box">
+    <p id="cfmMsg"></p>
+    <button id="cfmGo" class="pri" type="button">이 목적지로 변경</button>
+    <button id="cfmHist" type="button">이력에만 저장</button>
+    <button id="cfmNo" class="ghost" type="button">취소</button></div></div>
+<div id="pk" class="cfm" hidden role="dialog" aria-modal="true"><div class="box">
+    <p id="pkMsg"></p>
+    <button id="pkGo" class="pri" type="button">🚗 바로 설정</button>
+    <button id="pkResv" type="button">⏰ 예약</button>
+    <button id="pkPin" type="button">📍 지도에서 위치 조정</button>
+    <button id="pkNo" class="ghost" type="button">취소</button></div></div>
+<div id="faE" class="cfm" hidden role="dialog" aria-modal="true" aria-label="즐겨찾기 별칭"><div class="box">
+    <p id="faMsg"></p>
+    <input id="faIn" type="text" maxlength="40" enterkeyhint="done" autocomplete="off">
+    <small style="color:var(--sub);display:block;margin-bottom:10px">비우고 저장하면 원래 이름으로 돌아가요. 차에는 원래 장소(좌표)가 그대로 가요.</small>
+    <button id="faOk" class="pri" type="button">저장</button>
+    <button id="faClr" type="button">별칭 지우기</button>
+    <button id="faNo" class="ghost" type="button">취소</button></div></div>
+<div id="rnow" class="cfm" hidden role="dialog" aria-modal="true"><div class="box">
+    <p id="rnowMsg"></p>
+    <button id="rnowGo" class="pri" type="button">🚗 지금 보내기</button>
+    <button id="rnowNo" class="ghost" type="button">취소</button></div></div>
+<div id="pinMap" hidden role="dialog" aria-modal="true" aria-label="지도에서 위치 고르기">
+  <div class="ph"><b id="pinTitle"></b><small>지도를 움직여 핀을 정확한 위치(입구·주차장 등)에 맞추세요</small></div>
+  <div class="pm"><div id="pinLeaf"></div><div class="shd"></div>
+    <div class="ctr"><svg width="36" height="48" viewBox="0 0 36 48" aria-hidden="true"><path d="M18 47C18 47 34 28.5 34 17.5A16 16 0 0 0 2 17.5C2 28.5 18 47 18 47Z" fill="#e5484d" stroke="#fff" stroke-width="2.5"/><circle cx="18" cy="17" r="6" fill="#fff"/></svg></div>
+    <button id="pinMe" class="me" type="button">◎ 내 위치</button>
+    <button id="pinRs" class="me rs" type="button" hidden>↺ 원래 위치로</button><span class="prov" id="pinProv"></span></div>
+  <div class="pf"><div class="ll" id="pinLL"></div>
+    <div class="acts"><button id="pinOk" type="button">📍 이 위치로</button><button id="pinNo" class="ghost" type="button">취소</button></div></div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+// CRYPTO-BEGIN (same format as ../index.html: PBKDF2-SHA256 → AES-256-GCM; passphrase = #k=… fragment, never sent to the server)
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(doc.salt), iterations:doc.iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+
+// ---- SEND: the ONE place to adapt the request. cfg = decrypted cfg.enc.json ----
+//   cfg.mode === 'direct' : {url, key}  → POST JSON with Authorization: Bearer <key> (needs CORS from the webhook host)
+//   cfg.mode === 'relay'  : {url}       → POST text/plain JSON (a "simple" request, no preflight) to a relay that adds the key
+// Must resolve on success and throw on failure.
+async function sendDestination(cfg, payload){
+  const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 15000);
+  try{
+    let res;
+    if(cfg.mode === 'relay'){
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                  body:JSON.stringify(payload), signal:ctl.signal, redirect:'follow'});
+    }else{
+      res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+                                  body:JSON.stringify(payload), signal:ctl.signal});
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(cfg.mode === 'relay'){   // the relay always answers 200; the real result is in {ok, error|status}
+      let j=null; try{ j = await res.json(); }catch(e){}
+      if(j && j.ok === false) throw new Error(j.error==='rate' ? '잠시 후 다시' : (j.error ? '오류: '+j.error : 'HTTP '+(j.status||'?')));
+    }
+    return true;
+  }finally{ clearTimeout(t); }
+}
+
+// ---- SEARCH: relay first ({action:'search', q} → {ok:true, results}); if the relay is the old version
+//      (answers {ok:false,error:'empty'}) or fails, search Photon (OSM, keyless, CORS *) directly from the browser.
+const KR = {minLat:33.0, maxLat:38.7, minLng:124.5, maxLng:132.0};
+const inKr = (la,ln) => Number.isFinite(la) && Number.isFinite(ln) && la>=KR.minLat && la<=KR.maxLat && ln>=KR.minLng && ln<=KR.maxLng;
+const OSM_CAT = {station:'역',stop:'역',halt:'역',subway_entrance:'역 출입구',bus_stop:'버스정류장',department_store:'백화점',mall:'쇼핑몰',
+  supermarket:'마트',school:'학교',university:'대학교',college:'대학',cafe:'카페',restaurant:'음식점',fast_food:'음식점',hotel:'호텔',
+  hospital:'병원',clinic:'병원',pharmacy:'약국',parking:'주차장',fuel:'주유소',charging_station:'충전소',bank:'은행',apartments:'아파트',
+  residential:'아파트·주거',house:'주소',building:'건물',park:'공원',attraction:'명소',museum:'박물관'};
+function photonList(fs){
+  const list = fs.map(f=>{
+    const p=f.properties||{}, c=(f.geometry||{}).coordinates||[], parts=[];
+    const push=v=>{ if(v && !parts.includes(v)) parts.push(v); };
+    push(p.state); push(p.city); push(p.county);
+    if(!p.street) push(p.district||p.locality);
+    push(p.street ? p.street+(p.housenumber?' '+p.housenumber:'') : '');
+    const r = p.osm_value==='bus_stop' ? 2 : (p.osm_key==='landuse' ? 1 : 0);
+    return {name:p.name||parts.join(' '), address:parts.join(' '), category:OSM_CAT[p.osm_value]||'', lat:+c[1], lng:+c[0], _r:r};
+  }).filter(x=>x.name && inKr(x.lat,x.lng));
+  list.sort((a,b)=>a._r-b._r);
+  const seen=new Set(), out=[];
+  for(const x of list){ const k=x.name+'|'+x.lat.toFixed(3)+','+x.lng.toFixed(3); if(seen.has(k)) continue; seen.add(k); delete x._r; out.push(x); }
+  return out;
+}
+async function fetchJson(url, opt, ms){
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(), ms);
+  try{ const r=await fetch(url,{...opt,signal:ctl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
+  finally{ clearTimeout(t); }
+}
+// 2026-11-01: relay + Photon in parallel and merged (relay/Kakao first, numeric/garbled names dropped); if nothing,
+//             retry once without the last word (e.g. 'KTX빌딩 주차장' → 'KTX빌딩').
+async function relaySearch(cfg, q){
+  if(cfg.mode!=='relay') return {list:[], provider:''};
+  try{
+    const j = await fetchJson(cfg.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+                                       body:JSON.stringify({action:'search', q}),redirect:'follow'}, 10000);
+    if(j && j.ok && Array.isArray(j.results))
+      return {provider:j.provider||'', list:j.results.filter(x=>x && x.name && inKr(+x.lat,+x.lng)).map(x=>({...x,lat:+x.lat,lng:+x.lng}))};
+  }catch(e){}
+  return {list:[], provider:''};
+}
+async function photonSearch(q){
+  try{ const j = await fetchJson('https://photon.komoot.io/api/?limit=50&lang=default&bbox=124.5,33,132,38.7&q='+encodeURIComponent(q), {}, 10000);
+       return photonList(j.features||[]); }catch(e){ return []; }
+}
+function mergePlaces(a, b){
+  const out=[], seen=[];
+  for(const x of [...a, ...b]){
+    if(!x.name || /^[\d\s-]+$/.test(x.name)) x.name = x.address || x.name;   // e.g. '130' → address
+    if(!x.name) continue;
+    if(seen.some(y=>y.name===x.name && Math.abs(y.lat-x.lat)<0.002 && Math.abs(y.lng-x.lng)<0.002)) continue;
+    seen.push(x); out.push(x);
+  }
+  return out.slice(0, 30);
+}
+async function searchOnce(cfg, q){
+  const [r, p] = await Promise.all([relaySearch(cfg, q), photonSearch(q)]);
+  // Kakao results are authoritative; OSM only appended when the relay is not on Kakao
+  return mergePlaces(r.list, /^kakao$/.test(r.provider) && r.list.length ? [] : p);
+}
+async function searchPlaces(cfg, q){
+  let out = await searchOnce(cfg, q);
+  const words = q.trim().split(/\s+/);
+  if(!out.length && words.length>1) out = await searchOnce(cfg, words.slice(0,-1).join(' '));
+  return out;
+}
+
+const $ = id => document.getElementById(id);
+let TAB = 'tesla';   // 'tesla' | 'home' (2026-10-27 tabs) | 'jipbap' (2026-11-09)
+const HOME_TAB_HIDDEN = true;   // 2026-11-09: 홈자동화봇 tab hidden; set false (and un-hide #tabHome) to restore
+let SHOWN = 'loading';
+const show = id => {
+  SHOWN = id;
+  for(const x of ['loading','badlink','notready']) $(x).hidden = (x!==id);
+  const ready = id==='form';
+  $('tabs').hidden = !ready;
+  $('form').hidden = !(ready && TAB==='tesla');
+  $('homePanel').hidden = !(ready && TAB==='home');
+  $('jipbapPanel').hidden = !(ready && TAB==='jipbap');
+  $('teslaHead').hidden = ready && TAB!=='tesla';
+  $('card').classList.toggle('wide', ready && TAB==='home');
+};
+let CFG = null, RESULTS = [], PICK = null, LOCKED = false;
+let PK_X=null, PK_FROM_HIST=false;   // 2026-11-11 pick sheet (최근 목적지/즐겨찾기 → 바로 설정 | 예약)
+const COOLDOWN = 30;
+
+// 2026-11-10: no t= in the hash → first tab (🍚 집밥플래너). Deep links: &t=tesla (목적지), &t=jipbap; old &t=home → 목적지 while home is hidden.
+function tabFromHash(){ const m = location.hash.match(/[#&]t=(home|jipbap|tesla)(&|$)/); return m ? m[1] : 'jipbap'; }
+function setTab(t, save){
+  TAB = (t==='home' && !HOME_TAB_HIDDEN) ? 'home' : (t==='jipbap' ? 'jipbap' : 'tesla');
+  $('tabTesla').setAttribute('aria-selected', String(TAB==='tesla'));
+  $('tabHome').setAttribute('aria-selected', String(TAB==='home'));
+  $('tabJipbap').setAttribute('aria-selected', String(TAB==='jipbap'));
+  if(save){   // remember the tab in the fragment (replaceState: no reload, no hashchange, the key stays in the #fragment)
+    const h = location.hash.replace(/&t=[^&]*/g,'') + '&t='+TAB;
+    try{ history.replaceState(null, '', location.pathname + location.search + h); }catch(e){}
+  }
+  show(SHOWN);
+}
+$('tabTesla').addEventListener('click', ()=>{ setTab('tesla', true); const pw=passFromHash(); if(pw && CFG){ loadCurrent(pw); loadHist(pw); loadResv(pw); } });
+$('tabHome').addEventListener('click', ()=>setTab('home', true));
+$('tabJipbap').addEventListener('click', ()=>setTab('jipbap', true));
+
+function passFromHash(){
+  const m = location.hash.match(/[#&]k=([^&]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+async function init(){
+  const pass = passFromHash();
+  if(!pass || !window.crypto || !crypto.subtle){ show('badlink'); return; }
+  let doc;
+  try{
+    const r = await fetch('cfg.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.status===404){ show('notready'); return; }
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    doc = await r.json();
+  }catch(e){ show('notready'); return; }
+  if(doc && doc.placeholder){ show('notready'); return; }
+  try{
+    CFG = await decryptDoc(doc, pass);
+    if(!CFG || !CFG.url) { show('notready'); return; }
+  }catch(e){ show(e.badKey ? 'badlink' : 'notready'); return; }
+  TAB = tabFromHash(); setTab(TAB, false);
+  renderHome(CFG.home);
+  show('form'); if(TAB==='tesla') $('dest').focus();
+  loadCurrent(pass); loadHist(pass); loadJipbap(pass); loadResv(pass);
+}
+
+// ---- CURRENT DESTINATION: cur.enc.json = encrypted {name,address,lat,lng,set_at,expires} written by tesla_cur_dest.py
+//      (called from ~/.tesla/set_dest.py). Missing / unreadable / {none:true} / expired → card stays hidden (page as before).
+const CUR_MAX_H = 24;   // fallback age limit when the file has no `expires`
+function fmtKst(iso){
+  const d=new Date(iso); if(isNaN(d)) return '';
+  const p=Object.fromEntries(new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric',weekday:'short',
+    hour:'numeric',minute:'2-digit',hour12:true}).formatToParts(d).map(x=>[x.type,x.value]));
+  return `${p.month}/${p.day}(${p.weekday}) ${p.dayPeriod} ${p.hour}:${p.minute}`;
+}
+let CUR = null, PEND = null;
+// ---- 2026-11-01 send outcome: pending card + poll cur.enc.json / st.enc.json (tesla_dest_status.py) every 4 s, up to 2 min
+const kn = n => String(n||'').replace(/\s+/g,'');
+function pendMatch(cur){ return PEND && kn(cur.name)===kn(PEND.x.name) && Date.parse(cur.set_at) >= PEND.t0-90e3; }
+function pendCard(x, line, cls){
+  $('curName').textContent=x.name; const ad=(x.address||'').trim();
+  $('curAddr').textContent=ad; $('curAddr').hidden=!ad||ad===x.name;
+  $('curTime').textContent=line; $('curTime').className='tm'+(cls?' '+cls:''); $('curArr').hidden=true; $('curPin').hidden=true; $('curWx').hidden=true;
+  $('resend').hidden = true; swipeReset(); $('cur').hidden=false;
+}
+function startPending(x, sentAt){
+  clearTimeout(window.PEND_T); PEND={x, sentAt, t0:Date.now()}; CUR=null;
+  pendCard(x,'⏳ 설정 중… 차에 보내고 있어요','pend'); pendPoll();
+}
+async function pendPoll(){
+  if(!PEND) return; const pw=passFromHash(), me=PEND;
+  try{ const r=await fetch('st.enc.json?_='+Date.now(),{cache:'no-store'});
+    if(r.ok){ const st=await decryptDoc(await r.json(), pw);
+      const mine = st && (st.sent_at ? st.sent_at===me.sentAt : (kn(st.name)===kn(me.x.name) && Date.parse(st.at)>=me.t0-30e3));
+      if(mine && st.outcome!=='set'){ return pendDone(st.outcome, null, st.reason); } } }catch(e){}
+  if(PEND!==me) return;
+  await loadCurrent(pw); if(PEND!==me) return;
+  if(Date.now()-me.t0 > 120e3) return pendDone('timeout');
+  window.PEND_T=setTimeout(pendPoll, 4000);
+}
+function pendDone(outcome, cur, reason){
+  const x=PEND && PEND.x; PEND=null; clearTimeout(window.PEND_T); $('resend').hidden=false; $('curTime').className='tm';
+  if(!x) return;
+  const pw=passFromHash();
+  if(outcome==='set'){ loadCurrent(pw).then(()=>{ $('curTime').textContent='✅ 차에 설정됨 · '+$('curTime').textContent; });
+    setStatus('ok',`✅ '${x.name}' 차에 설정됐어요`); loadHist(pw); return; }
+  if(outcome==='skipped'){ pendCard(x,'↩️ 이미 같은 목적지라 건너뜀','skip'); $('resend').hidden=false; setStatus('ok',`'${x.name}'은(는) 이미 설정된 목적지라 건너뛰었어요`);
+    setTimeout(()=>{ if(!PEND) loadCurrent(pw); }, 8000); return; }
+  if(outcome==='failed'){ pendCard(x,'❌ 실패'+(reason?' · '+reason:''),'fail'); setStatus('err',`'${x.name}' 설정에 실패했어요. 다시 보내 주세요`);
+    setTimeout(()=>{ if(!PEND) loadCurrent(pw); }, 15000); return; }
+  pendCard(x,'⏳ 확인 중… 잠시 후 당겨서 새로고침','pend'); setStatus('busy','아직 결과가 안 왔어요. 잠시 후 화면을 당겨서 새로고침해 주세요');
+}   // the destination shown on the card (used by the 재전송 button)
+// CURDEL-PURE-BEGIN  2026-11-11 pick: after a swipe-delete the box clears in ~20 s, but GitHub Pages serves the new
+//   cur.enc.json only ~1–1.5 min later (routine → 60 s publish slot → Pages build). The page re-read the card at 20/45 s
+//   (and on pull-to-refresh / focus / 60 s timer) and showed the deleted destination AGAIN. Tombstone = {set_at,name,at}:
+//   a card with that exact set_at stays hidden until the server shows it gone (or a different/newer destination),
+//   at most CUR_DEL_HOLD_MS; after that the card comes back with a "not applied" message (so a real failure is visible).
+const CUR_DEL_HOLD_MS = 5*60e3;
+function curTombCheck(cur, tomb, nowMs){
+  if(!tomb || !tomb.set_at) return {hide:false, tomb:null, cleared:false, failed:false};
+  const live = !!(cur && !cur.none && cur.name);
+  if(!live) return {hide:false, tomb:null, cleared:true, failed:false};
+  if(cur.set_at!==tomb.set_at) return {hide:false, tomb:null, cleared:false, failed:false};   // newer destination: show it
+  if(nowMs-Date.parse(tomb.at) > CUR_DEL_HOLD_MS) return {hide:false, tomb:null, cleared:false, failed:true};
+  return {hide:true, tomb, cleared:false, failed:false};
+}
+// CURDEL-PURE-END
+const LS_CD='tesla_cur_del_v1';
+async function loadCurrent(pass){
+  let cur=null;
+  try{
+    const r = await fetch('cur.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.ok) cur = await decryptDoc(await r.json(), pass);
+  }catch(e){ cur=null; }
+  const now=Date.now(), set=cur && Date.parse(cur.set_at);
+  const exp = cur && (cur.expires ? Date.parse(cur.expires) : set + CUR_MAX_H*3600e3);
+  const valid = cur && !cur.none && cur.name && Number.isFinite(set) && Number.isFinite(exp) && now < exp;
+  if(PEND){ if(valid && pendMatch(cur)) return pendDone('set', cur); return; }   // keep the pending card until an outcome
+  const tomb=lsGet(LS_CD,null), tc=curTombCheck(valid?cur:null, tomb, now);
+  if(tomb && !tc.tomb){ try{ localStorage.removeItem(LS_CD); }catch(e){}
+    if(tc.cleared) setStatus('ok',`✅ '${tomb.name}' 목적지가 지워졌어요`);
+    if(tc.failed) setStatus('err',`'${tomb.name}' 삭제가 아직 반영되지 않았어요. 카드를 왼쪽으로 밀어 다시 삭제해 주세요`); }
+  if(tc.hide){ $('cur').hidden=true; CUR=null; swipeReset(); return; }
+  if(!valid){ $('cur').hidden=true; CUR=null; swipeReset(); return; }
+  CUR = {name:cur.name, address:cur.address||'', lat:+cur.lat, lng:+cur.lng, set_at:cur.set_at};
+  const cp=pins()[hk(cur.name)], cpin=cp && pinDistM(cp.lat,cp.lng,CUR.lat,CUR.lng)<3;
+  $('curName').innerHTML = esc(cur.name)+(cpin?'<span class="pinb">📍 핀 위치</span>':''); $('curPin').hidden=false;
+  const ad = (cur.address||'').trim();
+  $('curAddr').textContent = ad; $('curAddr').hidden = !ad || ad===cur.name;
+  $('curTime').textContent = fmtKst(cur.set_at) + ' 설정';
+  renderArrival(cur.arrival); renderCurWx(); loadWx(pass);
+  $('cur').hidden=false;
+  // extra guard (2026-10-27): the box also clears the file at `expires`; if the page stays open past it, hide the card then too
+  clearTimeout(window.CUR_EXP_T);
+  if(exp-now < 2147483000) window.CUR_EXP_T = setTimeout(()=>{ $('cur').hidden=true; CUR=null; }, exp-now+500);
+}
+
+// arrival = tesla_arrival.py result baked into cur.enc.json by the box (the page never calls the car):
+// {source:'car'|'estimate'|'unavailable', arrival_pct, short_km, dist_km, battery_pct, range_km, vehicle_at, reason}
+function renderArrival(a){
+  const el=$('curArr');
+  if(!a || !a.source){ el.hidden=true; el.textContent=''; return; }
+  const at = a.vehicle_at ? ' · 차량 정보 '+fmtKst(a.vehicle_at)+' 기준' : '';
+  let main, sub, cls;
+  if(a.source==='unavailable'){
+    cls='na'; main='🔋 도착 배터리 확인 불가'; sub=(a.reason||'차량 정보를 받지 못했어요');
+  }else{
+    const short = +a.short_km>0;
+    cls = short ? 'short' : (+a.arrival_pct<=15 ? 'low' : 'good');
+    main = short ? `🔋 도착 시 예상 배터리 0% · 약 ${a.short_km} km 부족 (충전 필요)` : `🔋 도착 시 예상 배터리 ${a.arrival_pct}%`;
+    sub = a.source==='car' ? `차량 내비 기준 · 남은 거리 ${a.dist_km} km`
+        : `추정치 · 도로 ${a.dist_km} km, 현재 ${a.battery_pct}% (주행가능 ${a.range_km} km) 기준`;
+  }
+  el.className='arr '+cls;
+  el.innerHTML = esc(main)+`<span class="sub">${esc(sub+at)}</span>`;
+  el.hidden=false;
+}
+
+function setStatus(cls, msg){ const s=$('status'); s.className='status '+cls; s.textContent=msg; }
+function esc(t){ return String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function clearResults(){
+  RESULTS=[]; PICK=null; $('results').innerHTML=''; $('results').hidden=true; PK_FROM_HIST=false;
+  if(typeof resvPickChanged==='function') resvPickChanged();
+  $('picked').hidden=true; $('send').hidden=true; if(!LOCKED) $('send').disabled=true;
+}
+function renderResults(){
+  const ul=$('results');
+  ul.innerHTML = RESULTS.map((x,i)=>`<li><button type="button" role="radio" aria-checked="false" data-i="${i}">
+      <div class="nm">${esc(x.name)}${x.category?`<span class="cat">${esc(x.category)}</span>`:''}</div>
+      <div class="ad">${esc(x.address||'')}</div></button></li>`).join('');
+  ul.hidden=false; $('send').hidden=false; $('send').disabled=true;
+  $('picked').hidden=false; $('picked').textContent='목록에서 갈 곳을 눌러 고르세요.';
+}
+function pick(i){
+  PICK = RESULTS[i] ? pinApply(RESULTS[i], pins()) : null;
+  for(const b of $('results').querySelectorAll('button')) b.setAttribute('aria-checked', String(+b.dataset.i===i));
+  if(PICK){ $('picked').innerHTML = `선택: <b>${esc(PICK.name)}</b>${PICK.pinned?'<span class="pinb">📍 핀 위치</span>':''}`; if(!LOCKED) $('send').disabled=false; }
+  if(typeof resvPickChanged==='function') resvPickChanged();
+}
+$('results').addEventListener('click', ev=>{ const b=ev.target.closest('button[data-i]'); if(b) pick(+b.dataset.i); });
+
+function cooldown(sec){
+  LOCKED = sec>0; const b=$('send'); b.disabled=true;
+  const r=$('resend');
+  const tick=()=>{ if(!RESENDING) r.disabled = sec>0;
+                   if(sec<=0){ LOCKED=false; b.textContent='이 곳으로 보내기'; b.disabled=!PICK; return; }
+                   b.textContent=`다시 보내기까지 ${sec}초`; sec--; setTimeout(tick,1000); };
+  tick();
+}
+
+let searching=false;
+$('dest').addEventListener('input', ()=>{ if(RESULTS.length) clearResults(); });
+$('form').addEventListener('submit', async ev=>{
+  ev.preventDefault();
+  if(searching) return;
+  const q = $('dest').value.trim().slice(0,60);
+  if(!q){ setStatus('err','목적지를 입력해 주세요.'); $('dest').focus(); return; }
+  searching=true; $('find').disabled=true; $('find').textContent='검색 중…'; clearResults(); setStatus('busy','찾는 중…');
+  try{
+    RESULTS = await searchPlaces(CFG, q);
+    if(!RESULTS.length){ setStatus('err','찾는 장소가 없어요. 다른 이름이나 주소로 검색해 보세요'); }
+    else { setStatus('',''); renderResults(); $('dest').blur(); }
+  }catch(e){
+    setStatus('err','검색에 실패했어요. 잠시 후 다시 시도해 주세요.');
+  }finally{ searching=false; $('find').disabled=false; $('find').textContent='검색'; }
+});
+// one payload shape for an already-picked place (normal pick AND 재전송), so the relay/routine treat both the same
+function pickedPayload(x, extra){
+  // destination = "<name> <address>" so the routine also works with the OLD relay (which forwards only destination)
+  const destination = (x.name + (x.address && x.address!==x.name ? ' ' + x.address : '')).slice(0,200);
+  return {destination, name:x.name, address:x.address||'', lat:x.lat, lng:x.lng, picked:true,
+          source:'tesla-form', sent_at:new Date().toISOString(), ...(extra||{})};
+}
+$('send').addEventListener('click', ()=>{ if($('send').disabled || !PICK || LOCKED) return; choose(PICK); });
+async function doSend(x){
+  if(LOCKED){ setStatus('err','잠시 후 다시 보내 주세요.'); return; }
+  const payload = pickedPayload(x);
+  $('send').disabled = true; $('send').textContent = '보내는 중…'; setStatus('busy','보내는 중…');
+  try{
+    await sendDestination(CFG, payload);
+    setStatus('ok',`보냈어요! '${x.name}' 설정 결과를 확인하고 있어요`);
+    $('dest').value=''; clearResults(); $('send').hidden=false;
+    cooldown(COOLDOWN);
+    startPending(x, payload.sent_at);   // 2026-11-01: card shows '설정 중…' at once, then the routine's outcome
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    setStatus('err',`전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(5);
+  }
+}
+// ---- 재전송: re-send the card's destination through the SAME sendDestination() path (no search, no ambiguity question).
+//      Shares LOCKED with the main send (the relay allows 1 send / 20 s anyway). resend:true is informational only.
+let RESENDING=false;
+function resendLabel(cls, html){ const b=$('resend'); b.className='resend'+(cls?' '+cls:''); b.innerHTML=html; }
+$('resend').addEventListener('click', async ()=>{
+  if(RESENDING || LOCKED || !CUR || !inKr(CUR.lat, CUR.lng)) return;
+  RESENDING=true; const b=$('resend'); b.disabled=true; resendLabel('', '보내는<br>중…'); setStatus('busy','보내는 중…');
+  let wait=5;
+  try{
+    await sendDestination(CFG, pickedPayload(CUR, {resend:true}));
+    resendLabel('ok','보냈어요<br>✓'); setStatus('ok',`다시 보냈어요! '${CUR.name}'(으)로 차에 곧 설정돼요`);
+    cooldown(COOLDOWN); wait=COOLDOWN;
+  }catch(e){
+    const why = e.name==='AbortError' ? '응답이 없어요' : (/^(HTTP|오류|잠시)/.test(String(e.message||'')) ? e.message : '네트워크 오류');
+    resendLabel('err','실패<br>다시 시도'); setStatus('err',`재전송에 실패했어요 (${why}). 잠시 후 다시 시도해 주세요.`);
+    cooldown(wait);
+  }
+  setTimeout(()=>{ RESENDING=false; b.disabled=false; resendLabel('', '테슬라로<br>재전송'); }, wait*1000);
+});
+
+// ---- 홈자동화봇 tab (2026-10-27). Device list comes ONLY from the encrypted cfg (cfg.home = home_accessories.json);
+//      nothing is invented here. Payload {kind:'home', accessory, action:'on'|'off'} goes through the SAME sendDestination()
+//      (relay → webhook routine → 홈자동화봇). No name/destination field, so an old relay rejects it ('empty') instead of
+//      ever treating it as a destination. No on/off state is shown (the page cannot read Apple Home).
+const HOME_LOCK_S = 4;   // relay allows 1 home command / 4 s
+let HOME_BUSY = false;
+function renderHome(h){
+  const box=$('homeGroups');
+  const groups = h && Array.isArray(h.groups) ? h.groups : [];
+  $('homeNotReady').hidden = groups.length>0;
+  if(h && h.lead) $('homeLead').textContent = h.lead;
+  // accessory = "name" (sent id = shown name) or {id, label} (id = unique identifier sent to the relay, label = shown name)
+  for(const g of groups) g._acc = (Array.isArray(g.accessories) ? g.accessories : []).map(a=>
+      typeof a==='string' ? {id:a, label:a} : (a && typeof a.id==='string' ? {id:a.id, label:a.label||a.id} : null))
+    .filter(a=>a && a.id.trim());
+  box.innerHTML = groups.map((g,gi)=>{
+    const acc = g._acc.map(a=>a.label);
+    const head = `<h2>${esc(g.icon||'')} ${esc(g.title||'')}${g.room?` <span class="rm">· ${esc(g.room)}</span>`:''}</h2>`;
+    const rows = acc.length ? acc.map((a,ai)=>`<div class="hrow" data-g="${gi}" data-a="${ai}"><div class="top"><div class="nm">${esc(a)}</div>
+        <div class="btns"><button type="button" class="on" data-act="on" aria-label="${esc(g.title||"")} ${esc(a)} 켜기">켜기</button>
+        <button type="button" class="off" data-act="off" aria-label="${esc(g.title||"")} ${esc(a)} 끄기">끄기</button></div></div>
+        <div class="msg" role="status" aria-live="polite"></div></div>`).join('')
+      : `<div class="hrow na"><div class="top"><div class="nm">${esc(g.title||'')}</div>
+        <div class="btns"><button type="button" class="on" disabled>켜기</button><button type="button" class="off" disabled>끄기</button></div></div>
+        <div class="note">${esc(g.empty_note || '등록된 기기가 없어요')}</div></div>`;
+    return `<div class="hgrp">${head}<div class="hlist">${rows}</div></div>`;
+  }).join('');
+  box._groups = groups;
+}
+function homeButtons(dis){ for(const b of $('homeGroups').querySelectorAll('.hrow:not(.na) button')) b.disabled = dis; }
+$('homeGroups').addEventListener('click', async ev=>{
+  const b = ev.target.closest('button[data-act]'); if(!b || b.disabled || HOME_BUSY) return;
+  const row = b.closest('.hrow'), g = ($('homeGroups')._groups||[])[+row.dataset.g];
+  const accessory = g && g._acc[+row.dataset.a] && g._acc[+row.dataset.a].id; const action = b.dataset.act;
+  if(!accessory || (action!=='on' && action!=='off')) return;
+  const label = action==='on' ? '켜기' : '끄기', msg = row.querySelector('.msg');
+  HOME_BUSY = true; homeButtons(true); const orig=b.textContent; b.textContent='보내는 중…';
+  msg.className='msg'; msg.textContent='보내는 중…';
+  let wait = HOME_LOCK_S;
+  try{
+    await sendDestination(CFG, {kind:'home', accessory, action, source:'tesla-form-home', sent_at:new Date().toISOString()});
+    msg.className='msg ok'; msg.textContent=`${label} 요청 보냈어요 (반영까지 수십 초 걸릴 수 있어요)`;
+  }catch(e){
+    const m = String(e.message||'');
+    const why = e.name==='AbortError' ? '응답이 없어요'
+      : /empty|kind/.test(m) ? '중계 서버가 아직 홈 명령을 지원하지 않아요'
+      : /accessory|action/.test(m) ? '허용되지 않은 요청이에요'
+      : /^(HTTP|오류|잠시)/.test(m) ? m : '네트워크 오류';
+    msg.className='msg err'; msg.textContent=`${label} 요청을 보내지 못했어요 (${why})`;
+    if(/잠시/.test(m)) wait = HOME_LOCK_S;
+  }
+  b.textContent = orig;
+  setTimeout(()=>{ HOME_BUSY=false; homeButtons(false); }, wait*1000);
+});
+
+window.addEventListener('hashchange', init);
+// ---- 2026-11-01 swipe-left on the card -> X -> delete via the SAME relay as sending (no key in the page).
+//      Server clears only if set_at still matches (a newer/already-cleared destination = no-op), then verifies live.
+const SW={x0:0,y0:0,dx:0,open:false,on:false,lock:null}, DEL_W=88;
+// 2026-11-11 pick: one swipe component for the destination card AND each 예약 row.
+//   bindSwipe(wrap, getSlider, st): touch (iPhone) + mouse/pointer (desktop, Tesla). st = shared state object;
+//   SW is the card's; RSW the 예약 list's. pull-to-refresh skips while any st.lock==='x'.
+function bindSwipe(wrap, getSlider, st, onOpen){
+  const set=(el,x)=>{ if(el){ el.style.transform = x ? `translateX(${x}px)` : ''; el.parentElement.classList.toggle('open', !!x); } };
+  const clamp=v=>Math.max(-DEL_W-20, Math.min(0, v));
+  wrap.addEventListener('touchstart',e=>{ const el=getSlider(e.target); if(!el) return; const t=e.touches[0];
+    if(st.el && st.el!==el && st.open){ set(st.el,0); st.open=false; }
+    st.el=el; st.x0=t.clientX; st.y0=t.clientY; st.dx=0; st.on=true; st.lock=null; el.parentElement.classList.add('dragging'); },{passive:true});
+  wrap.addEventListener('touchmove',e=>{ if(!st.on) return; const t=e.touches[0], dx=t.clientX-st.x0, dy=t.clientY-st.y0;
+    if(st.lock===null && (Math.abs(dx)>8||Math.abs(dy)>8)) st.lock = Math.abs(dx)>Math.abs(dy) ? 'x':'y';
+    if(st.lock!=='x') return; e.preventDefault();
+    st.dx=dx; set(st.el, clamp((st.open?-DEL_W:0)+dx)); },{passive:false});
+  const end=()=>{ if(!st.on) return; st.on=false; if(st.el) st.el.parentElement.classList.remove('dragging');
+    if(st.lock==='x'){ const pos=(st.open?-DEL_W:0)+st.dx; st.open = pos < -DEL_W/2; set(st.el, st.open?-DEL_W:0); if(st.open && onOpen) onOpen(st.el); }
+    setTimeout(()=>{ if(!st.on) st.lock=null; }, 0); };
+  wrap.addEventListener('touchend',end); wrap.addEventListener('touchcancel',end);
+  let md=false;
+  wrap.addEventListener('pointerdown',e=>{ if(e.pointerType==='touch') return; const el=getSlider(e.target); if(!el) return;
+    if(st.el && st.el!==el && st.open){ set(st.el,0); st.open=false; }
+    md=true; st.el=el; st.x0=e.clientX; st.dx=0; el.parentElement.classList.add('dragging'); });
+  window.addEventListener('pointermove',e=>{ if(!md) return; st.dx=e.clientX-st.x0; set(st.el, clamp((st.open?-DEL_W:0)+st.dx)); });
+  window.addEventListener('pointerup',()=>{ if(!md) return; md=false; st.el.parentElement.classList.remove('dragging'); const pos=(st.open?-DEL_W:0)+st.dx;
+    if(Math.abs(st.dx)>5){ st.open=pos<-DEL_W/2; set(st.el, st.open?-DEL_W:0); if(st.open && onOpen) onOpen(st.el); } });
+  return { reset(){ st.open=false; set(st.el,0); } };
+}
+SW.el=null;
+const RSW={x0:0,y0:0,dx:0,open:false,on:false,lock:null,el:null};   // 예약 rows
+function swipeSet(x){ $('curCard').style.transform = x ? `translateX(${x}px)` : ''; $('cur').classList.toggle('open', !!x); }
+function swipeReset(){ SW.open=false; swipeSet(0); }
+let CUR_DEL_T=null;
+function curDelPoll(i){   // re-read the card until the server shows it gone (tombstone keeps it hidden meanwhile)
+  clearTimeout(CUR_DEL_T); const steps=[15,30,45,60,80,100,130,170,220,310];
+  if(i>=steps.length || !lsGet(LS_CD,null)) return;
+  const wait=(steps[i]-(i?steps[i-1]:0))*1000;
+  CUR_DEL_T=setTimeout(async ()=>{ const pw=passFromHash(); if(pw && CFG) await loadCurrent(pw); curDelPoll(i+1); }, wait);
+}
+(function(){
+  const c=$('curCard');
+  bindSwipe($('cur'), t=>c.contains(t) && !t.closest('#curDel') ? c : null, SW);
+  $('curDel').addEventListener('click', async ()=>{
+    if(!CUR || !CUR.set_at) return; const b=$('curDel'); b.disabled=true;
+    const x=CUR;
+    try{
+      // 2026-11-01 fix: NO name/destination field -> a pre-v5 relay rejects it ('empty') instead of
+      //   re-sending it as a destination (that was the 18:24 '중복 목적지' skip). v5 relay forwards clear_name as name.
+      await sendDestination(CFG,{action:'clear_nav', clear_nav:true, if_set_at:x.set_at, clear_name:x.name,
+                                 source:'tesla-form-delete', sent_at:new Date().toISOString()});
+      lsSet(LS_CD, {set_at:x.set_at, name:x.name, at:new Date().toISOString()});   // keep it hidden until Pages catches up
+      setStatus('busy',`'${x.name}' 목적지를 지우는 중… 차와 지도에서 지워지면 알려드려요`); $('cur').hidden=true; CUR=null; swipeReset();
+      curDelPoll(0);
+    }catch(e){ setStatus('err', /empty/.test(e&&e.message||'') ? '삭제 기능 연결(릴레이 업데이트)이 아직 안 됐어요.' : '삭제에 실패했어요. 잠시 후 다시 시도해 주세요.'); swipeReset(); }
+    finally{ b.disabled=false; }
+  });
+})();
+// 2026-11-01: card was only loaded on open; iOS resumes a stale tab/home-screen app without reloading -> re-check on return + every 60s
+function refreshCur(){ if(document.visibilityState!=='visible') return; const pw=passFromHash(); if(pw && CFG){ loadCurrent(pw); if(TAB==='jipbap') loadJipbap(pw); if(TAB==='tesla') loadResv(pw); } }
+document.addEventListener('visibilitychange', refreshCur);
+window.addEventListener('pageshow', refreshCur); window.addEventListener('focus', refreshCur);
+setInterval(refreshCur, 60000);
+// ---- 2026-11-01 history (hist.enc.json, box) + this device's '이력에만 저장' items + favorites (localStorage, this device only)
+const LS_H='tesla_hist_local_v1', LS_F='tesla_fav_v1', PAGE=20;
+// 2026-11-12 histdel: swipe a 최근 목적지 row → relay v13 {kind:'hist_del', name, del_at} → routine → tesla_hist.py --webhook.
+//   This device keeps a tombstone (LS_HD {key: del_at}) so the row stays hidden until the published hist.enc.json no longer has
+//   that visit (or 24 h). A newer visit of the same place shows again. ⭐ 즐겨찾기 is NOT changed (separate list).
+const LS_HD='tesla_hist_del_v1';
+// HISTDEL-PURE-BEGIN
+const HIST_DEL_TTL_MS = 24*3600e3;
+function histDelFilter(list, tomb){ tomb=tomb||{};
+  return (list||[]).filter(x=>{ const k=String(x&&x.name||'').replace(/\s+/g,''), d=tomb[k]; return !(d && (Date.parse(x.at)||0) <= (Date.parse(d)||0)); }); }
+// drop tombstones the box has applied (server no longer has that visit) or that are older than a day
+function histDelPrune(tomb, srv, nowMs){ const out={}; let changed=false;
+  for(const [k,d] of Object.entries(tomb||{})){
+    const still=(srv||[]).some(x=>String(x&&x.name||'').replace(/\s+/g,'')===k && (Date.parse(x.at)||0) <= (Date.parse(d)||0));
+    if(still && nowMs-(Date.parse(d)||0) < HIST_DEL_TTL_MS) out[k]=d; else changed=true; }
+  return {tomb:out, changed}; }
+// HISTDEL-PURE-END
+// 2026-11-12 favalias: a favorite's display name. Box: dest_fav.json[key].alias/alias_at (relay v13 {kind:'fav_alias'}) → hist.enc.json
+//   .fav → every device. This device's edits (LS_FA {key:{alias,at}}) win until the box has an equal/newer alias_at.
+//   Sending always uses the place's own name + coords (the alias is display only).
+const LS_FA='tesla_fav_alias_v1';
+// FAVALIAS-PURE-BEGIN
+function favAlias(k, srv, loc){ const s=(srv||{})[k]||{}, l=(loc||{})[k];
+  const a = l && (Date.parse(l.at)||0) > (Date.parse(s.alias_at)||0) ? l.alias : (s.alias||'');
+  return String(a||'').trim(); }
+function favAliasPrune(loc, srv){ const out={}; let changed=false;
+  for(const [k,l] of Object.entries(loc||{})){ const s=(srv||{})[k]||{};
+    if((Date.parse(s.alias_at)||0) >= (Date.parse(l.at)||0)) changed=true; else out[k]=l; }
+  return {loc:out, changed}; }
+// FAVALIAS-PURE-END
+const HSW={x0:0,y0:0,dx:0,open:false,on:false,lock:null,el:null};   // 최근 목적지 rows
+let HIST_SRV=[], FAV_SRV={}, HIST_N=PAGE;
+const tms = t => Date.parse(t||'')||0;
+const hk = n => String(n||'').replace(/\s+/g,'');
+function lsGet(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d; }catch(e){ return d; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+async function loadHist(pass){
+  try{ const r=await fetch('hist.enc.json?_='+Date.now(),{cache:'no-store'});
+       if(r.ok){ const d=await decryptDoc(await r.json(), pass); HIST_SRV=Array.isArray(d&&d.items)?d.items:[]; FAV_SRV=(d&&d.fav&&typeof d.fav==='object')?d.fav:{};
+         const pr=histDelPrune(lsGet(LS_HD,{}), HIST_SRV, Date.now()); if(pr.changed) lsSet(LS_HD, pr.tomb);
+         const fp=favAliasPrune(lsGet(LS_FA,{}), FAV_SRV); if(fp.changed) lsSet(LS_FA, fp.loc); } }catch(e){}
+  renderHist();
+}
+function histAll(){
+  const m=new Map();
+  for(const x of histDelFilter([...HIST_SRV, ...lsGet(LS_H,[])], lsGet(LS_HD,{}))){ const k=hk(x.name); if(!k) continue; const o=m.get(k);
+    if(!o){ m.set(k,{...x}); continue; }
+    if(tms(x.at)>tms(o.at)) o.at=x.at;
+    for(const f of ['address','lat','lng']) if(x[f] && !o[f]) o[f]=x[f]; }
+  return [...m.values()].sort((a,b)=>tms(b.at)-tms(a.at)).slice(0,200);
+}
+// favorites = synced (hist.enc.json .fav, via relay v6 fav_toggle) merged with this device's records; newer changed_at wins
+function favMap(){
+  const m={}, loc=lsGet(LS_F,{});
+  for(const [k,v] of Object.entries(FAV_SRV)) m[k]={...v};
+  for(const [k,v0] of Object.entries(loc)){ const v={star:true, changed_at:v0.starred_at, ...v0};
+    if(!m[k] || tms(v.changed_at)>=tms(m[k].changed_at)) m[k]=v; }
+  for(const k of Object.keys(m)) if(!m[k].star) delete m[k];
+  return m;
+}
+function relayQuiet(payload){ return sendDestination(CFG, {...payload, source:'tesla-form-hist', sent_at:new Date().toISOString()}).then(()=>true, ()=>false); }
+function hiHtml(x, on, del){ const k=esc(hk(x.name));
+  const pn=!!pins()[hk(x.name)], al=on ? favAlias(hk(x.name), FAV_SRV, lsGet(LS_FA,{})) : '';
+  return (del ? `<li class="swipe"><button type="button" class="del" data-hd="${k}" aria-label="최근 목적지에서 삭제">✕<span>삭제</span></button><div class="hi swc">`
+              : `<li class="hi">`)+`<button type="button" class="go" data-k="${k}"><div class="nm">${esc(al||x.name)}${pn?'<span class="pinb">📍 핀</span>':''}</div>`+
+    (al ? `<div class="on">${esc(x.name)}</div>` : '')+
+    (x.address && x.address!==x.name ? `<div class="ad">${esc(x.address)}</div>` : '')+
+    (x.at ? `<div class="tm">${esc(fmtKst(x.at))}</div>` : '')+
+    `</button>${on && !del ? `<button type="button" class="ed" data-fe="${k}" aria-label="별칭 편집">✏️</button>` : ''}<button type="button" class="star${on?' on':''}" data-s="${k}" aria-label="${on?'즐겨찾기 해제':'즐겨찾기'}">${on?'★':'☆'}</button>`+(del?'</div></li>':'</li>'); }
+function renderHist(){
+  const fav=favMap(), all=histAll();
+  const favs=Object.values(fav).sort((a,b)=>tms(b.starred_at)-tms(a.starred_at));
+  $('favWrap').hidden=!favs.length; $('favList').innerHTML=favs.map(x=>hiHtml(x,true)).join('');
+  $('histList').innerHTML=all.slice(0,HIST_N).map(x=>hiHtml(x,!!fav[hk(x.name)],true)).join('');
+  HSW.open=false; HSW.el=null; HSW.on=false;
+  $('histEmpty').hidden=!!all.length; $('histMore').hidden=all.length<=HIST_N;
+  $('hist').hidden=false;
+}
+function findItem(k){ const f=favMap(); return pinApply(f[k] || histAll().find(x=>hk(x.name)===k), pins()); }
+$('histMore').addEventListener('click', ()=>{ HIST_N+=PAGE; renderHist(); });
+const histSwipe = bindSwipe($('histList'), t=>{ const li=t.closest('li.swipe'); return li && !t.closest('.del') ? li.querySelector('.swc') : null; }, HSW);
+let FA_K=null;
+function faOpen(k){ const x=favMap()[k]; if(!x) return; FA_K=k;
+  const al=favAlias(k, FAV_SRV, lsGet(LS_FA,{}));
+  $('faMsg').innerHTML=`⭐ 즐겨찾기 별칭<br><small style="color:var(--sub)">${esc(x.name)}${x.address&&x.address!==x.name?' · '+esc(x.address):''}</small>`;
+  $('faIn').value=al; $('faIn').placeholder=x.name; $('faClr').hidden=!al; $('faE').hidden=false; setTimeout(()=>$('faIn').focus(), 50); }
+function faClose(){ $('faE').hidden=true; FA_K=null; }
+async function faSave(alias){
+  const k=FA_K, x=k && favMap()[k]; if(!x){ faClose(); return; }
+  alias=String(alias||'').replace(/[\u0000-\u001f]/g,' ').trim().slice(0,40); if(alias===x.name) alias='';
+  const at=new Date().toISOString(), m=lsGet(LS_FA,{}); m[k]={alias, at}; lsSet(LS_FA,m);   // instant on this device
+  faClose(); renderHist();
+  setStatus('ok', alias ? `⭐ '${x.name}' 별칭을 '${alias}'(으)로 저장했어요` : `⭐ '${x.name}' 별칭을 지웠어요 (원래 이름으로 보여요)`);
+  // a favorite the box doesn't know yet (starred where sync failed) → star it there first, with its coords
+  if(!FAV_SRV[k] || !FAV_SRV[k].star) await relayQuiet({kind:'fav_toggle', name:x.name, address:x.address||'', lat:x.lat||'', lng:x.lng||'', star:true, starred_at:x.starred_at||at});
+  try{ await sendDestination(CFG, {kind:'fav_alias', name:x.name, alias, alias_at:at, source:'tesla-form-hist', sent_at:at}); }
+  catch(e){ setStatus('ok', /kind/.test(String(e&&e.message||'')) ? `⭐ 별칭을 이 기기에만 저장했어요 (중계 서버 업데이트(v13) 후 다른 기기와 맞춰져요)` : '⭐ 별칭을 이 기기에만 저장했어요 (동기화 실패 · 나중에 다시 저장해 주세요)'); }
+}
+$('faOk').addEventListener('click', ()=>faSave($('faIn').value));
+$('faClr').addEventListener('click', ()=>faSave(''));
+$('faNo').addEventListener('click', faClose);
+$('faIn').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); faSave($('faIn').value); } });
+$('faE').addEventListener('click', ev=>{ if(ev.target.id==='faE') faClose(); });
+async function histDel(k, btn){
+  const x=histAll().find(y=>hk(y.name)===k); if(!x) return;
+  btn.disabled=true; const at=new Date().toISOString();
+  try{
+    await sendDestination(CFG, {kind:'hist_del', name:x.name, del_at:at, source:'tesla-form-hist', sent_at:at});
+    const t=lsGet(LS_HD,{}); t[k]=at; lsSet(LS_HD,t);
+    lsSet(LS_H, lsGet(LS_H,[]).filter(y=>hk(y.name)!==k));
+    renderHist();
+    setStatus('ok', `'${x.name}'을(를) 최근 목적지에서 지웠어요`+(favMap()[k]?' (⭐ 즐겨찾기는 그대로예요)':''));
+    const pw=passFromHash(); for(const sec of [30,90,200]) setTimeout(()=>{ if(pw) loadHist(pw); }, sec*1000);
+  }catch(e){
+    btn.disabled=false; histSwipe.reset();
+    setStatus('err', /kind/.test(String(e&&e.message||'')) ? '중계 서버 업데이트(v13) 전이라 아직 최근 목적지를 지울 수 없어요.' : '삭제하지 못했어요. 잠시 후 다시 시도해 주세요.');
+  }
+}
+$('hist').addEventListener('click', ev=>{
+  const hd=ev.target.closest('button[data-hd]'); if(hd){ histDel(hd.dataset.hd, hd); return; }
+  const fe=ev.target.closest('button[data-fe]'); if(fe){ faOpen(fe.dataset.fe); return; }
+  if(HSW.open && ev.target.closest('#histList')){ histSwipe.reset(); return; }   // tap elsewhere on an open row just closes it
+  const s=ev.target.closest('[data-s]'), g=ev.target.closest('[data-k]');
+  if(s){ const k=s.dataset.s, x=findItem(k); if(!x) return; const on=!favMap()[k], now=new Date().toISOString();
+    const rec={name:x.name,address:x.address||'',lat:x.lat||'',lng:x.lng||'',at:x.at||'',star:on,
+               starred_at:on?now:(x.starred_at||''),changed_at:now};
+    const f=lsGet(LS_F,{}); f[k]=rec; lsSet(LS_F,f); renderHist();        // instant (this device)
+    relayQuiet({kind:'fav_toggle',name:rec.name,address:rec.address,lat:rec.lat,lng:rec.lng,star:on,...(on?{starred_at:now}:{})}); // sync (v6 relay; older relay → stays local)
+    return; }
+  if(g){ const x=findItem(g.dataset.k); if(x) pkOpen(x); }
+});
+// 2026-11-11 pick: tapping a 최근 목적지 / ⭐ 즐겨찾기 item asks first: 🚗 바로 설정 (the existing flow, incl. the
+//   '이미 설정된 목적지' confirm) or ⏰ 예약 (the existing reservation form, prefilled with this place).
+function pkHasLL(x){ return !!(x.lat && x.lng && inKr(+x.lat,+x.lng)); }
+function pkOpen(x){
+  x=pinApply(x, pins());
+  const al=favMap()[hk(x.name)] ? favAlias(hk(x.name), FAV_SRV, lsGet(LS_FA,{})) : '';
+  PK_X=x; $('pkMsg').innerHTML=`<b>${esc(al||x.name)}</b>${x.pinned?'<span class="pinb">📍 핀 위치</span>':''}${al?`<br><small style="color:var(--sub)">${esc(x.name)}</small>`:''}${x.address&&x.address!==x.name?`<br><small style="color:var(--sub)">${esc(x.address)}</small>`:''}<br>어떻게 할까요?`;
+  $('pkResv').textContent = RV_CONFIRM ? '📅 이 장소로 확정' : '⏰ 예약';
+  $('pk').hidden=false;
+}
+function pkClose(){ $('pk').hidden=true; PK_X=null; }
+function pkResearch(x, why){ $('dest').value=x.name.slice(0,60); window.scrollTo({top:0,behavior:'smooth'}); $('form').requestSubmit(); setStatus('busy',`'${x.name}' 다시 찾는 중… 결과에서 골라 ${why}`); }
+$('pkGo').addEventListener('click', ()=>{ const x=PK_X; pkClose(); if(!x) return;
+  if(pkHasLL(x)) choose({name:x.name,address:x.address||'',lat:+x.lat,lng:+x.lng});
+  else pkResearch(x,'주세요'); });
+$('pkResv').addEventListener('click', ()=>{ const x=PK_X; pkClose(); if(!x) return;
+  if(!pkHasLL(x)){ pkResearch(x, RV_CONFIRM ? '‘이 장소로 확정’을 누르세요' : '‘이 곳으로 예약하기’를 누르세요'); return; }
+  const p={name:x.name,address:x.address||'',lat:+x.lat,lng:+x.lng,...(x.pinned?{pinned:true}:{})};
+  if(RV_CONFIRM){ resvConfirm(RV_CONFIRM, p); return; }
+  resvOpenFor(p, true); });
+$('pkNo').addEventListener('click', pkClose);
+$('pkPin').addEventListener('click', async ()=>{ const x=PK_X; pkClose(); if(!x) return;
+  const v=await pinOpen(x); if(!v){ pkOpen(x); return; }
+  pinSave(x, v.lat, v.lng, v); const y={...x, lat:v.lat, lng:v.lng, pinned:!v.reset}; if(v.reset) delete y.orig; pkOpen(y);
+  setStatus('ok', v.reset ? `↺ '${x.name}' 원래 위치로 되돌렸어요 (저장된 핀은 지웠어요)` : `📍 '${x.name}' 핀 위치를 저장했어요`); });
+$('pk').addEventListener('click', ev=>{ if(ev.target.id==='pk') pkClose(); });
+function histOnly(x){
+  const h=lsGet(LS_H,[]); h.unshift({name:x.name,address:x.address||'',lat:String(x.lat),lng:String(x.lng),at:new Date().toISOString()});
+  lsSet(LS_H,h.slice(0,200)); HIST_N=Math.max(HIST_N,PAGE); renderHist();
+  setStatus('ok',`'${x.name}'을(를) 최근 목적지에 저장했어요 (차에는 안 보냈어요)`); $('dest').value=''; clearResults();
+  relayQuiet({kind:'hist_add',name:x.name,address:x.address||'',lat:x.lat,lng:x.lng}).then(ok=>{
+    if(!ok) setStatus('ok',`'${x.name}'을(를) 이 기기 최근 목적지에만 저장했어요 (차에는 안 보냈어요)`); });
+}
+// ---- 2026-11-12 pin: 지도에서 핀을 움직여 고른 정확한 좌표. Saved per place (LS_PIN, key = name without spaces) and reused
+//      wherever the same place comes back (search result / 최근 / ⭐ / 예약). Sync: hist_add (+ fav_toggle for a favorite) carries
+//      the pinned lat/lng to the box (tesla_hist.py: newer coords win), so other devices get them via hist.enc.json.
+//      Sending uses x.lat/x.lng as is → relay (×1e6 rounding) → routine → set_dest.py GPS only (no text search) = the pinned point.
+const LS_PIN='tesla_pin_v1';
+// PIN-PURE-BEGIN
+function pinDistM(a,b,c,d){ const r=Math.PI/180, x=(d-b)*r*Math.cos((a+c)/2*r), y=(c-a)*r; return Math.round(Math.sqrt(x*x+y*y)*6371e3); }
+function pinApply(x, pins){   // place → same place with the saved pin (only if the pin is within 3 km of what we have, or we have no coords)
+  if(!x) return x; const p=(pins||{})[String(x.name||'').replace(/\s+/g,'')]; if(!p) return x;
+  const la=+x.lat, ln=+x.lng;
+  if(Number.isFinite(la) && Number.isFinite(ln) && la && ln && pinDistM(la,ln,p.lat,p.lng)>3000) return x;
+  return {...x, lat:p.lat, lng:p.lng, pinned:true, ...(pinOrig(x, pins) ? {orig:pinOrig(x, pins)} : {})};
+}
+// 2026-11-12 원래 위치로: the place's original (search) coords. From the pin record (olat/olng, saved when the pin was first made),
+// else the place's own coords when they differ from the pin (a search result / box entry not yet overwritten). null = unknown.
+function pinOrig(x, pins){
+  if(!x) return null; if(x.orig && Number.isFinite(+x.orig.lat) && Number.isFinite(+x.orig.lng)) return {lat:+x.orig.lat, lng:+x.orig.lng};
+  const p=(pins||{})[String(x.name||'').replace(/\s+/g,'')], la=+x.lat, ln=+x.lng, has=Number.isFinite(la)&&Number.isFinite(ln)&&!!la&&!!ln;
+  if(p && Number.isFinite(+p.olat) && Number.isFinite(+p.olng) && p.olat!==null && p.olng!==null) return {lat:+p.olat, lng:+p.olng};
+  if(!has || x.pinned) return null;
+  if(p && pinDistM(la,ln,p.lat,p.lng)<1) return null;          // the coords we have ARE the pin (other device / box copy)
+  return {lat:la, lng:ln};
+}
+// the record to store for a new pin: keeps the first original coords across re-pins
+function pinRecord(prev, name, lat, lng, orig, atIso){
+  const o = prev && prev.olat!=null ? {olat:prev.olat, olng:prev.olng} : orig ? {olat:+(+orig.lat).toFixed(6), olng:+(+orig.lng).toFixed(6)} : {};
+  return {lat:+(+lat).toFixed(6), lng:+(+lng).toFixed(6), at:atIso, name, ...o};
+}
+// 이 위치로 pressed: the centre is the original spot (within 1 m) → "reset" (drop the saved pin, use the original coords)
+function pinResult(c, orig){
+  if(orig && pinDistM(orig.lat,orig.lng,c.lat,c.lng)<=1) return {lat:+(+orig.lat).toFixed(6), lng:+(+orig.lng).toFixed(6), reset:true, orig};
+  return {lat:+(+c.lat).toFixed(6), lng:+(+c.lng).toFixed(6), reset:false, orig:orig||null};
+}
+function pinFmt(lat,lng){ return `${(+lat).toFixed(6)}, ${(+lng).toFixed(6)}`; }
+// PIN-PURE-END
+function pins(){ return lsGet(LS_PIN,{}); }
+function pinSave(x, lat, lng, v){
+  const m=pins(), k=hk(x.name); if(!k) return;
+  if(v && v.reset){ delete m[k]; lsSet(LS_PIN,m); m[k]={lat:+(+lat).toFixed(6), lng:+(+lng).toFixed(6)}; }   // 원래 위치로: pin removed, original coords synced
+  else { m[k]=pinRecord(m[k], x.name, lat, lng, v && v.orig, new Date().toISOString()); lsSet(LS_PIN,m); }
+  relayQuiet({kind:'hist_add', name:x.name, address:x.address||'', lat:m[k].lat, lng:m[k].lng});
+  const f=favMap()[k];
+  if(f) relayQuiet({kind:'fav_toggle', name:x.name, address:x.address||f.address||'', lat:m[k].lat, lng:m[k].lng, star:true, starred_at:f.starred_at||new Date().toISOString()});
+  if(f){ const loc=lsGet(LS_F,{}); if(loc[k]){ loc[k].lat=String(m[k].lat); loc[k].lng=String(m[k].lng); lsSet(LS_F,loc); } }
+  renderHist();
+}
+let LEAF=null, PIN_MAP=null, PIN_RES=null, PIN_ORIG=null, PIN_DOT=null;
+// 2026-11-12 kmap: 카카오지도 (Kakao Maps JS SDK) first when cfg.kakao_js (JavaScript 키, encrypted cfg) is set, Leaflet+OSM if the
+// key is missing or the SDK fails (unregistered domain → sdk.js 401 → onerror, network, 8 s timeout). Both sit behind one adapter
+// (PIN_MAP: getCenter()→{lat,lng} · setCenter(lat,lng) · relayout() · setDot(o|null)), so the pin logic doesn't care which.
+let KAKAO_P=null, KAKAO_FAIL=false;
+function kakaoKey(){ const k=CFG && CFG.kakao_js; return typeof k==='string' && /^[0-9a-f]{32}$/i.test(k.trim()) ? k.trim() : ''; }
+function kakaoLoad(key){
+  if(window.kakao && kakao.maps && kakao.maps.Map) return Promise.resolve();
+  if(KAKAO_P) return KAKAO_P;
+  KAKAO_P=new Promise((res,rej)=>{
+    let done=false; const fin=(e)=>{ if(done) return; done=true; clearTimeout(to); e ? rej(e) : res(); };
+    const to=setTimeout(()=>fin(new Error('kakao timeout')), 8000);
+    const j=document.createElement('script'); j.src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey='+encodeURIComponent(key);
+    j.onload=()=>{ try{ kakao.maps.load(()=>fin(kakao.maps.Map ? null : new Error('kakao'))); }catch(e){ fin(new Error('kakao')); } };
+    j.onerror=()=>fin(new Error('kakao sdk'));
+    document.head.appendChild(j);
+  }).catch(e=>{ KAKAO_P=null; KAKAO_FAIL=true; throw e; });
+  return KAKAO_P;
+}
+function kakaoAdapter(c0){
+  const K=kakao.maps, el=$('pinLeaf');
+  const m=new K.Map(el, {center:new K.LatLng(c0[0],c0[1]), level:2});
+  let dot=null;
+  K.event.addListener(m,'dragstart',()=>$('pinMap').classList.add('moving'));
+  K.event.addListener(m,'zoom_start',()=>$('pinMap').classList.add('moving'));
+  K.event.addListener(m,'idle',()=>{ $('pinMap').classList.remove('moving'); pinLLText(); });
+  return {prov:'kakao',
+    getCenter(){ const c=m.getCenter(); return {lat:c.getLat(), lng:c.getLng()}; },
+    setCenter(lat,lng,zoom){ if(zoom && m.getLevel()>2) m.setLevel(2); m.setCenter(new K.LatLng(lat,lng)); pinLLText(); },
+    relayout(){ m.relayout(); },
+    setDot(o){ if(dot){ dot.setMap(null); dot=null; } if(o){ const d=document.createElement('div'); d.className='kdot'; d.title='검색된 위치';
+      dot=new K.CustomOverlay({position:new K.LatLng(o.lat,o.lng), content:d, xAnchor:.5, yAnchor:.5, zIndex:1}); dot.setMap(m); } }};
+}
+function leafAdapter(c0){
+  const m=L.map('pinLeaf',{zoomControl:false, attributionControl:true}).setView(c0, 18);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, attribution:'© OpenStreetMap'}).addTo(m);
+  m.on('movestart',()=>$('pinMap').classList.add('moving'));
+  m.on('moveend',()=>{ $('pinMap').classList.remove('moving'); pinLLText(); });
+  let dot=null;
+  return {prov:'leaflet', map:m,
+    getCenter(){ const c=m.getCenter(); return {lat:c.lat, lng:c.lng}; },
+    setCenter(lat,lng,zoom){ m.setView([lat,lng], zoom ? 18 : m.getZoom(), {animate:false}); pinLLText(); },
+    relayout(){ m.invalidateSize(); },
+    setDot(o){ if(dot){ dot.remove(); dot=null; } if(o) dot=L.circleMarker([o.lat,o.lng],{radius:6,color:'#fff',weight:2,fillColor:'#2b5fd9',fillOpacity:.9}).addTo(m).bindTooltip('검색된 위치'); }};
+}
+// create the map once: Kakao if possible, else Leaflet. Returns false if neither loads.
+async function pinMapEnsure(c0){
+  if(PIN_MAP) return true;
+  const key=kakaoKey();
+  if(key && !KAKAO_FAIL){ try{ await kakaoLoad(key); PIN_MAP=kakaoAdapter(c0); return true; }catch(e){ /* → Leaflet */ } }
+  try{ await leafLoad(); }catch(e){ return false; }
+  PIN_MAP=leafAdapter(c0); $('pinProv').textContent = key ? '카카오지도를 못 불러와 OSM 지도로 보여요' : ''; return true;
+}
+function leafLoad(){
+  if(window.L) return Promise.resolve(); if(LEAF) return LEAF;
+  LEAF=new Promise((res,rej)=>{
+    const c=document.createElement('link'); c.rel='stylesheet'; c.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    c.integrity='sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY='; c.crossOrigin=''; document.head.appendChild(c);
+    const j=document.createElement('script'); j.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    j.integrity='sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo='; j.crossOrigin='';
+    j.onload=()=>res(); j.onerror=()=>{ LEAF=null; rej(new Error('leaflet')); }; document.head.appendChild(j);
+  });
+  return LEAF;
+}
+function pinLLText(){
+  if(!PIN_MAP) return; const c=PIN_MAP.getCenter(), o=PIN_ORIG;
+  const d=o ? pinDistM(o.lat,o.lng,c.lat,c.lng) : 0;
+  $('pinLL').textContent = `${pinFmt(c.lat,c.lng)}` + (o ? (d>=3 ? ` · 원래 위치에서 ${d>=1000?(d/1000).toFixed(1)+'km':d+'m'}` : ' · 원래 위치') : '');
+}
+// open the map centred on x (or its saved pin); resolves {lat,lng} or null
+async function pinOpen(x){
+  const at=pinApply(x, pins()), lat=+at.lat, lng=+at.lng;
+  const has=Number.isFinite(lat) && Number.isFinite(lng) && inKr(lat,lng);
+  $('pinTitle').textContent=x.name||'위치 고르기'; $('pinMap').hidden=false; $('pinLL').textContent='지도 불러오는 중…'; $('pinOk').disabled=true;
+  const c0 = has ? [lat,lng] : [37.5665,126.9780];
+  const o = at.orig || pinOrig(x, pins());
+  PIN_ORIG = o && inKr(o.lat,o.lng) ? o : null;
+  $('pinRs').hidden = !PIN_ORIG;
+  if(!(await pinMapEnsure(c0))){ $('pinLL').textContent='지도를 불러오지 못했어요. 네트워크를 확인하고 다시 열어 주세요'; return new Promise(r=>{ PIN_RES=r; }); }
+  PIN_MAP.relayout(); PIN_MAP.setCenter(c0[0], c0[1], true);
+  PIN_MAP.setDot(PIN_ORIG);
+  setTimeout(()=>{ PIN_MAP.relayout(); PIN_MAP.setCenter(c0[0], c0[1]); }, 60);
+  $('pinOk').disabled=false; pinLLText();
+  return new Promise(r=>{ PIN_RES=r; });
+}
+function pinClose(v){ $('pinMap').hidden=true; $('pinMap').classList.remove('moving'); const r=PIN_RES; PIN_RES=null; if(r) r(v); }
+$('pinOk').addEventListener('click', ()=>{ if(!PIN_MAP) return; const c=PIN_MAP.getCenter(); if(!inKr(c.lat,c.lng)){ $('pinLL').textContent='국내 위치만 고를 수 있어요'; return; } pinClose(pinResult(c, PIN_ORIG)); });
+$('pinRs').addEventListener('click', ()=>{ if(PIN_MAP && PIN_ORIG) PIN_MAP.setCenter(PIN_ORIG.lat, PIN_ORIG.lng, true); });
+$('pinNo').addEventListener('click', ()=>pinClose(null));
+$('pinMe').addEventListener('click', ()=>{
+  if(!navigator.geolocation){ $('pinLL').textContent='이 기기에서는 내 위치를 쓸 수 없어요'; return; }
+  $('pinLL').textContent='내 위치 찾는 중…';
+  navigator.geolocation.getCurrentPosition(p=>{ if(PIN_MAP) PIN_MAP.setCenter(p.coords.latitude, p.coords.longitude, true); },
+    ()=>{ $('pinLL').textContent='내 위치를 가져오지 못했어요 (위치 권한을 확인해 주세요)'; }, {enableHighAccuracy:true, timeout:10000, maximumAge:30000});
+});
+// 검색 결과에서 고른 곳
+$('pinAdj').addEventListener('click', async ()=>{
+  if(!PICK) return; const v=await pinOpen(PICK); if(!v) return;
+  pinSave(PICK, v.lat, v.lng, v); PICK={...PICK, lat:v.lat, lng:v.lng, pinned:!v.reset};
+  $('picked').innerHTML=`선택: <b>${esc(PICK.name)}</b>${v.reset?'':'<span class="pinb">📍 핀 위치</span>'}`;
+  setStatus('ok', v.reset ? '↺ 원래 위치로 되돌렸어요. 검색된 좌표로 보내요' : '📍 핀 위치를 저장했어요. 다음에도 이 위치로 보내요');
+});
+// 예약 입력 중
+$('resvPin').addEventListener('click', async ()=>{
+  if(!PICK) return; const v=await pinOpen(PICK); if(!v) return;
+  pinSave(PICK, v.lat, v.lng, v); PICK={...PICK, lat:v.lat, lng:v.lng, pinned:!v.reset};
+  $('resvPlace').innerHTML=`${esc(PICK.name)}${v.reset?'':'<span class="pinb">📍 핀</span>'}`;
+});
+// 현재 목적지 카드
+$('curPin').addEventListener('click', async ev=>{
+  ev.stopPropagation(); if(!CUR) return; const x=CUR; const v=await pinOpen(x); if(!v) return;
+  pinSave(x, v.lat, v.lng, v);
+  CFM_X={...x, lat:v.lat, lng:v.lng, pinned:!v.reset}; CFM_MODE='pin';
+  $('cfmMsg').innerHTML = v.reset ? `↺ <b>${esc(x.name)}</b> 원래 위치로 되돌렸어요 (저장된 핀은 지웠어요).<br>원래 좌표로 차에 다시 보낼까요?`
+                                  : `📍 <b>${esc(x.name)}</b> 핀 위치를 저장했어요.<br>이 좌표로 차에 다시 보낼까요?`;
+  $('cfmGo').textContent='🚗 이 좌표로 다시 보내기'; $('cfmHist').textContent='저장만 하기'; $('cfm').hidden=false;
+});
+let CFM_MODE='';
+let CFM_X=null;
+function choose(x){
+  if(!CUR){ doSend(x); return; }
+  CFM_X=x; $('cfmMsg').innerHTML=`지금 <b>${esc(CUR.name)}</b>(이)가 설정돼 있어요.<br><b>${esc(x.name)}</b>(으)로 어떻게 할까요?`; $('cfm').hidden=false;
+}
+function cfmReset(){ CFM_MODE=''; $('cfmGo').textContent='이 목적지로 변경'; $('cfmHist').textContent='이력에만 저장'; }
+$('cfmGo').addEventListener('click', ()=>{ $('cfm').hidden=true; if(CFM_X) doSend(CFM_X); CFM_X=null; cfmReset(); });
+$('cfmHist').addEventListener('click', ()=>{ $('cfm').hidden=true; if(CFM_X){ if(CFM_MODE==='pin') setStatus('ok',`📍 '${CFM_X.name}' 핀 위치를 저장했어요. 다음에 보낼 때 이 좌표를 써요`); else histOnly(CFM_X); } CFM_X=null; cfmReset(); });
+$('cfmNo').addEventListener('click', ()=>{ $('cfm').hidden=true; CFM_X=null; cfmReset(); });
+$('cfm').addEventListener('click', ev=>{ if(ev.target.id==='cfm'){ $('cfm').hidden=true; CFM_X=null; cfmReset(); } });
+// ---- pull-to-refresh (iOS Safari + home-screen PWA + Tesla browser). Touch only; no mouse drag.
+//      The whole page (#ptrSheet) translates down with rubber-band resistance; the spinner
+//      stays fixed at the top and is revealed in the gap (iOS-native). Horizontal card swipe
+//      (SW.lock==='x') and normal scrolling stay intact. Disabled while a modal/sheet is open.
+function pageScrollTop(){ return Math.max(window.scrollY||0, document.documentElement.scrollTop||0, document.body.scrollTop||0); }
+function ptrModalOpen(){
+  const cfm=$('cfm'); if(cfm && !cfm.hidden) return true;
+  const pk=$('pk'); if(pk && !pk.hidden) return true;
+  for(const el of document.querySelectorAll('[role="dialog"],[role="alertdialog"]')){
+    if(el.hidden || el.getAttribute('aria-hidden')==='true') continue;
+    return true;
+  }
+  return false;
+}
+function showToast(msg){
+  const t=$('toast'); if(!t) return;
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(window._toastT);
+  window._toastT=setTimeout(()=>t.classList.remove('on'), 2200);
+}
+(function(){
+  const ind=$('ptr'), sheet=$('ptrSheet'), icon=ind&&ind.querySelector('.ptr-icon'), msg=ind&&ind.querySelector('.ptr-msg');
+  if(!ind||!sheet) return;
+  let y0=0,x0=0,pull=0,act=false,busy=false,dir=null;
+  const TH=70, MAX=120, HOLD=56;
+  const SPRING='transform .34s cubic-bezier(.22,.8,.32,1)';
+  const ELASTIC='transform .58s cubic-bezier(.18,1.25,.32,1)';
+  function resist(dy){
+    if(dy<=0) return 0;
+    const raw=0.5*dy;
+    if(raw<=80) return raw;
+    const extra=raw-80;
+    return Math.min(MAX, 80 + extra*(40/(40+extra)));
+  }
+  function holdY(){
+    const box=ind.querySelector('.ptr-box');
+    const sat=box ? (parseFloat(getComputedStyle(box).paddingTop)||0) : 0;
+    return HOLD + sat;
+  }
+  const setPull=(y, animate, elastic)=>{
+    sheet.style.transition = animate ? (elastic ? ELASTIC : SPRING) : 'none';
+    sheet.style.transform = y ? `translateY(${y}px)` : '';
+    if(y>4) ind.classList.add('on'); else ind.classList.remove('on','ready');
+    if(!busy){
+      if(y>=TH){ ind.classList.add('ready'); if(icon) icon.style.transform='rotate(180deg)'; if(msg) msg.textContent='놓으면 새로고침'; }
+      else { ind.classList.remove('ready'); if(icon) icon.style.transform=`rotate(${Math.min(180,y*2.2)}deg)`; if(msg) msg.textContent='당겨서 새로고침'; }
+    }
+  };
+  const reset=(elastic)=>{
+    setPull(0,true,!!elastic);
+    const wait=elastic?640:380;
+    setTimeout(()=>{ if(!busy && !act){ sheet.style.transition=''; } }, wait);
+  };
+  document.addEventListener('touchstart',e=>{
+    if(busy||ptrModalOpen()||pageScrollTop()>0||e.touches.length!==1) return;
+    const el=e.target;
+    if(el && el.closest && el.closest('input,textarea,select,[contenteditable="true"]')) return;
+    act=true; dir=null; pull=0; y0=e.touches[0].clientY; x0=e.touches[0].clientX;
+  },{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(!act||busy) return;
+    if(e.touches.length!==1){ act=false; reset(); return; }
+    const t=e.touches[0], dy=t.clientY-y0, dx=t.clientX-x0;
+    if(dir===null && (Math.abs(dx)>8||Math.abs(dy)>8)) dir = (Math.abs(dy)>Math.abs(dx) && dy>0) ? 'y' : 'n';
+    if(dir!=='y' || SW.lock==='x' || RSW.lock==='x' || HSW.lock==='x' || pageScrollTop()>0 || ptrModalOpen()){ if(dir==='n') act=false; return; }
+    e.preventDefault();
+    pull=resist(dy);
+    setPull(pull,false);
+  },{passive:false});
+  const end=async ()=>{
+    if(!act) return; act=false;
+    if(dir!=='y' || pull<TH || ptrModalOpen()){ reset(); pull=0; return; }
+    busy=true; setPull(holdY(), true);
+    ind.classList.add('spin','on'); ind.classList.remove('ready');
+    if(icon) icon.style.transform=''; if(msg) msg.textContent='불러오는 중…';
+    const pw=passFromHash();
+    let ok=true;
+    try{
+      const jobs=[new Promise(r=>setTimeout(r,400))];
+      if(pw && CFG) jobs.push(loadCurrent(pw), loadHist(pw), loadJipbap(pw), loadResv(pw));
+      await Promise.all(jobs);
+    }catch(e){ ok=false; }
+    finally{
+      ind.classList.remove('spin'); reset(true); busy=false; pull=0;
+      showToast(ok ? '최신 데이터로 새로고침했어요' : '새로고침하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    }
+  };
+  document.addEventListener('touchend',end);
+  document.addEventListener('touchcancel',()=>{ if(!act||busy) return; act=false; reset(); pull=0; });
+})();
+// ---- 2026-11-09 🍚 집밥플래너 tab. Data = jipbap.enc.json (encrypted copy of the box's jipbap/inventory.json, owned by
+//      집밥플래너봇; same pass/scheme as cur.enc.json). Receipt photo → relay {kind:'receipt'} → box queue → 집밥플래너봇 reads it
+//      (the page does NO OCR). 소진 → relay {kind:'jipbap_consume'} → box marks the item status:'consumed'.
+//      냉동보관 → relay {kind:'jipbap_freeze'} → box sets loc:'냉동', frozen_at=today, exp (today+category days).
+//      보관 위치 정정 → relay {kind:'jipbap_loc'} → box setloc, 기본은 exp=구매일+새 위치 기간.
+//      exp_source=='label' 이면 위치만 바꾸고 라벨 기한 유지(estimated=false). 예외: 냉동은 오늘 기준으로 재계산.
+//      후기 → relay {kind:'jipbap_review'} → box reviews[product_key] (code or normalized name); no coaching re-analysis.
+const LS_JU='jipbap_uploads_v1', LS_JC='jipbap_consumed_v1', LS_JR='jipbap_reviews_v1', LS_JF='jipbap_frozen_v1', LS_JL='jipbap_loc_v1';
+const JB_APP_V='20261112-histsave';
+let JB=null, JSEC='stock', JTRIP=null, JB_IMG=null, JB_BUSY=false, JREBUY='';
+const LS_JN='jipbap_nutri_v1', LS_JNT='jipbap_nutri_thumb_v1';
+let JN_IMG=null, JN_BUSY=false, JN_OPEN=null, JN_WATCH=null, JN_RELAY_V=null, JN_POLL=null;
+const won = n => (Number(n)||0).toLocaleString('ko-KR')+'원';
+function kstToday(){ return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()); }
+function dLeft(exp){ if(!/^\d{4}-\d\d-\d\d$/.test(exp||'')) return null; return Math.round((Date.parse(exp+'T00:00:00Z')-Date.parse(kstToday()+'T00:00:00Z'))/864e5); }
+function addDaysYMD(iso,n){ const p=String(iso||'').split('-').map(Number); if(p.length<3||!p[0]) return ''; const dt=new Date(Date.UTC(p[0],p[1]-1,p[2]+n)); return dt.toISOString().slice(0,10); }
+function mmdd(iso){ const p=String(iso||'').split('-'); return p.length>=3 ? p[1]+'/'+p[2] : ''; }
+// Keep in sync with jipbap.py SHELF_RULES (first match wins; 국/탕/찌개 skip 생고기).
+const SHELF_DEFAULT={냉동:30,냉장:7,실온:3};
+const SHELF_RULES=[
+  ['곱창·막창·대창',{냉동:30,냉장:2,실온:0},['곱창','막창','대창','직화곱창']],
+  ['양념육',{냉동:30,냉장:5,실온:0},['양념육','양념갈비','양념 갈비','양념목살','불고기']],
+  ['닭꼬치 등 가공육',{냉동:30,냉장:14,실온:0},['닭꼬치','핫도그','소시지','햄','베이컨','너겟','가공육','비엔나','프랑크','미트볼']],
+  ['피자·만두류',{냉동:45,냉장:2,실온:0},['피자','만두','교자','군만두','물만두','왕만두']],
+  ['빵·식빵·버터롤',{냉동:30,냉장:7,실온:4},['식빵','버터롤','크루아상','베이글','모닝빵','케이크','페이스트리','빵','롤']],
+  ['생선·새우회',{냉동:30,냉장:1,실온:0},['새우회','모둠회','생선회','회','생선','새우','고등어','연어','갈치','조기','오징어','낙지','주꾸미','문어','게','굴']],
+  ['치즈',{냉동:60,냉장:30,실온:2},['치즈','하바티','모짜렐라','체다','체더','고다','카망베르','리코타','파마산','크림치즈']],
+  ['바나나·사과 등 과일',{냉동:60,냉장:14,실온:5},['바나나','사과','과일','딸기','블루베리','포도','오렌지','감귤','키위','망고','수박','멜론','메론','복숭아','자두','참외','체리','파인애플','나주배','신고배']],
+  ['유제품',{냉동:30,냉장:5,실온:0},['우유','두유','요거트','요구르트','생크림','휘핑크림']],
+  ['계란',{냉동:30,냉장:21,실온:7},['유정란','메추리알','계란','달걀']],
+  ['맥주·주류',{냉동:90,냉장:180,실온:90},['맥주','비어','생맥주','와인']],
+  ['절임·반찬',{냉동:30,냉장:30,실온:3},['나물','김치','젓갈','장아찌','피클']],
+  ['조리식품',{냉동:30,냉장:3,실온:0},['해장국','찌개','전골','짜장','떡볶이','족발','국물']],
+  ['생고기·삼겹',{냉동:60,냉장:3,실온:0},['삼겹','로스','생고기','목살','항정','갈비','차돌','부채살','등심','안심','앞다리','뒷다리','돼지고기','소고기','쇠고기','한우','와규','다짐육','민스','닭가슴','닭다리','생닭','육전','스테이크','돼지']]
+];
+function shelfRule(name){
+  name=String(name||'');
+  const soup=/국|탕|찌개|전골|죽|스프|수프/.test(name);
+  for(const [label,days,kws] of SHELF_RULES){
+    if(label==='생고기·삼겹' && soup) continue;
+    if(kws.some(k=>k && name.indexOf(k)>=0)) return [label,days];
+  }
+  return ['기타', SHELF_DEFAULT];
+}
+function shelfDays(name, loc){
+  const [label,days]=shelfRule(name);
+  return [label, days[loc] ?? SHELF_DEFAULT[loc] ?? 7];
+}
+function freezeCat(name){
+  let [label,days]=shelfDays(name,'냉동');
+  if(label==='곱창·막창·대창' || label==='양념육') label='양념육·곱창';
+  return [label,days];
+}
+function freezePlan(it, today){
+  today = today || kstToday();
+  const [label,days]=freezeCat(it && it.name);
+  const exp=addDaysYMD(today, days);
+  return {label, days, loc:'냉동', frozen_at:today, exp, exp_note:`냉동 후 약 ${days}일 (${mmdd(today)} 냉동)`};
+}
+function purchaseDate(it){
+  const rid=String(it && it.receipt_id || '').trim();
+  const r=rid && (JB && JB.receipts || []).find(x=>x.id===rid);
+  if(r && /^\d{4}-\d\d-\d\d$/.test(r.date||'')) return r.date;
+  for(const k of ['bought','added','purchased','bought_at','purchased_at']){
+    const v=String(it && it[k] || '').trim();
+    if(/^\d{4}-\d\d-\d\d$/.test(v)) return v.slice(0,10);
+    if(/^\d{4}-\d\d-\d\dT/.test(v)) return v.slice(0,10);
+  }
+  return '';
+}
+function shelfPlan(it, loc){
+  const isLabel=String(it && it.exp_source||'')==='label';
+  if(isLabel && loc!=='냉동'){
+    const bought=purchaseDate(it);
+    const [label,days]=shelfDays(it && it.name, loc);
+    return {label, days, loc, bought:bought||'', exp:it.exp||'', exp_note:it.exp_note||'',
+            frozen_at:'', estimated:false, past: dLeft(it.exp)<0, kept_label:true};
+  }
+  if(isLabel && loc==='냉동'){
+    const plan=freezePlan(it);
+    return {...plan, bought:purchaseDate(it)||'', estimated:true, past:dLeft(plan.exp)<0, kept_label:false, from_today:true};
+  }
+  const bought=purchaseDate(it);
+  if(!bought) return null;
+  const [label,days]=shelfDays(it && it.name, loc);
+  const exp=addDaysYMD(bought, days);
+  return {label, days, loc, bought, exp, exp_note:`${loc} 기준 약 ${days}일 (구매 ${mmdd(bought)})`,
+          frozen_at: loc==='냉동' ? bought : '', estimated:true, past: dLeft(exp)<0};
+}
+const OVERLAY_STALE_MS=15*60*1000;
+function overlayTs(rec){
+  const t=Date.parse((rec && (rec.set_at||rec.sent_at))||'');
+  return Number.isFinite(t) ? t : NaN;
+}
+function shouldKeepOverlay(rec, serverItem, kind, now, staleMs){
+  now = now || Date.now();
+  staleMs = staleMs==null ? OVERLAY_STALE_MS : staleMs;
+  const recLoc = kind==='freeze' ? '냉동' : (rec && rec.loc);
+  if(serverItem && serverItem.loc===recLoc) return false;          // server already matches
+  const t=overlayTs(rec);
+  if(!Number.isFinite(t) || (now-t)>staleMs) return false;         // undated or older than ~15 min
+  return true;                                                     // very recent pending change
+}
+function pruneOverlayDict(dict, items, kind, now, staleMs){
+  const byId=Object.fromEntries((items||[]).filter(it=>it&&it.id).map(it=>[it.id,it]));
+  const out={}; let changed=false;
+  for(const [id,rec] of Object.entries(dict||{})){
+    if(shouldKeepOverlay(rec, byId[id], kind, now, staleMs)) out[id]=rec;
+    else changed=true;
+  }
+  return {map: changed ? out : (dict||{}), changed};
+}
+function shouldDropLocOverlay(it, jl){
+  // Server loc already matches the pending change → drop overlay and use server exp/estimated.
+  // Do not require exp to match: a later label correction must not stay hidden under the optimistic recalc.
+  return !!(jl && it && it.loc===jl.loc);
+}
+function locOverlay(it){
+  if(!it) return it;
+  const jl=(lsGet(LS_JL,{})||{})[it.id];
+  if(jl) return {...it, loc:jl.loc, exp:jl.exp, exp_note:jl.exp_note, frozen_at:jl.frozen_at||'',
+                 estimated: !!jl.estimated, exp_source: jl.kept_label ? 'label' : (jl.estimated ? '' : (it.exp_source||''))};
+  const jf=(lsGet(LS_JF,{})||{})[it.id];
+  if(jf && it.loc!=='냉동') return {...it, loc:'냉동', exp:jf.exp, exp_note:jf.exp_note, frozen_at:jf.frozen_at};
+  return it;
+}
+function ddHtml(n){
+  if(n===null) return `<div class="dd">기한<small>없음</small></div>`;
+  const cls = n<0 ? 'exp' : n<=3 ? 'red' : n<=7 ? 'orange' : '';
+  const top = n<0 ? `D+${-n}` : n===0 ? 'D-day' : `D-${n}`;
+  const sub = n<0 ? '만료' : n<=3 ? '임박' : n<=7 ? '임박' : '';
+  return `<div class="dd ${cls}">${top}${sub?`<small>${sub}</small>`:''}</div>`;
+}
+function productKey(it){
+  const c = String(it && it.code || '').trim();
+  if(c) return c;
+  return String(it && it.name || '').trim().toLowerCase().replace(/\s+/g,' ');
+}
+function reviewBucket(pk){
+  const srv = (JB && JB.reviews && JB.reviews[pk]) || null;
+  const loc = lsGet(LS_JR,{});
+  const pend = Array.isArray(loc[pk]) ? loc[pk] : [];
+  const entries = [...((srv && srv.entries) || [])];
+  // merge optimistic pending that are not yet on the box (match by at+text+rebuy)
+  const seen = new Set(entries.map(e=>`${e.at}|${e.text||''}|${e.rebuy||''}`));
+  for(const e of pend){
+    const k = `${e.at}|${e.text||''}|${e.rebuy||''}`;
+    if(!seen.has(k)) entries.push({...e, _pending:true});
+  }
+  entries.sort((a,b)=>String(a.at).localeCompare(String(b.at)));
+  let rebuy = (srv && srv.rebuy) || '';
+  if(!rebuy){ for(let i=pend.length-1;i>=0;i--) if(pend[i].rebuy){ rebuy=pend[i].rebuy; break; } }
+  return { name:(srv&&srv.name)||'', code:(srv&&srv.code)||'', rebuy, entries };
+}
+function prunePendingReviews(){
+  if(!JB || !JB.reviews) return;
+  const loc = lsGet(LS_JR,{}); let ch=false;
+  for(const pk of Object.keys(loc)){
+    const srv = JB.reviews[pk]; if(!srv) continue;
+    const seen = new Set((srv.entries||[]).map(e=>`${e.at}|${e.text||''}|${e.rebuy||''}`));
+    const keep = (loc[pk]||[]).filter(e=>!seen.has(`${e.at}|${e.text||''}|${e.rebuy||''}`));
+    if(keep.length!==(loc[pk]||[]).length){ ch=true; if(keep.length) loc[pk]=keep; else delete loc[pk]; }
+  }
+  if(ch) lsSet(LS_JR, loc);
+}
+function jbActive(){
+  const loc = lsGet(LS_JC,{});
+  return (JB && Array.isArray(JB.items) ? JB.items : []).filter(x=>x && x.name && (x.status||'active')!=='consumed' && !loc[x.id])
+    .map(x=>{ x=locOverlay(x); return {...x, _d:dLeft(x.exp), _pk:productKey(x)}; })
+    .sort((a,b)=>(a._d===null?1e9:a._d)-(b._d===null?1e9:b._d));
+}
+async function loadJipbap(pass){
+  try{ const r=await fetch('jipbap.enc.json?_='+Date.now(),{cache:'no-store'});
+       if(r.ok) JB=await decryptDoc(await r.json(), pass); }catch(e){}
+  if(JB){ // forget this device's optimistic 소진 marks once the box has them
+    const loc=lsGet(LS_JC,{}); for(const it of JB.items||[]) if(it.status==='consumed') delete loc[it.id]; lsSet(LS_JC,loc);
+    const fz=pruneOverlayDict(lsGet(LS_JF,{}), JB.items||[], 'freeze');
+    if(fz.changed) lsSet(LS_JF,fz.map);
+    const jl=pruneOverlayDict(lsGet(LS_JL,{}), JB.items||[], 'loc');
+    if(jl.changed) lsSet(LS_JL,jl.map);
+    prunePendingReviews(); }
+  renderJipbap();
+}
+function setJsec(s){ JSEC=s; JITEM=null; JN_OPEN=null; if(s==='nutri') jnCheckRelay(); for(const b of document.querySelectorAll('.jseg button')) b.setAttribute('aria-selected', String(b.dataset.js===s)); renderJipbap(); }
+document.querySelector('.jseg').addEventListener('click', ev=>{ const b=ev.target.closest('button[data-js]'); if(b) setJsec(b.dataset.js); });
+function renderJipbap(){
+  $('jbLoading').hidden = true;
+  const none = !JB || !Array.isArray(JB.items);
+  $('jbNone').hidden = !none || JSEC==='rcpt' || JSEC==='nutri';
+  const act = jbActive();
+  $('jbNStock').textContent = none ? '' : act.length;
+  for(const [k,id] of [['stock','jbStock'],['hist','jbHist'],['rcpt','jbRcpt'],['nutri','jbNutri']]) $(id).hidden = JSEC!==k || (none && k!=='rcpt' && k!=='nutri');
+  if(!none){
+    $('jbStockList').innerHTML = act.length ? act.map(x=>{
+        const rb = reviewBucket(x._pk).rebuy;
+        return `<li class="ji"><button type="button" class="go inf" data-item="${esc(x.id)}"><div class="nm">${esc(x.name)}${VD.includes(x.verdict)?`<span class="vd ${esc(x.verdict)}">${esc(x.verdict)}</span>`:''}${rb?`<span class="rb ${esc(rb)}">재구매 ${esc(rb)}</span>`:''}</div>
+        <div class="mt">${x.loc?`<span class="loc ${esc(x.loc)}">${esc(x.loc)}</span>`:''}${esc(x.qty||'')}${x.exp?` · ${esc(x.exp)}`:''}</div></button>
+        ${ddHtml(x._d)}<div class="acts"><button type="button" class="use" data-use="${esc(x.id)}">소진</button>${x.loc!=='냉동'?`<button type="button" class="use ice" data-freeze="${esc(x.id)}">냉동보관</button>`:''}</div></li>`; }).join('')
+      : '<li class="jempty">남은 재고가 없어요.</li>';
+    renderCoach(); renderItem();
+    renderTrips();
+  }
+  renderUploads(); renderNutri();
+}
+// 2026-11-10: whole-inventory coaching is generated by 집밥플래너봇 (box: 10 min after the LAST inventory change) and only
+//             DISPLAYED here — the page never analyses anything itself.
+const VD=['추천','적당히','비추천'];
+let JITEM=null;
+function renderCoach(){
+  const c = JB && JB.coaching; const el=$('jbCoach');
+  if(!c || !c.summary){ el.innerHTML=''; return; }
+  const items = Object.fromEntries((JB.items||[]).map(i=>[i.id,i]));
+  const stale = JB.last_change_at && c.based_on_change_at && tms(c.based_on_change_at) < tms(JB.last_change_at);
+  const dueD = new Date(JB.coaching_due_at||''), dueT = isNaN(dueD) ? '' :
+    new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hour12:false}).format(dueD);
+  const g = c.groups || {};
+  el.innerHTML = `<div class="jcoach"><div class="t">🩺 건강 코칭 분석<small>분석 기준 시각 ${esc(fmtKst(c.based_on_change_at || c.generated_at)||'-')}</small></div>
+    ${stale?`<div class="due">재고 변경 반영 예정${dueT?` (${esc(dueT)})`:''}</div>`:''}
+    <div class="sum">${esc(c.summary)}</div>
+    <details${JB._coachOpen===false?'':' open'}><summary>품목별 코칭 보기</summary>
+    ${VD.filter(k=>Array.isArray(g[k]) && g[k].length).map(k=>`<div class="jcg ${k}"><h3>${k}</h3><ul>${g[k].map(r=>{
+        const it=items[r.item_id]; const gone = it && it.status==='consumed';
+        return `<li${gone?' style="opacity:.55"':''}><b>${esc(r.name || (it&&it.name) || '')}</b>${gone?' (소진)':''} · ${esc(r.text||'')}</li>`; }).join('')}</ul></div>`).join('')}
+    ${c.notes?`<div class="nt">${esc(c.notes)}</div>`:''}</details></div>`;
+  el.querySelector('details').addEventListener('toggle', e=>{ JB._coachOpen = e.target.open; });
+}
+const NUT=[['kcal','열량','kcal'],['protein_g','단백질','g'],['fat_g','지방','g'],['sat_fat_g','포화지방','g'],['carb_g','탄수화물','g'],['sugar_g','당류','g'],['sodium_mg','나트륨','mg']];
+function renderItem(){
+  const raw = JITEM && (JB.items||[]).find(x=>x.id===JITEM);
+  const it = locOverlay(raw);
+  $('jbStockMain').hidden = !!it; $('jbItem').hidden = !it;
+  if(!it){ JREBUY=''; return; }
+  const n = it.nutrition || {}, has = NUT.some(([k])=>n[k]!=null && n[k]!=='');
+  const d = dLeft(it.exp);
+  const pk = productKey(it);
+  const bucket = reviewBucket(pk);
+  if(!JREBUY && bucket.rebuy) JREBUY = bucket.rebuy;
+  const hist = bucket.entries.slice().reverse();
+  const histHtml = hist.length
+    ? `<ul class="hist">${hist.map(e=>`<li><div class="hd"><span>${esc(fmtKst(e.at)||e.at||'')}${e._pending?' · 반영 중':''}</span>${e.rebuy?`<span class="rb ${esc(e.rebuy)}">재구매 ${esc(e.rebuy)}</span>`:''}</div>${e.text?`<div class="tx">${esc(e.text)}</div>`:''}</li>`).join('')}</ul>`
+    : '<div class="na">아직 후기가 없어요. 먹어 본 느낌을 남겨 주세요.</div>';
+  $('jbItem').innerHTML = `<button type="button" class="jback" data-back="1">‹ 재고</button>
+    <div class="nm">${esc(it.name)}${VD.includes(it.verdict)?`<span class="vd ${esc(it.verdict)}">${esc(it.verdict)}</span>`:''}${bucket.rebuy?`<span class="rb ${esc(bucket.rebuy)}">재구매 ${esc(bucket.rebuy)}</span>`:''}</div>
+    <div class="ji" style="padding:8px 12px"><div class="inf"><div class="mt">${it.loc?`<span class="loc ${esc(it.loc)}">${esc(it.loc)}</span>`:''}${esc(it.qty||'')}${it.exp?` · ${esc(it.exp)}`:''}${it.exp_note?` · ${esc(it.exp_note)}`:''}${it.estimated?' · 추정':''}</div></div>${ddHtml(d)}</div>
+    <div class="sec"><h3>보관 위치</h3>
+      <div class="jlocsw" role="group" aria-label="보관 위치">${['냉동','냉장','실온'].map(l=>`<button type="button" class="${l}" data-loc="${l}" aria-pressed="${it.loc===l}">${l}</button>`).join('')}</div>
+      <div class="na" style="margin-top:6px">${it.exp_source==='label'?'잘못 적혀 있으면 바꿔 주세요. 라벨 소비기한은 그대로 두고, 냉동으로 바꿀 때만 오늘 기준으로 다시 계산돼요.':'잘못 적혀 있으면 바꿔 주세요. 유통기한은 구매일 기준으로 다시 계산돼요.'}</div>
+      ${d!==null && d<0 ? `<div class="jpast">${it.estimated?'다시 계산한 기한이 이미 지났어요.':'기한이 이미 지났어요.'}</div>` : d!==null && d<=3 ? '<div class="jsoon">임박했어요.</div>' : ''}
+      <div id="jbLocMsg" hidden></div></div>
+    <div class="sec"><h3>영양성분${n.basis?` <span class="na">(${esc(n.basis)} 기준)</span>`:''}${it.estimated?'<span class="est">비슷한 제품 추정치</span>':''}</h3>
+      ${has ? `<table>${NUT.map(([k,l,u])=>`<tr><td>${l}</td><td>${n[k]!=null&&n[k]!==''?esc(Number(n[k]).toLocaleString('ko-KR'))+' '+u:'<span class="na">-</span>'}</td></tr>`).join('')}</table>`
+            : '<div class="na">영양성분 정보가 아직 없어요.</div>'}</div>
+    <div class="sec"><h3>원재료</h3>${it.ingredients ? `<div>${esc(it.ingredients)}</div>` : '<div class="na">원재료 정보가 아직 없어요.</div>'}</div>
+    <div class="sec"><h3>건강코칭 분석${VD.includes(it.verdict)?`<span class="vd ${esc(it.verdict)}">${esc(it.verdict)}</span>`:''}</h3>
+      ${has3(it.coach3) ? p3Html(it.coach3) + concernsHtml(it.coach3.concerns) + altHtml(it.coach3.alternatives)
+        : `<div>${esc(it.coaching || it.note || '아직 코칭이 없어요.')}</div>`}${it.note && (it.coaching || has3(it.coach3)) ? `<div class="na" style="margin-top:6px">메모: ${esc(it.note)}</div>`:''}</div>
+    <div class="sec jrev" data-pk="${esc(pk)}"><h3>후기 · 재구매</h3>
+      ${histHtml}
+      <textarea id="jbRevText" maxlength="500" placeholder="맛·양·보관·재구매 여부 등 (최대 500자)"></textarea>
+      <div class="tog" role="group" aria-label="재구매">
+        <button type="button" class="추천" data-rebuy="추천" aria-pressed="${JREBUY==='추천'}">재구매 추천</button>
+        <button type="button" class="비추천" data-rebuy="비추천" aria-pressed="${JREBUY==='비추천'}">재구매 비추천</button>
+      </div>
+      <button type="button" class="save" id="jbRevSave">저장</button>
+      <div id="jbRevMsg" hidden></div>
+    </div>`;
+}
+$('jbStock').addEventListener('click', ev=>{
+  const g=ev.target.closest('[data-item]'); if(g){ JITEM=g.dataset.item; JREBUY=''; renderItem(); window.scrollTo({top:0}); return; }
+  if(ev.target.closest('[data-back]')){ JITEM=null; JREBUY=''; renderItem(); return; }
+  const rb=ev.target.closest('[data-rebuy]');
+  if(rb){
+    JREBUY = (JREBUY===rb.dataset.rebuy) ? '' : rb.dataset.rebuy;
+    for(const b of document.querySelectorAll('#jbItem [data-rebuy]')) b.setAttribute('aria-pressed', String(b.dataset.rebuy===JREBUY));
+    return;
+  }
+});
+$('jbStock').addEventListener('click', async ev=>{
+  const b=ev.target.closest('#jbRevSave'); if(!b || b.disabled) return;
+  const it=(JB.items||[]).find(x=>x.id===JITEM); if(!it) return;
+  const text=(($('jbRevText')&&$('jbRevText').value)||'').trim().slice(0,500);
+  const rebuy=JREBUY||'';
+  if(!text && !rebuy){ const m=$('jbRevMsg'); m.hidden=false; m.className='sterr'; m.textContent='후기나 재구매 추천/비추천 중 하나는 적어 주세요.'; return; }
+  if(!CFG || CFG.mode!=='relay'){ alert('중계 서버 설정이 없어 저장할 수 없어요.'); return; }
+  b.disabled=true; b.textContent='저장 중…';
+  const at=new Date().toISOString(), pk=productKey(it);
+  try{
+    await sendDestination(CFG, {kind:'jipbap_review', item_id:it.id, product_key:pk, name:it.name, text, rebuy, reviewed_at:at, source:'tesla-form-jipbap', sent_at:at});
+    const loc=lsGet(LS_JR,{}); (loc[pk]=loc[pk]||[]).push({at, text, rebuy, item_id:it.id}); lsSet(LS_JR, loc);
+    const m=$('jbRevMsg'); m.hidden=false; m.className='stok'; m.textContent='저장됨 (반영 중)';
+    if($('jbRevText')) $('jbRevText').value='';
+    // keep JREBUY so the toggle still shows the last choice; re-render history
+    renderItem();
+    const m2=$('jbRevMsg'); if(m2){ m2.hidden=false; m2.className='stok'; m2.textContent='저장됨 (반영 중)'; }
+  }catch(e){
+    b.disabled=false; b.textContent='저장';
+    const msg=String(e.message||'');
+    const m=$('jbRevMsg'); m.hidden=false; m.className='sterr';
+    m.textContent = /kind/.test(msg) ? '중계 서버가 아직 후기를 받지 못해요 (릴레이 v9 업데이트 필요).'
+      : /잠시/.test(msg) ? '잠시 후 다시 저장해 주세요.'
+      : '저장하지 못했어요. 잠시 후 다시 시도해 주세요.';
+  }
+});
+function renderTrips(){
+  const rs = (JB.receipts||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const t = JTRIP && rs.find(r=>r.id===JTRIP);
+  $('jbTrips').hidden = !!t; $('jbTrip').hidden = !t;
+  $('jbTrips').innerHTML = '<div class="jh">장 본 이력</div>' + (rs.length ? '<ul class="jl">'+rs.map(r=>`<li><button type="button" class="jtr" data-trip="${esc(r.id)}">
+      <div class="inf"><div class="nm">${esc(r.store||'')}</div><div class="mt">${esc(r.date||'')}</div></div>
+      <div class="amt">${won(r.total)}</div><span class="chev">›</span></button></li>`).join('')+'</ul>' : '<div class="jempty">아직 장 본 이력이 없어요.</div>');
+  if(t){
+    const lines = Array.isArray(t.lines) ? t.lines : [];
+    $('jbTrip').innerHTML = `<button type="button" class="jback" data-trip="">‹ 목록</button>
+      <div class="jh">${esc(t.store||'')} · ${esc(t.date||'')}</div>
+      <div class="jmet"><div><b>${won(t.total)}</b><span>총액</span></div><div><b>${esc(t.food_count ?? lines.filter(l=>l.food!==false).length)}개</b><span>식품</span></div>
+        <div><b>${t.food_total!=null?won(t.food_total):'-'}</b><span>식품 금액</span></div></div>
+      ${lines.map(l=>`<div class="jline"><span>${esc(l.name)}${l.food===false?'<span class="nf">비식품</span>':''}</span><span class="pr">${won(l.price)}</span></div>`).join('')}`;
+  }
+}
+$('jbHist').addEventListener('click', ev=>{ const b=ev.target.closest('[data-trip]'); if(!b) return; JTRIP=b.dataset.trip||null; renderTrips(); window.scrollTo({top:0}); });
+// 소진 처리: relay → box (jipbap.py pull/consume) sets status:'consumed' + consumed_at; this device hides it at once
+$('jbStock').addEventListener('click', async ev=>{
+  const b=ev.target.closest('button[data-use]'); if(!b || b.disabled) return;
+  const it=(JB.items||[]).find(x=>x.id===b.dataset.use); if(!it) return;
+  if(!confirm(`'${it.name}'을(를) 다 먹었어요? 재고에서 뺄게요.`)) return;
+  b.disabled=true; b.textContent='처리 중…';
+  const at=new Date().toISOString();
+  try{
+    await sendDestination(CFG, {kind:'jipbap_consume', item_id:it.id, name:it.name, consumed_at:at, source:'tesla-form-jipbap', sent_at:at});
+    const loc=lsGet(LS_JC,{}); loc[it.id]=at; lsSet(LS_JC,loc); renderJipbap();
+  }catch(e){
+    b.disabled=false; b.textContent='소진';
+    alert(/kind/.test(String(e.message||'')) ? '중계 서버가 아직 소진 처리를 지원하지 않아요 (릴레이 업데이트 필요).' : '소진 처리를 보내지 못했어요. 잠시 후 다시 시도해 주세요.');
+  }
+});
+// 냉동보관: relay {kind:'jipbap_freeze'} → box (jipbap.py pull/freeze) sets loc/exp/frozen_at. Hidden if already 냉동.
+$('jbStock').addEventListener('click', async ev=>{
+  const b=ev.target.closest('button[data-freeze]'); if(!b || b.disabled) return;
+  const it=(JB.items||[]).find(x=>x.id===b.dataset.freeze); if(!it) return;
+  if((it.loc||'')==='냉동') return;
+  const left=dLeft(it.exp);
+  if(left!==null && left<0){ alert('유통기한이 지났어요. 버리세요'); return; }
+  if(!confirm(`'${it.name}'을(를) 냉동보관할까요? 유통기한이 냉동 기준으로 다시 잡혀요.`)) return;
+  b.disabled=true; b.textContent='처리 중…';
+  const at=new Date().toISOString();
+  const plan=freezePlan(it);
+  try{
+    await sendDestination(CFG, {kind:'jipbap_freeze', item_id:it.id, name:it.name, frozen_at:at, source:'tesla-form-jipbap', sent_at:at});
+    const fz=lsGet(LS_JF,{}); fz[it.id]={...plan, set_at:at}; lsSet(LS_JF,fz); renderJipbap();
+  }catch(e){
+    b.disabled=false; b.textContent='냉동보관';
+    alert(/kind/.test(String(e.message||'')) ? '중계 서버가 아직 냉동보관을 지원하지 않아요 (릴레이 업데이트 필요).' : '냉동보관을 보내지 못했어요. 잠시 후 다시 시도해 주세요.');
+  }
+});
+// 보관 위치 정정: relay {kind:'jipbap_loc'} → box (jipbap.py pull/setloc).
+// 기본은 exp=구매일+새 위치 기간. exp_source=label 이면 기한 유지(냉동은 오늘 기준 재계산). 기한이 지났어도 막지 않음.
+$('jbStock').addEventListener('click', async ev=>{
+  const b=ev.target.closest('button[data-loc]'); if(!b || b.disabled) return;
+  const it0=(JB.items||[]).find(x=>x.id===JITEM); if(!it0) return;
+  const it=locOverlay(it0);
+  const loc=b.dataset.loc;
+  if(loc===it.loc) return;
+  const plan=shelfPlan(it, loc);
+  if(!plan){ alert('구매일을 알 수 없어 기한을 다시 계산하지 못했어요.'); return; }
+  let extra='유통기한이 구매일 기준으로 다시 계산돼요.';
+  if(plan.kept_label) extra=`라벨 소비기한(${it.exp||''})은 그대로 둬요.`;
+  else if(plan.from_today) extra='유통기한이 오늘 기준으로 다시 계산돼요.';
+  if(plan.past) extra += plan.kept_label ? ' 기한이 이미 지난 상태예요.' : (plan.from_today ? ' 다시 계산하면 기한이 이미 지난 상태예요.' : ' 다시 계산하면 기한이 이미 지난 상태예요.');
+  if(!confirm(`'${it.name}'의 보관 위치를 '${it.loc||''}'에서 '${loc}'으로 바꿀까요? ${extra}`)) return;
+  for(const x of document.querySelectorAll('#jbItem button[data-loc]')) x.disabled=true;
+  b.textContent='처리 중…';
+  const at=new Date().toISOString();
+  try{
+    await sendDestination(CFG, {kind:'jipbap_loc', item_id:it.id, name:it.name, loc, set_at:at, source:'tesla-form-jipbap', sent_at:at});
+    const jl=lsGet(LS_JL,{}); jl[it.id]={...plan, set_at:at}; lsSet(LS_JL,jl);
+    const fz=lsGet(LS_JF,{}); if(fz[it.id]){ delete fz[it.id]; lsSet(LS_JF,fz); }
+    renderJipbap();
+    const m=$('jbLocMsg');
+    if(m){ m.hidden=false; m.className=plan.past?'jpast':'na'; m.style.marginTop='8px';
+           m.textContent=plan.past?'반영 중 · 다시 계산한 기한이 이미 지났어요.':'반영 중'; }
+  }catch(e){
+    for(const x of document.querySelectorAll('#jbItem button[data-loc]')) x.disabled=false;
+    b.textContent=loc;
+    alert(/kind/.test(String(e.message||'')) ? '중계 서버가 아직 보관 위치 변경을 지원하지 않아요 (릴레이 업데이트 필요).' : '보관 위치를 바꾸지 못했어요. 잠시 후 다시 시도해 주세요.');
+  }
+});
+// 영수증: shrink in the browser (long side ≤ 2000 px JPEG), upload through the relay; the box + 집밥플래너봇 do the reading
+function jbStatus(cls,msg){ const s=$('jbStatus'); s.className='status '+cls; s.textContent=msg; }
+async function shrink(file){
+  const url=URL.createObjectURL(file);
+  try{
+    const img=await new Promise((ok,no)=>{ const i=new Image(); i.onload=()=>ok(i); i.onerror=no; i.src=url; });
+    for(const [max,q] of [[2000,.82],[1600,.7],[1280,.6]]){
+      const k=Math.min(1, max/Math.max(img.naturalWidth,img.naturalHeight)), c=document.createElement('canvas');
+      c.width=Math.round(img.naturalWidth*k); c.height=Math.round(img.naturalHeight*k);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      const d=c.toDataURL('image/jpeg',q).split(',')[1];
+      if(d.length<=2900000) return {mime:'image/jpeg', data:d, preview:'data:image/jpeg;base64,'+d};
+    }
+    throw new Error('too big');
+  }finally{ URL.revokeObjectURL(url); }
+}
+async function pickFile(ev){
+  const f=ev.target.files && ev.target.files[0]; ev.target.value=''; if(!f) return;
+  jbStatus('busy','사진 준비 중…');
+  try{ JB_IMG=await shrink(f); $('jbImg').src=JB_IMG.preview; $('jbPrev').hidden=false; jbStatus('',''); }
+  catch(e){ JB_IMG=null; $('jbPrev').hidden=true; jbStatus('err','사진을 열 수 없어요. 다른 사진으로 해 주세요.'); }
+}
+$('jbCam').addEventListener('change', pickFile); $('jbFile').addEventListener('change', pickFile);
+$('jbSend').addEventListener('click', async ()=>{
+  if(!JB_IMG || JB_BUSY) return;
+  if(!CFG || CFG.mode!=='relay'){ jbStatus('err','중계 서버 설정이 없어 보낼 수 없어요.'); return; }
+  JB_BUSY=true; $('jbSend').disabled=true; $('jbSend').textContent='보내는 중…'; jbStatus('busy','영수증 보내는 중…');
+  const ctl=new AbortController(), t=setTimeout(()=>ctl.abort(), 90000), at=new Date().toISOString();
+  try{
+    const r=await fetch(CFG.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},redirect:'follow',signal:ctl.signal,
+      body:JSON.stringify({kind:'receipt', mime:JB_IMG.mime, data:JB_IMG.data, source:'tesla-form-jipbap', sent_at:at})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j || !j.ok || !j.id) throw new Error(j && j.error==='rate' ? '잠시 후 다시' : (j && j.error==='kind' ? 'kind' : '오류: '+((j&&j.error)||'?')));
+    const ups=lsGet(LS_JU,[]); ups.unshift({upload_id:j.id, uploaded_at:at}); lsSet(LS_JU, ups.slice(0,30));
+    JB_IMG=null; $('jbPrev').hidden=true; jbStatus('ok','보냈어요! 집밥플래너봇이 읽고 재고에 넣을 때까지 ‘인식 대기 중’이에요.');
+    renderUploads();
+  }catch(e){
+    const m=String(e.message||'');
+    jbStatus('err', e.name==='AbortError' ? '응답이 없어요. 잠시 후 다시 보내 주세요.' : m==='kind' ? '중계 서버가 아직 영수증을 받지 못해요 (릴레이 업데이트 필요).'
+      : `보내지 못했어요 (${/^(HTTP|오류|잠시)/.test(m)?m:'네트워크 오류'}). 잠시 후 다시 시도해 주세요.`);
+  }finally{ clearTimeout(t); JB_BUSY=false; $('jbSend').disabled=false; $('jbSend').textContent='이 영수증 보내기'; }
+});
+function renderUploads(){
+  const srv = JB && Array.isArray(JB.uploads) ? JB.uploads : [], byId = Object.fromEntries(srv.map(u=>[u.upload_id,u]));
+  let loc = lsGet(LS_JU,[]);
+  loc = loc.filter(u=>!(byId[u.upload_id] && byId[u.upload_id].status!=='pending')); lsSet(LS_JU, loc);   // finished on the box → forget
+  const all = [...loc.filter(u=>!byId[u.upload_id]).map(u=>({...u, status:'pending'})), ...srv]
+    .sort((a,b)=>tms(b.uploaded_at)-tms(a.uploaded_at)).slice(0,20);
+  const rc = id => (JB && JB.receipts || []).find(r=>r.id===id);
+  $('jbUps').innerHTML = all.length ? all.map(u=>{
+    const r = rc(u.receipt_id);
+    const st = u.status==='done' ? `<span class="st done">✅ 등록 완료${r?` · ${esc(r.store||'')} ${esc(r.date||'')}`:''}</span>`
+      : u.status==='failed' ? `<span class="st fail">❌ 인식 실패${u.reason?` · ${esc(u.reason)}`:''}</span>`
+      : `<span class="st pend">⏳ 인식 대기 중</span>`;
+    return `<li class="ji jup"><div class="inf"><div>${st}</div><div class="mt">${esc(fmtKst(u.uploaded_at)||'')} 보냄</div></div></li>`;
+  }).join('') : '<li class="jempty">아직 보낸 영수증이 없어요.</li>';
+}
+// ---- 2026-11-12 🔬 영양성분·원재료 분석. Photo → relay {kind:'jipbap_nutri'} (v13; same photo storage as receipts, purpose
+//      'nutri') → webhook kind 'jipbap_nutri' → box `jipbap.py pull` (nutri_queue/, never the receipt queue) → 집밥플래너봇 reads
+//      the label → `jipbap.py nutri-set` → JB.nutri[] (history). A v12 relay answers error:'kind' → clear message, nothing filed.
+// NUTRI-PURE-BEGIN
+const V3 = {'사도 좋아요':'ok', '가끔은 괜찮아요':'mid', '피하세요':'bad'};
+const P3 = [['diet','다이어트'],['health','건강'],['kids','성장기 어린이·청소년']];
+const JN_TTL_MS = 6*3600e3;   // relay keeps photos 6 h
+function has3(c){ return !!(c && typeof c==='object' && P3.every(([k])=>c[k] && V3[c[k].verdict])); }
+function v3Cls(v){ return V3[v] || 'mid'; }
+// server history + this device's just-sent uploads → newest-first rows; local entries the box already knows are dropped
+function nutriMerge(srv, loc, nowMs){
+  srv = Array.isArray(srv) ? srv.filter(e=>e && e.upload_id) : [];
+  const known = new Set(srv.map(e=>e.upload_id));
+  const keep = (Array.isArray(loc)?loc:[]).filter(u=>u && u.upload_id && !known.has(u.upload_id) && nowMs - (Date.parse(u.uploaded_at)||0) < JN_TTL_MS);
+  const rows = [...keep.map(u=>({...u, status:'pending', _local:true})), ...srv]
+    .sort((a,b)=>(Date.parse(b.uploaded_at||b.analyzed_at)||0)-(Date.parse(a.uploaded_at||a.analyzed_at)||0));
+  return {rows, local:keep};
+}
+function dvLevel(p){ return p==null ? '' : p>=30 ? 'h' : p>=15 ? 'w' : ''; }
+// NUTRI-PURE-END
+function jnStatus(cls,msg){ const s=$('jnStatus'); s.className='status '+cls; s.textContent=msg; }
+function p3Html(c){
+  return P3.map(([k,l])=>{ const p=c[k]||{};
+    return `<div class="p3"><div class="ph3"><span>${esc(l)}</span><span class="v3 ${v3Cls(p.verdict)}">${esc(p.verdict||'')}</span></div>
+      ${p.summary?`<div class="sm">${esc(p.summary)}</div>`:''}${(p.points||[]).length?`<ul>${p.points.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`; }).join('');
+}
+function concernsHtml(cs){ cs=Array.isArray(cs)?cs:[]; return cs.length ? `<div class="p3"><div class="ph3"><span>⚠️ 원재료 주의</span></div><ul>${cs.map(x=>`<li><b>${esc(x.name||'')}</b>${x.why?` — ${esc(x.why)}`:''}</li>`).join('')}</ul></div>` : ''; }
+function altHtml(a){ a=Array.isArray(a)?a:[]; return a.length ? `<div class="p3"><div class="ph3"><span>🔁 대신 이런 건 어때요</span></div><ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>` : ''; }
+function jnChips(r){ const ps=(r&&r.perspectives)||{}; return `<div class="jn-chips">${P3.map(([k,l])=>ps[k]&&ps[k].verdict?`<span class="v3 ${v3Cls(ps[k].verdict)}">${esc(l.replace('성장기 어린이·청소년','성장기'))} · ${esc(ps[k].verdict)}</span>`:'').join('')}</div>`; }
+function renderNutri(){
+  if(!$('jnList')) return;
+  const m = nutriMerge(JB && JB.nutri, lsGet(LS_JN,[]), Date.now());
+  lsSet(LS_JN, m.local);
+  const th = lsGet(LS_JNT,{}), ids=new Set(m.rows.map(r=>r.upload_id));
+  for(const k of Object.keys(th)) if(!ids.has(k)) delete th[k];
+  lsSet(LS_JNT, th);
+  const pend = m.rows.filter(r=>r.status==='pending');
+  $('jnBusy').innerHTML = pend.length ? `<div class="jn-busy"><span class="sp"></span><div><b>분석 중이에요 (${pend.length}건)</b><div class="na" style="font-size:12.5px;margin-top:2px">집밥플래너봇이 라벨을 읽고 있어요. 이 화면을 켜 두면 끝나는 대로 결과가 열려요.</div></div></div>` : '';
+  $('jnList').innerHTML = m.rows.length ? m.rows.map(e=>{
+    const r=e.result||{}, nm = e.status==='done' ? (r.product&&r.product.name||'제품') : e.status==='failed' ? '분석 실패' : '분석 중…';
+    const sub = e.status==='done' ? jnChips(r) : e.status==='failed' ? `<div class="mt" style="color:var(--err)">${esc(e.reason||'사진을 읽지 못했어요. 라벨이 잘 보이게 다시 찍어 주세요.')}</div>` : '<div class="mt" style="color:#f5c518">⏳ 결과를 기다리는 중</div>';
+    return `<li class="ji"><button type="button" class="go inf" data-jn="${esc(e.upload_id)}" ${e.status==='done'?'':'disabled'} style="display:flex;gap:10px;align-items:center;text-align:left">
+      ${th[e.upload_id]?`<img class="jn-th" src="${esc(th[e.upload_id])}" alt="">`:'<span class="jn-th" style="display:flex;align-items:center;justify-content:center">🔬</span>'}
+      <span style="flex:1;min-width:0"><div class="nm">${esc(nm)}${r.product&&r.product.brand?` <span class="na" style="font-size:13px">${esc(r.product.brand)}</span>`:''}</div>${sub}
+      <div class="mt">${esc(fmtKst(e.uploaded_at||e.analyzed_at)||'')}</div></span></button></li>`; }).join('')
+    : '<li class="jempty">아직 분석한 제품이 없어요.</li>';
+  if(JN_WATCH){ const w=m.rows.find(r=>r.upload_id===JN_WATCH);
+    if(w && w.status!=='pending'){ JN_WATCH=null; if(w.status==='done' && JSEC==='nutri'){ JN_OPEN=w.upload_id; showToast('분석이 끝났어요'); jnStatus('',''); } } }
+  renderNutriDet(m.rows);
+  // in-store: refresh faster (15 s) while something is being analyzed and this sub-tab is open
+  const want = pend.length>0 && JSEC==='nutri' && TAB==='jipbap';
+  if(want && !JN_POLL) JN_POLL=setInterval(()=>{ const pw=passFromHash(); if(document.visibilityState==='visible' && pw && JSEC==='nutri') loadJipbap(pw); }, 15000);
+  if(!want && JN_POLL){ clearInterval(JN_POLL); JN_POLL=null; }
+}
+function renderNutriDet(rows){
+  const e = JN_OPEN && rows.find(r=>r.upload_id===JN_OPEN && r.status==='done');
+  $('jnDet').hidden = !e; $('jnMain').hidden = !!e;
+  if(!e){ $('jnDet').innerHTML=''; return; }
+  const r=e.result||{}, pr=r.product||{}, lb=r.label||{}, ing=r.ingredients||{};
+  const ur = t => t==='판독 불가' ? '<span class="jn-ur">판독 불가</span>' : esc(t);
+  const rows2 = (lb.rows||[]).map(x=>{ const p=typeof x.dv_pct==='number'?x.dv_pct:null, lv=dvLevel(p);
+    return `<tr><td>${esc(x.name||'')}</td><td>${ur(x.amount||'')}</td><td>${p==null?'<span class="na">-</span>':`${p}%${x.dv_src==='calc'?'<sup title="라벨에 %가 없어 기준치로 계산">*</sup>':''}<span class="jn-bar"><i class="${lv}" style="width:${Math.min(100,p)}%"></i></span>`}</td></tr>`; }).join('');
+  $('jnDet').innerHTML = `<button type="button" class="jback" data-jnback="1">‹ 분석 기록</button>
+    <div class="nm">${ur(pr.name||'')}${pr.brand?` <span class="na" style="font-size:14px">${esc(pr.brand)}</span>`:''}</div>
+    <div class="na">${esc(fmtKst(e.analyzed_at||e.uploaded_at)||'')} 분석${pr.category?` · ${esc(pr.category)}`:''}</div>
+    <div class="sec"><h3>3가지 관점 코칭</h3>${p3Html(r.perspectives||{})}</div>
+    <div class="sec"><h3>영양정보${lb.basis?` <span class="na">(${ur(lb.basis)})</span>`:''}</h3>${lb.total?`<div class="na" style="margin-bottom:4px">${esc(lb.total)}</div>`:''}
+      ${rows2?`<table class="jn-tab"><tr><td class="na">성분</td><td class="na" style="font-weight:600">함량</td><td class="na">1일 기준치</td></tr>${rows2}</table>
+      ${(lb.rows||[]).some(x=>x.dv_src==='calc')?'<div class="na" style="margin-top:6px">* 라벨에 %가 없어 1일 기준치로 계산한 값</div>':''}`:'<div class="na">영양정보를 읽지 못했어요 (판독 불가).</div>'}</div>
+    <div class="sec"><h3>원재료</h3><div style="font-size:14px;line-height:1.5">${ing.text?ur(ing.text):'<span class="jn-ur">판독 불가</span>'}</div>
+      ${(ing.allergens||[]).length?`<div style="margin-top:6px">${ing.allergens.map(a=>`<span class="jn-alg">${esc(a)}</span>`).join('')}</div>`:''}
+      ${concernsHtml(ing.concerns)}</div>
+    ${(r.alternatives||[]).length?`<div class="sec">${altHtml(r.alternatives)}</div>`:''}
+    ${r.notes?`<div class="sec"><div class="na">${esc(r.notes)}</div></div>`:''}`;
+}
+$('jbNutri').addEventListener('click', ev=>{
+  const b=ev.target.closest('button[data-jn]'); if(b && !b.disabled){ JN_OPEN=b.dataset.jn; renderNutri(); window.scrollTo(0,0); return; }
+  if(ev.target.closest('button[data-jnback]')){ JN_OPEN=null; renderNutri(); }
+});
+// one GET to the relay when the sub-tab opens: v<13 → show the update notice up front (send stays possible; relay rejects it anyway)
+async function jnCheckRelay(){
+  if(JN_RELAY_V!==null || !CFG || CFG.mode!=='relay') return;
+  JN_RELAY_V=0;
+  try{ const r=await fetch(CFG.url,{redirect:'follow'}); const j=await r.json(); JN_RELAY_V=Number(j && j.v)||0; }catch(e){ JN_RELAY_V=null; return; }
+  jnRelayWarn();
+}
+function jnRelayWarn(){ const w=$('jnWarn'); const old = JN_RELAY_V!==null && JN_RELAY_V>0 && JN_RELAY_V<13;
+  w.hidden=!old; w.textContent = old ? `중계 서버(v${JN_RELAY_V})가 아직 성분 분석 사진을 받지 못해요. 업데이트(v13) 후에 쓸 수 있어요. 지금 보내도 영수증으로 잘못 등록되지는 않아요.` : ''; }
+async function jnPick(ev){
+  const f=ev.target.files && ev.target.files[0]; ev.target.value=''; if(!f) return;
+  jnStatus('busy','사진 준비 중…');
+  try{ JN_IMG=await shrink(f); $('jnImg').src=JN_IMG.preview; $('jnPrev').hidden=false; jnStatus('',''); }
+  catch(e){ JN_IMG=null; $('jnPrev').hidden=true; jnStatus('err','사진을 열 수 없어요. 다른 사진으로 해 주세요.'); }
+}
+$('jnCam').addEventListener('change', jnPick); $('jnFile').addEventListener('change', jnPick);
+async function jnThumb(preview){
+  try{ const img=await new Promise((ok,no)=>{ const i=new Image(); i.onload=()=>ok(i); i.onerror=no; i.src=preview; });
+    const k=120/Math.min(img.naturalWidth,img.naturalHeight), c=document.createElement('canvas');
+    c.width=Math.round(img.naturalWidth*k); c.height=Math.round(img.naturalHeight*k); c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    return c.toDataURL('image/jpeg',.6); }catch(e){ return ''; }
+}
+$('jnSend').addEventListener('click', async ()=>{
+  if(!JN_IMG || JN_BUSY) return;
+  if(!CFG || CFG.mode!=='relay'){ jnStatus('err','중계 서버 설정이 없어 보낼 수 없어요.'); return; }
+  JN_BUSY=true; $('jnSend').disabled=true; $('jnSend').textContent='보내는 중…'; jnStatus('busy','사진 보내는 중…');
+  const ctl=new AbortController(), t=setTimeout(()=>ctl.abort(), 90000), at=new Date().toISOString();
+  try{
+    const r=await fetch(CFG.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},redirect:'follow',signal:ctl.signal,
+      body:JSON.stringify({kind:'jipbap_nutri', mime:JN_IMG.mime, data:JN_IMG.data, source:'tesla-form-jipbap', sent_at:at})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j || !j.ok || !j.id) throw new Error(j && j.error==='rate' ? '잠시 후 다시' : (j && j.error==='kind' ? 'kind' : '오류: '+((j&&j.error)||'?')));
+    const th=lsGet(LS_JNT,{}); const tb=await jnThumb(JN_IMG.preview); if(tb){ th[j.id]=tb; lsSet(LS_JNT,th); }
+    const l=lsGet(LS_JN,[]); l.unshift({upload_id:j.id, uploaded_at:at}); lsSet(LS_JN, l.slice(0,10));
+    JN_WATCH=j.id; JN_IMG=null; $('jnPrev').hidden=true; jnStatus('ok','보냈어요! 분석이 끝나면 결과가 바로 열려요.');
+    renderNutri();
+  }catch(e){
+    const m=String(e.message||'');
+    if(m==='kind'){ JN_RELAY_V = JN_RELAY_V>0 ? JN_RELAY_V : 12; jnRelayWarn(); }
+    jnStatus('err', e.name==='AbortError' ? '응답이 없어요. 잠시 후 다시 보내 주세요.'
+      : m==='kind' ? '중계 서버가 아직 성분 분석을 지원하지 않아요 (릴레이 v13 업데이트 필요). 사진은 저장되지 않았고 영수증으로도 등록되지 않았어요.'
+      : `보내지 못했어요 (${/^(HTTP|오류|잠시)/.test(m)?m:'네트워크 오류'}). 잠시 후 다시 시도해 주세요.`);
+  }finally{ clearTimeout(t); JN_BUSY=false; $('jnSend').disabled=false; $('jnSend').textContent='이 사진 분석하기'; }
+});
+// ---- 2026-11-11 ⏰ 목적지 예약. Data = resv.enc.json (encrypted copy of the box's ~/.tesla/resv.json, tesla_resv.py).
+//      등록/삭제/📅확정 → relay {kind:'resv_add'|'resv_del'|'resv_confirm'} (v12) → box pull → box timer fires set_dest.py at fire_at.
+//      An old relay (v11) answers error:'kind' → '중계 서버 업데이트 대기 중' and nothing is stored on this device.
+// RESV-PURE-BEGIN
+const RESV_TTL_MS = 6*3600e3;   // relay keeps queued events 6 h; local optimistic records expire with it
+function kstParts(ms){ const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms)).map(x=>[x.type,x.value]));
+  return {date:`${p.year}-${p.month}-${p.day}`, time:`${p.hour}:${p.minute}`}; }
+function resvIsoFromInputs(date, time){
+  if(!/^\d{4}-\d\d-\d\d$/.test(date||'') || !/^\d\d:\d\d$/.test(time||'')) return '';
+  const iso=`${date}T${time}:00+09:00`; return Number.isFinite(Date.parse(iso)) ? iso : ''; }
+function resvDefault(nowMs, addMin){ const t=Math.ceil((nowMs+(addMin||60)*60e3)/600e3)*600e3; return kstParts(t); }
+function resvTomorrow8(nowMs){ const d=kstParts(nowMs+86400e3).date; return {date:d, time:'08:00'}; }
+function resvCheck(iso, nowMs){
+  const t=Date.parse(iso); if(!Number.isFinite(t)) return '날짜와 시각을 골라 주세요';
+  if(t < nowMs+60e3) return '지금보다 나중 시각을 골라 주세요';
+  if(t > nowMs+60*86400e3) return '60일 안의 시각만 예약할 수 있어요';
+  return ''; }
+function resvNewId(){ const a=new Uint8Array(6); crypto.getRandomValues(a); return 'r'+[...a].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+// server list + this device's optimistic adds/deletes/confirms → what to show (and the pruned local records)
+function resvMerge(server, adds, dels, cfs, nowMs){
+  const S=Array.isArray(server)?server:[], ids=new Set(S.map(x=>x.id)), out=[];
+  const add2={}, del2={}, cf2={};
+  for(const [id,x] of Object.entries(adds||{})){ if(ids.has(id) || nowMs-Date.parse(x.created_at||0) > RESV_TTL_MS) continue; add2[id]=x; }
+  for(const [id,at] of Object.entries(dels||{})){ if(!ids.has(id) && !(adds||{})[id]) continue; if(nowMs-Date.parse(at) > RESV_TTL_MS) continue; del2[id]=at; }
+  for(const [id,x] of Object.entries(cfs||{})){ const s=S.find(y=>y.id===id); if(!s || nowMs-Date.parse(x.at) > RESV_TTL_MS) continue;
+    const pinPending = x.pin && s.state==='scheduled' && (Math.abs(+s.lat - +x.lat)>1e-6 || Math.abs(+s.lng - +x.lng)>1e-6);   // 2026-11-12 pin edit
+    if(s.state!=='needs_confirm' && !pinPending) continue; cf2[id]=x; }
+  for(const x of S){ if(del2[x.id]) continue;
+    if(['done','skipped'].includes(x.state) && !resvWaking(x, nowMs)) continue;   // 2026-11-12: completed reservations vanish right away (YB)
+    if(['failed','missed'].includes(x.state) && nowMs-(Date.parse(x.fired_at||x.fire_at)||nowMs) > RESV_SHOW_DONE_MS) continue;   // problems: 24 h window
+    out.push(cf2[x.id] ? {...x, ...cf2[x.id], state:'confirming'} : x); }
+  for(const x of Object.values(add2)){ if(!del2[x.id]) out.push({...x, state:'pending'}); }
+  const fin=x=>['done','skipped','failed','missed'].includes(x.state)?1:0;   // upcoming first, finished (last 24 h) below
+  out.sort((a,b)=>fin(a)-fin(b) || String(a.fire_at).localeCompare(String(b.fire_at)));
+  return {list:out, adds:add2, dels:del2, cfs:cf2};
+}
+function resvDur(m){ m=+m; if(!(m>0)) return ''; const h=Math.floor(m/60), r=m%60; return h ? `${h}시간${r?` ${r}분`:''}` : `${r}분`; }
+// 2026-11-12 zombie: a 'waking' result older than 15 min is over (box settles it too; this covers a stale published copy)
+const RESV_WAKE_MS = 15*60e3, RESV_SHOW_DONE_MS = 24*3600e3;
+function resvWaking(x, nowMs){ return x.state==='done' && !resvWakeStale(x, nowMs) && (x.result==='set_wake' || (x.result==='sent_now' && /깨운/.test(x.reason||''))); }
+function resvWakeStale(x, nowMs){ const t=Date.parse(x.fired_at||'')||0; return !!t && (nowMs||Date.now())-t > RESV_WAKE_MS; }
+function resvState(x, nowMs){
+  switch(x.state){
+    case 'pending': return ['', '⏳ 등록 중 (박스 반영 대기)'];
+    case 'confirming': return ['', x.pin ? '⏳ 핀 위치 반영 중' : '⏳ 장소 확정 반영 중'];
+    case 'scheduled': return ['', x.reason && /^재시도/.test(x.reason) ? '🔁 '+x.reason : '⏳ 예정'];
+    case 'needs_confirm': return ['need', '📍 장소 확인 필요 · 확정 전에는 보내지 않아요'];
+    case 'firing': return ['', '🚗 차에 보내는 중…'];
+    case 'sending_now': return ['', '🚗 지금 보내는 중… (박스가 차에 보내요)'];
+    case 'done': return ['done', x.result==='set_unconfirmed' ? '✅ 보냄 · 깨운 뒤 확인은 안 됐어요'
+                                : resvWakeStale(x, nowMs) ? (x.result==='sent_now' ? '✅ 지금 보내기로 차에 설정됨' : '✅ 차에 설정됨')
+                                : x.result==='sent_now' ? (/깨운/.test(x.reason||'') ? '✅ 지금 보내기로 설정됨 · 차를 깨워 다시 보내는 중' : '✅ 지금 보내기로 차에 설정됨')
+                                : x.result==='set_wake' ? '✅ 설정됨 · 차를 깨워 다시 보내는 중' : '✅ 차에 설정됨'];
+    case 'skipped': return ['skip', '↩️ 이미 같은 목적지라 건너뜀'];
+    case 'failed': return ['fail', '❌ 실패'+(x.reason?' · '+x.reason:'')];
+    case 'missed': return ['miss', '⌛ 보내지 않음'+(x.reason?' · '+x.reason:'')];
+    default: return ['', x.state||''];
+  } }
+// 2026-11-12 resv_now: this device's '🚗 지금 보내기' requests ({id: at}) → show 'sending_now' while the box still says scheduled
+const RESV_NOW_TTL_MS = 15*60e3;
+function resvNowApply(list, nows, nowMs){ const keep={};
+  const out=(list||[]).map(x=>{ const at=(nows||{})[x.id];
+    if(!at || nowMs-(Date.parse(at)||0) > RESV_NOW_TTL_MS || x.state!=='scheduled') return x;
+    keep[x.id]=at; return {...x, state:'sending_now'}; });
+  return {list:out, nows:keep}; }
+// RESV-PURE-END
+const LS_RVA='tesla_resv_add_v1', LS_RVD='tesla_resv_del_v1', LS_RVC='tesla_resv_cf_v1', LS_RVN='tesla_resv_now_v1';
+let RV_SRV=[], RV_SYNC='', RV_RELAY_V=null, RV_CONFIRM=null, RV_BUSY=false;
+async function relayVersion(){
+  if(RV_RELAY_V!==null || !CFG || CFG.mode!=='relay') return RV_RELAY_V;
+  try{ const j=await fetchJson(CFG.url,{method:'GET',redirect:'follow'}, 8000); RV_RELAY_V = j && +j.v || 0; }catch(e){ RV_RELAY_V = -1; }   // -1 = unknown (don't warn)
+  return RV_RELAY_V;
+}
+// ---- 2026-11-11 wx: 도착 시점 · 도착지 날씨. Box (tesla_wx.py) computes it — the browser can't call 기상청 (CORS) —
+//      and publishes wx.enc.json = {cur:{set_at,eta,drive_min,eta_src,past,wx}, resv:{id:{fire_at,...}}}; matched by set_at / fire_at.
+let WX=null, WX_P=null, WX_T=0;
+function loadWx(pass){
+  if(WX_P && Date.now()-WX_T<3000) return WX_P;
+  WX_T=Date.now();
+  WX_P=(async()=>{ try{ const r=await fetch('wx.enc.json?_='+Date.now(),{cache:'no-store'}); if(r.ok) WX=await decryptDoc(await r.json(), pass); }catch(e){}
+    renderCurWx(); if(typeof renderResv==='function' && !$('resv').hidden) renderResv(); })();
+  return WX_P;
+}
+// WX-PURE-BEGIN
+function wxN(x){ return typeof x==='number' && isFinite(x); }
+function wxEtaNote(e){
+  const m=e.drive_min, d = m ? (m>=60 ? `${Math.floor(m/60)}시간${m%60?` ${m%60}분`:''}` : `${m}분`) : '';
+  if(e.past) return '도착 시각이 지나 지금 날씨예요';
+  if(e.eta_src==='car') return `차량 내비 기준 이동 ${d}`;
+  if(e.eta_src==='estimate') return `이동 약 ${d} (추정)`;
+  if(/^cal_/.test(e.eta_src||'')) return `이동 약 ${d} (${e.eta_src==='cal_osrm'?'도로 기준':'직선거리'} 추정)`;
+  if(e.eta_src==='est_car') return `차 위치에서 이동 약 ${d} (추정)`;
+  return `집 출발 기준 이동 약 ${d} (추정)`;
+}
+function wxBox(e, fmt){
+  if(!e || !e.wx) return '';
+  const w=e.wx, at=fmt(e.eta);
+  const hd=sub=>`<div class="wxt">🌤 도착지 날씨 · <b>${e.past?'지금':at+' 도착'}</b></div><small class="wxa">${esc(wxEtaNote(e))}${sub?' · '+sub:''}</small>`;
+  if(w.st==='out') return hd('')+'<div class="wxm">예보 범위 밖이에요 (약 2주 뒤까지만 예보가 있어요)</div>';
+  if(w.st!=='ok' || !Array.isArray(w.rows) || w.rows.length!==3) return hd('')+'<div class="wxm">날씨를 불러오지 못했어요</div>';
+  const R=w.rows, W=270, x=i=>45+i*90, kma=w.src==='kma', f=(v,n)=>wxN(v)?(kma?String(v):v.toFixed(n)):'—';
+  const T=R.map(r=>r.t).filter(wxN); if(!T.length) return hd('')+'<div class="wxm">날씨 자료가 없어요</div>';
+  const tmin=Math.min(...T), tmax=Math.max(...T), sp=Math.max(tmax-tmin,2), ty=v=>8+(1-(v-(tmin+tmax)/2+sp/2)/sp)*22;
+  const tl=R.map((r,i)=>wxN(r.t)?[x(i),ty(r.t)]:null).filter(Boolean);
+  const pmx=Math.max(1,...R.map(r=>wxN(r.r)?r.r:0));
+  const bar=(v,mx,col)=>{ if(!wxN(v)) return ''; const h=Math.max(v>0?2:0, v/mx*20); return `<rect x="-14" y="${22-h}" width="28" height="${h}" rx="3" fill="${col}"/>`; };
+  const tsvg=`<svg viewBox="0 0 ${W} 40" class="wxs" preserveAspectRatio="none"><polyline points="${tl.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"/>${tl.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#fbbf24"/>`).join('')}</svg>`;
+  const bsvg=(k,mx,col)=>`<svg viewBox="0 0 ${W} 24" class="wxs" preserveAspectRatio="none"><line x1="0" y1="22.5" x2="${W}" y2="22.5" stroke="#223047"/>${R.map((r,i)=>`<g transform="translate(${x(i)},0)">${bar(r[k],mx,col)}</g>`).join('')}</svg>`;
+  const vals=(k,n,u)=>`<div class="wxv">${R.map(r=>`<b>${f(r[k],n)}${wxN(r[k])?u:''}</b>`).join('')}</div>`;
+  const rvals=kma?`<div class="wxv">${R.map(r=>`<b>${esc(r.rl==null?'—':r.rl)}</b>`).join('')}</div>`:vals('r',1,'');
+  const ai=wxN(w.arr_i)?w.arr_i:1;
+  const src=`${fmt(w.at)} 조회 · ${kma?'기상청'+(w.area?' '+esc(String(w.area).replace(/^\S+\s/,'')):''):'Open-Meteo'}`;
+  return hd(src)+`<div class="wxg"><div></div><div class="wxv wxh">${R.map((r,i)=>`<span class="${i===ai?'arr':''}" title="${esc(r.sky||'')}"><i>${esc(r.icon||'·')}</i>${r.h}시${i===ai?'<em>도착</em>':''}</span>`).join('')}</div>
+    <div class="wxl" style="color:#fbbf24">기온<small>°C</small></div><div>${tsvg}${vals('t',1,'°')}</div>
+    <div class="wxl" style="color:#60a5fa">강수확률<small>%</small></div><div>${bsvg('p',100,'#60a5fa')}${vals('p',0,'%')}</div>
+    <div class="wxl" style="color:#22d3ee">강수량<small>mm</small></div><div>${bsvg('r',pmx,'#22d3ee')}${rvals}</div></div>`;
+}
+// WX-PURE-END
+function wxShort(iso){ const d=new Date(iso); if(isNaN(d)) return ''; const k=new Date(d.getTime()+9*36e5).toISOString(); return `${+k.slice(5,7)}/${+k.slice(8,10)} ${k.slice(11,16)}`; }
+function renderCurWx(){
+  const el=$('curWx'); if(!el) return; const e=WX&&WX.cur;
+  if(!CUR || PEND || !e || e.set_at!==CUR.set_at){ el.hidden=true; el.innerHTML=''; return; }
+  el.innerHTML=wxBox(e, wxShort); el.hidden=!el.innerHTML;
+}
+function resvWx(x){ const e=WX&&WX.resv&&WX.resv[x.id]; return e && e.fire_at===x.fire_at ? `<div class="wx">${wxBox(e, wxShort)}</div>` : ''; }
+async function loadResv(pass){
+  try{ const r=await fetch('resv.enc.json?_='+Date.now(),{cache:'no-store'});
+       if(r.ok){ const d=await decryptDoc(await r.json(), pass); RV_SRV=Array.isArray(d&&d.items)?d.items:[]; RV_SYNC=d&&d.cal_synced_at||''; } }catch(e){}
+  renderResv(); loadWx(pass);
+  relayVersion().then(v=>{ $('resvWarn').hidden = !(v>=0 && v<12); });
+}
+function resvMerged(){
+  const m=resvMerge(RV_SRV, lsGet(LS_RVA,{}), lsGet(LS_RVD,{}), lsGet(LS_RVC,{}), Date.now());
+  lsSet(LS_RVA,m.adds); lsSet(LS_RVD,m.dels); lsSet(LS_RVC,m.cfs);
+  const n=resvNowApply(m.list, lsGet(LS_RVN,{}), Date.now()); lsSet(LS_RVN, n.nows); return n.list;
+}
+function renderResv(){
+  const L=resvMerged();
+  $('resvSync').textContent = RV_SYNC ? '📅 캘린더 반영 '+fmtKst(RV_SYNC) : '';
+  $('resvList').innerHTML = L.map(x=>{
+    const [cls, st]=resvState(x), c=x.cal||null, fin=['done','skipped','failed','missed'].includes(x.state);
+    const canDel=['pending','scheduled','needs_confirm','confirming'].includes(x.state);
+    const when = x.state==='needs_confirm' && c ? `📅 일정 ${fmtKst(c.start)}` : `${fmtKst(x.fire_at)}${fin?' 예약':'에 보내요'}`;
+    let meta='';
+    if(c){ const dr=c.drive_min ? ` · 이동 약 ${resvDur(c.drive_min)}(${c.drive_src==='osrm'?'도로 기준':'직선거리 추정'}, ${c.origin==='car'?'차 위치':'집'} 출발) + 10분 여유` : '';
+           meta = `📅 ${esc(c.summary||'일정')} · 일정 ${esc(fmtKst(c.start))}${esc(dr)}`; }
+    const cands = x.state==='needs_confirm' ? `<div class="cands">${(x.candidates||[]).map((p,i)=>`<button type="button" data-cf="${esc(x.id)}" data-ci="${i}">${esc(p.name)}<small>${esc(p.address||'')}</small></button>`).join('')}
+        <button type="button" class="srch" data-cs="${esc(x.id)}">🔎 다른 장소 검색해서 확정</button></div>` : '';
+    const nm = x.state==='needs_confirm' && c ? (c.location||x.name) : x.name;
+    const inner = `<div class="inf"><div class="when">${esc(when)}</div>
+      <div class="nm">${esc(nm)}${c?`<span class="calb">📅 ${esc(c.cal_name||'캘린더')}</span>`:''}</div>
+      ${x.address && x.address!==x.name && x.state!=='needs_confirm' ? `<div class="ad">${esc(x.address)}</div>`:''}
+      ${meta?`<div class="mt">${meta}</div>`:''}<div class="stt ${cls}">${esc(st)}</div>${x.state==='scheduled'?`<div class="rvacts"><button type="button" class="pinsm now" data-rn="${esc(x.id)}">🚗 지금 보내기</button><button type="button" class="pinsm" data-rp="${esc(x.id)}">📍 위치 수정</button></div>`+resvWx(x):''}${cands}</div>`;
+    // 2026-11-11 pick: deletable rows = swipe left → 삭제 (same component as the destination card); finished rows stay plain
+    if(!canDel) return `<li class="rv${fin?' fin':''}" data-rid="${esc(x.id)}">${inner}</li>`;
+    return `<li class="swipe" data-rid="${esc(x.id)}"><button type="button" class="del" data-rd="${esc(x.id)}" aria-label="예약 삭제">✕<span>삭제</span></button>`+
+      `<div class="rv swc">${inner}</div></li>`;
+  }).join('');
+  $('resvEmpty').hidden = L.length>0; $('resv').hidden=false;
+  RSW.open=false; RSW.el=null; RSW.on=false;
+}
+function resvErr(e, what){
+  const m=String(e&&e.message||'');
+  if(/kind/.test(m)){ RV_RELAY_V=11; $('resvWarn').hidden=false; return '중계 서버 업데이트 대기 중이라 아직 '+what+'할 수 없어요'; }
+  if(/fire_at/.test(m)) return '예약 시각을 다시 골라 주세요';
+  if(/coords/.test(m)) return '장소 좌표가 올바르지 않아요';
+  if(/잠시/.test(m)) return '잠시 후 다시 시도해 주세요';
+  return e&&e.name==='AbortError' ? '응답이 없어요. 잠시 후 다시 시도해 주세요' : what+'에 실패했어요. 잠시 후 다시 시도해 주세요';
+}
+function resvPickChanged(){
+  const has=!!PICK; $('pinAdj').hidden=!has || PK_FROM_HIST;
+  $('resvOpen').hidden=!has;
+  $('histSave').hidden=!has || PK_FROM_HIST || !!RV_CONFIRM;   // 2026-11-12: save the picked search result to 최근 목적지 only (no car)
+  $('resvOpen').textContent = RV_CONFIRM ? '📅 이 장소로 확정' : '⏰ 이 곳으로 예약하기';
+  if(!has) $('resvForm').hidden=true;
+}
+function resvFill(v){ $('resvDate').value=v.date; $('resvTime').value=v.time; }
+function resvShowForm(){
+  $('resvPlace').innerHTML=esc(PICK.name)+(PICK.pinned?'<span class="pinb">📍 핀</span>':''); resvFill(resvDefault(Date.now(),60));
+  $('resvDate').min=kstParts(Date.now()).date; $('resvForm').hidden=false;
+  $('resvForm').scrollIntoView({block:'center',behavior:'smooth'});
+}
+// from 최근 목적지/즐겨찾기: no search results list; PICK = that place, the form opens right away
+function resvOpenFor(p, fromHist){
+  $('dest').value=''; clearResults(); PICK=p; PK_FROM_HIST=!!fromHist;
+  $('picked').hidden=false; $('picked').innerHTML=`선택: <b>${esc(p.name)}</b>`;
+  resvPickChanged(); $('resvOpen').hidden=true; $('histSave').hidden=true; resvShowForm();
+}
+$('histSave').addEventListener('click', ()=>{ const x=PICK; if(!x || !pkHasLL(x)) return; $('resvForm').hidden=true; histOnly(x); });
+$('resvOpen').addEventListener('click', ()=>{
+  if(!PICK) return;
+  if(RV_CONFIRM){ resvConfirm(RV_CONFIRM, PICK); return; }
+  resvShowForm();
+});
+$('resvCancel').addEventListener('click', ()=>{ $('resvForm').hidden=true; if(PK_FROM_HIST){ PK_FROM_HIST=false; clearResults(); } });
+for(const id of ['resvDate','resvTime']) $(id).addEventListener('keydown', e=>{ if(e.key==='Enter') e.preventDefault(); });
+$('resvForm').addEventListener('click', ev=>{ const b=ev.target.closest('button[data-q]'); if(!b) return;
+  resvFill(b.dataset.q==='tm8' ? resvTomorrow8(Date.now()) : resvDefault(Date.now(), +b.dataset.q)); });
+$('resvSave').addEventListener('click', async ()=>{
+  if(RV_BUSY || !PICK) return;
+  const iso=resvIsoFromInputs($('resvDate').value, $('resvTime').value), bad=resvCheck(iso, Date.now());
+  if(bad){ setStatus('err', bad); return; }
+  const x=PICK, id=resvNewId(), now=new Date().toISOString();
+  const rec={id, name:x.name, address:x.address||'', lat:x.lat, lng:x.lng, fire_at:iso, created_at:now};
+  RV_BUSY=true; const b=$('resvSave'); b.disabled=true; b.textContent='등록 중…'; setStatus('busy','예약 등록 중…');
+  try{
+    await sendDestination(CFG, {kind:'resv_add', ...rec, source:'tesla-form-resv', sent_at:now});
+    const a=lsGet(LS_RVA,{}); a[id]=rec; lsSet(LS_RVA,a); renderResv();
+    setStatus('ok', `예약했어요! ${fmtKst(iso)}에 '${x.name}'(으)로 차에 보내요`);
+    $('resvForm').hidden=true; $('dest').value=''; clearResults();
+    const pw=passFromHash(); for(const s of [20,60,150]) setTimeout(()=>loadResv(pw), s*1000);
+  }catch(e){ setStatus('err', resvErr(e,'예약')); }
+  finally{ RV_BUSY=false; b.disabled=false; b.textContent='예약 등록'; }
+});
+$('resvList').addEventListener('click', async ev=>{
+  const d=ev.target.closest('button[data-rd]'), cf=ev.target.closest('button[data-cf]'), cs=ev.target.closest('button[data-cs]');
+  if(d){
+    const id=d.dataset.rd, x=resvMerged().find(y=>y.id===id); if(!x) return;
+    d.disabled=true;
+    // a 'pending' add not yet on the box is deleted the same way: the relay queue keeps order (add, then del)
+    try{ await sendDestination(CFG, {kind:'resv_del', id, name:x.name, source:'tesla-form-resv', sent_at:new Date().toISOString()});
+         const m=lsGet(LS_RVD,{}); m[id]=new Date().toISOString(); lsSet(LS_RVD,m); renderResv();
+         setStatus('ok', x.cal ? `📅 '${x.cal.summary||x.name}' 예약을 지웠어요 (캘린더 일정은 그대로 두고, 이 예약만 다시 만들지 않아요)` : `'${x.name}' 예약을 지웠어요`); }
+    catch(e){ d.disabled=false; resvSwipe.reset(); setStatus('err', resvErr(e,'삭제')); }
+    return;
+  }
+  const rn=ev.target.closest('button[data-rn]');
+  if(rn){ const x=resvMerged().find(y=>y.id===rn.dataset.rn); if(x && x.state==='scheduled') rnowOpen(x); return; }
+  const rp=ev.target.closest('button[data-rp]');
+  if(rp){ const x=RV_SRV.find(y=>y.id===rp.dataset.rp); if(!x) return; const v=await pinOpen(x); if(!v) return;
+    pinSave(x, v.lat, v.lng, v);
+    try{ await sendDestination(CFG, {kind:'resv_confirm', id:x.id, name:x.name, address:x.address||'', lat:v.lat, lng:v.lng, source:'tesla-form-resv', sent_at:new Date().toISOString()});
+      const m=lsGet(LS_RVC,{}); m[x.id]={name:x.name, address:x.address||'', lat:v.lat, lng:v.lng, pin:true, at:new Date().toISOString()}; lsSet(LS_RVC,m);
+      renderResv(); setStatus('ok', v.reset ? `↺ '${x.name}' 예약 위치를 원래 위치로 되돌렸어요` : `📍 '${x.name}' 예약 위치를 핀 위치로 바꿨어요`+(x.cal?' (출발 시각은 새 위치로 다시 계산돼요)':''));
+      const pw=passFromHash(); for(const s of [20,60,150]) setTimeout(()=>loadResv(pw), s*1000); }
+    catch(e){ setStatus('err', resvErr(e,'위치 수정')); }
+    return; }
+  if(cf){ const x=RV_SRV.find(y=>y.id===cf.dataset.cf); const p=x && (x.candidates||[])[+cf.dataset.ci]; if(p) resvConfirm(x.id, p); return; }
+  if(cs){ const x=RV_SRV.find(y=>y.id===cs.dataset.cs); if(!x) return;
+    RV_CONFIRM=x.id; $('cfmBarTxt').textContent=`📅 '${(x.cal&&x.cal.summary)||x.name}' 장소를 검색해서 고른 뒤 ‘이 장소로 확정’을 누르세요`; $('cfmBar').hidden=false;
+    $('dest').value=((x.cal&&x.cal.location)||x.name).slice(0,60); window.scrollTo({top:0,behavior:'smooth'}); $('form').requestSubmit(); }
+});
+// 2026-11-12 '🚗 지금 보내기': confirm here (same '이미 설정된 목적지' question as 바로 설정), then relay v13 {kind:'resv_now', id}.
+//   The BOX fires it (tesla_resv.py: same dup-check + set_dest.py GPS as the timer / an immediate send), marks it done ('sent_now'),
+//   and tombstones a 📅 one so the calendar sync never re-creates it. The page never sends coords for this.
+let RNOW_X=null;
+function rnowOpen(x){
+  RNOW_X=x; const cur = CUR && !CUR.none && CUR.name ? CUR : null, same = cur && hk(cur.name)===hk(x.name);
+  $('rnowMsg').innerHTML = `<b>${esc(x.name)}</b>${x.address&&x.address!==x.name?`<br><small style="color:var(--sub)">${esc(x.address)}</small>`:''}<br>`+
+    `<small style="color:var(--sub)">${esc(fmtKst(x.fire_at))} 예약</small><br><br>`+
+    (same ? '이미 차에 같은 목적지가 설정돼 있어요. 보내면 건너뛰고 예약만 끝낼게요.'
+     : cur ? `지금 차에 <b>${esc(cur.name)}</b>(이)가 설정돼 있어요.<br>이 예약 목적지로 바꿔서 지금 보낼까요?` : '이 예약을 지금 바로 차에 보낼까요?<br><small style="color:var(--sub)">보내면 예약 시각에는 다시 보내지 않아요.</small>');
+  $('rnowGo').textContent = cur && !same ? '🚗 이 목적지로 변경해서 보내기' : '🚗 지금 보내기';
+  $('rnow').hidden=false;
+}
+function rnowClose(){ $('rnow').hidden=true; RNOW_X=null; }
+$('rnowNo').addEventListener('click', rnowClose);
+$('rnow').addEventListener('click', ev=>{ if(ev.target.id==='rnow') rnowClose(); });
+$('rnowGo').addEventListener('click', async ()=>{
+  const x=RNOW_X; if(!x) return; const b=$('rnowGo'); b.disabled=true;
+  try{
+    await sendDestination(CFG, {kind:'resv_now', id:x.id, name:x.name, source:'tesla-form-resv', sent_at:new Date().toISOString()});
+    const m=lsGet(LS_RVN,{}); m[x.id]=new Date().toISOString(); lsSet(LS_RVN,m); rnowClose(); renderResv();
+    setStatus('busy', `🚗 '${x.name}' 예약을 지금 보내는 중… 차에 설정되면 위 카드에 보여요`);
+    const pw=passFromHash(); for(const sec of [15,30,50,80,120]) setTimeout(()=>{ if(pw){ loadResv(pw); loadCurrent(pw); } }, sec*1000);
+  }catch(e){ rnowClose(); setStatus('err', /kind/.test(String(e&&e.message||'')) ? '중계 서버 업데이트(v13) 전이라 아직 예약을 바로 보낼 수 없어요. 예약은 그대로 있어요.' : resvErr(e,'지금 보내기')); }
+  finally{ b.disabled=false; }
+});
+const resvSwipe = bindSwipe($('resvList'), t=>{ const li=t.closest('li.swipe'); return li && !t.closest('.del') ? li.querySelector('.swc') : null; }, RSW);
+$('cfmBarX').addEventListener('click', ()=>{ RV_CONFIRM=null; $('cfmBar').hidden=true; resvPickChanged(); });
+async function resvConfirm(id, p){
+  const x=RV_SRV.find(y=>y.id===id); if(!x || RV_BUSY) return;
+  if(!inKr(+p.lat, +p.lng)){ setStatus('err','장소 좌표가 올바르지 않아요'); return; }
+  if(!confirm(`📅 '${(x.cal&&x.cal.summary)||''}' 장소를 '${p.name}'(으)로 확정할까요? 출발 시각을 다시 계산해서 그때 차에 보내요.`)) return;
+  RV_BUSY=true; setStatus('busy','확정 중…');
+  try{ await sendDestination(CFG, {kind:'resv_confirm', id, name:p.name, address:p.address||'', lat:+p.lat, lng:+p.lng, source:'tesla-form-resv', sent_at:new Date().toISOString()});
+       const m=lsGet(LS_RVC,{}); m[id]={name:p.name, address:p.address||'', at:new Date().toISOString()}; lsSet(LS_RVC,m);
+       RV_CONFIRM=null; $('cfmBar').hidden=true; if(PICK) { $('dest').value=''; clearResults(); }
+       renderResv(); setStatus('ok',`'${p.name}'(으)로 확정했어요`); const pw=passFromHash(); for(const s of [20,60,150]) setTimeout(()=>loadResv(pw), s*1000); }
+  catch(e){ setStatus('err', resvErr(e,'확정')); }
+  finally{ RV_BUSY=false; }
+}
+init();
+</script>
+</body>
+</html>
