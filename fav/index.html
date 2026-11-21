@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0f1115">
+<title>즐겨찾기</title>
+<style>
+:root{
+  --bg:#0f1115;
+  --ink:#1d1d1f;
+  --slate:#707070;
+  --steel:#86868b;
+  --hair:#d6d6d6;
+  --mist:#f5f5f7;
+  --ctl:#e6e6e8;
+  --frost:#fafafc;
+  --white:#ffffff;
+  --ablue:#0066cc;
+  --pblue:#0071e3;
+  --launch:#b64400;
+  --ease:cubic-bezier(.25,.1,.25,1);
+  --spring:cubic-bezier(.32,.72,0,1);
+  --sans:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;
+  --disp:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:#eef1f6;
+  font:17px/1.35 var(--sans);-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;overscroll-behavior:none;letter-spacing:-.374px}
+body{padding:0}
+[hidden]{display:none!important}
+.wrap{padding:calc(20px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
+  max-width:1200px;margin:0 auto}
+.stage{background:var(--mist);color:var(--ink);border-radius:28px;padding:20px 12px 16px}
+.fhead{display:flex;align-items:baseline;justify-content:space-between;padding:0 8px 14px;gap:12px}
+.fkick{display:block;font-size:12px;line-height:16px;font-weight:600;letter-spacing:-.12px;color:var(--launch);margin:0 0 2px}
+h1{margin:0;color:var(--ink);font-family:var(--disp);font-size:28px;line-height:1.14;font-weight:600;letter-spacing:-.4px}
+.fcnt{font-size:14px;line-height:19px;letter-spacing:-.22px;color:var(--slate);font-weight:400;flex:none}
+.toolbar{display:flex;flex-direction:column;gap:10px;padding:0 8px 14px}
+.tabs{display:flex;gap:0;padding:3px;border-radius:12px;overflow-x:auto;scrollbar-width:none;
+  background:var(--ctl);-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:transparent;color:var(--ink);flex:1 0 auto;
+  min-height:44px;min-width:64px;padding:0 12px;border-radius:9px;font:inherit;
+  font-size:13px;line-height:16px;font-weight:500;letter-spacing:-.12px;
+  cursor:pointer;touch-action:manipulation;user-select:none;white-space:nowrap;
+  transition:background-color .18s var(--ease),color .18s var(--ease)}
+.tab:active{background:rgba(255,255,255,.45)}
+.tab[aria-selected="true"]{background:var(--white);color:var(--ink)}
+.search{position:relative}
+.search input{width:100%;min-height:48px;border:1px solid var(--steel);border-radius:980px;
+  background:var(--white);color:var(--ink);font:inherit;font-size:17px;font-weight:400;
+  letter-spacing:-.374px;padding:0 16px 0 42px;outline:none;-webkit-appearance:none;
+  transition:border-color .18s var(--ease)}
+.search input::placeholder{color:var(--steel)}
+.search input:focus{border-color:var(--pblue)}
+.search .mag{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;
+  color:var(--slate);pointer-events:none}
+.sec{margin:0 0 16px}
+.sec:last-child{margin-bottom:4px}
+.sec-lab{padding:0 16px 6px;font-size:13px;line-height:16px;font-weight:400;letter-spacing:-.12px;color:var(--slate)}
+.card{background:var(--white);border-radius:28px;overflow:hidden;padding:4px 0}
+a.tile{position:relative;display:flex;align-items:center;gap:12px;background:transparent;
+  min-height:68px;padding:10px 16px 10px 16px;text-decoration:none;color:var(--ink);
+  font-weight:600;font-size:17px;line-height:22px;letter-spacing:-.374px;word-break:keep-all;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none;
+  transition:background-color .18s var(--ease)}
+a.tile:active{background:var(--ctl)}
+a.tile + a.tile::before{content:"";position:absolute;top:0;left:68px;right:16px;
+  border-top:1px solid var(--hair);transform:scaleY(.5);transform-origin:top}
+.ic{width:36px;height:36px;border-radius:11px;background:var(--mist);
+  display:grid;place-items:center;flex:none;line-height:1;overflow:hidden}
+.ic .emo{font-size:20px;line-height:1}
+.ic img{width:22px;height:22px;object-fit:contain;display:block}
+.nm{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center}
+.nm > span{color:var(--ink);font-size:17px;line-height:22px;font-weight:600;letter-spacing:-.374px;
+  white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
+.cat{margin-top:1px;font-size:14px;line-height:19px;font-weight:400;color:var(--slate);letter-spacing:-.22px}
+.foot{margin-top:18px;color:#6b7382;font-size:12px;line-height:16px;letter-spacing:-.12px;text-align:center}
+.notice{text-align:center;padding:80px 16px;max-width:640px;margin:8vh auto 0;color:#eef1f6}
+.notice .big{font-size:48px;line-height:1}
+.notice b{display:block;font-size:21px;font-family:var(--disp);font-weight:600;letter-spacing:.23px;margin-top:14px;color:#f5f5f7}
+.notice p{margin:8px 0 0;color:#9aa3b2;font-size:17px;letter-spacing:-.374px;font-weight:400}
+.stage .empty{text-align:center;padding:36px 16px 28px;color:var(--slate)}
+.stage .empty .big{font-size:36px;line-height:1}
+.stage .empty b{display:block;margin-top:10px;color:var(--ink);font-family:var(--disp);
+  font-size:21px;font-weight:600;letter-spacing:.23px}
+.stage .empty p{margin:6px 0 0;font-size:14px;line-height:19px;letter-spacing:-.22px}
+.stage:not([data-seen]) a.tile{animation:favIn .5s var(--spring) both}
+.stage:not([data-seen]) a.tile:nth-child(1){animation-delay:0s}
+.stage:not([data-seen]) a.tile:nth-child(2){animation-delay:.04s}
+.stage:not([data-seen]) a.tile:nth-child(3){animation-delay:.08s}
+.stage:not([data-seen]) a.tile:nth-child(4){animation-delay:.12s}
+.stage:not([data-seen]) a.tile:nth-child(n+5){animation-delay:.16s}
+@keyframes favIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  a.tile{animation:none!important;transition:none}
+}
+@media (min-width:700px){
+  .wrap{padding:28px 24px 40px}
+  .stage{padding:24px 16px 18px}
+  .tab{min-height:48px;font-size:14px;padding:0 14px}
+  .search input{min-height:52px}
+}
+@media (min-width:1100px){
+  .wrap{padding:24px 28px 28px}
+  .stage{padding:22px 18px 16px}
+  h1{font-size:32px;letter-spacing:-.5px}
+  .fkick{font-size:12px}
+  .fcnt{font-size:17px;letter-spacing:-.374px}
+  .tabs{padding:4px;border-radius:14px}
+  .tab{min-height:52px;font-size:15px;min-width:88px;border-radius:10px}
+  .search input{min-height:52px;font-size:17px}
+  #list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 20px;align-items:start}
+  #list:has(.empty){display:block}
+  #list:has(.sec:only-child){grid-template-columns:minmax(0,1fr);max-width:720px}
+  .sec{margin:0 0 8px}
+  a.tile{min-height:64px;padding:10px 18px}
+  a.tile .nm > span{font-size:17px;line-height:22px}
+  a.tile + a.tile::before{left:78px;right:18px}
+  .ic{width:40px;height:40px;border-radius:12px}
+  .ic .emo{font-size:22px}
+  .ic img{width:24px;height:24px}
+}
+/* Tesla landscape ~1200x800: keep every group on one screen, large enough targets */
+@media (min-width:1100px) and (max-height:860px){
+  .wrap{padding:10px 20px 8px}
+  .stage{padding:14px 14px 10px}
+  .fhead{padding:0 8px 8px}
+  h1{font-size:28px;letter-spacing:-.4px}
+  .toolbar{gap:8px;padding:0 8px 8px}
+  .tabs{padding:3px;border-radius:12px}
+  .tab{min-height:44px;font-size:14px;min-width:72px}
+  .search input{min-height:44px}
+  #list{gap:2px 16px}
+  .sec{margin:0}
+  .sec-lab{padding:0 16px 4px}
+  a.tile{min-height:58px;padding:8px 16px}
+  a.tile + a.tile::before{left:68px;right:16px}
+  .ic{width:36px;height:36px;border-radius:11px}
+  .ic .emo{font-size:20px}
+  .ic img{width:22px;height:22px}
+  .foot{margin-top:8px}
+}
+</style>
+<body>
+<div id="badlink" class="notice" hidden>
+  <div class="big">🔒</div><b>링크가 올바르지 않아요</b>
+  <p>받은 링크 전체(# 뒤까지)를 그대로 열어 주세요.</p>
+</div>
+<div id="notready" class="notice" hidden>
+  <div class="big">⏳</div><b>아직 준비 중이에요</b>
+  <p>목록을 불러오지 못했어요. 잠시 후 다시 열어 주세요.</p>
+</div>
+<div id="app" hidden>
+  <div class="wrap">
+    <div class="stage" id="stage">
+      <div class="fhead">
+        <div>
+          <span class="fkick">바로가기</span>
+          <h1>즐겨찾기</h1>
+        </div>
+        <span id="favCnt" class="fcnt"></span>
+      </div>
+      <div class="toolbar">
+        <div class="tabs" id="tabs" role="tablist" aria-label="분류"></div>
+        <div class="search">
+          <svg class="mag" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="q" type="search" placeholder="이름 검색" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
+        </div>
+      </div>
+      <div id="list"></div>
+    </div>
+    <div class="foot" id="foot">눌러서 열기</div>
+  </div>
+</div>
+<script>
+// CRYPTO-BEGIN (same format as ../tesla/index.html: PBKDF2-SHA256 → AES-256-GCM; passphrase = #k=… fragment, never sent to the server)
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(doc.salt), iterations:doc.iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+
+function passFromHash(){
+  const m = location.hash.match(/[#&]k=([^&]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+function show(id){
+  for(const el of document.querySelectorAll('#badlink,#notready,#app')) el.hidden = el.id!==id;
+}
+function hostOf(url){
+  try{ return new URL(url).hostname || ''; }catch(e){ return ''; }
+}
+function logoSrc(it){
+  if(it && it.logo && /^(https:\/\/|data:image\/)/i.test(it.logo)) return it.logo;
+  const host = hostOf(it && it.url);
+  if(!host) return '';
+  if(host.endsWith('github.io') || host==='localhost' || host==='127.0.0.1') return '';
+  return 'https://www.google.com/s2/favicons?domain='+encodeURIComponent(host)+'&sz=128';
+}
+
+let DATA = null;
+let activeGroup = '';
+let query = '';
+
+function allLinks(){
+  return (DATA && Array.isArray(DATA.links) ? DATA.links : []).filter(x => x && x.name && x.url);
+}
+function groupName(it){
+  return (it.group || '').trim() || '바로가기';
+}
+function groupOrder(links){
+  const order = [];
+  for(const it of links){
+    const g = groupName(it);
+    if(!order.includes(g)) order.push(g);
+  }
+  return order;
+}
+
+function makeTile(it){
+  const a = document.createElement('a');
+  a.className = 'tile';
+  a.href = it.url;
+  const ic = document.createElement('span');
+  ic.className = 'ic';
+  ic.setAttribute('aria-hidden','true');
+  const emo = document.createElement('span');
+  emo.className = 'emo';
+  emo.textContent = it.icon || '🔗';
+  ic.appendChild(emo);
+  const src = logoSrc(it);
+  if(src){
+    const img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.referrerPolicy = 'no-referrer';
+    img.addEventListener('load', () => { emo.hidden = true; });
+    img.addEventListener('error', () => { img.remove(); emo.hidden = false; });
+    img.src = src;
+    ic.appendChild(img);
+  }
+  const body = document.createElement('span');
+  body.className = 'nm';
+  const name = document.createElement('span');
+  name.textContent = it.name;
+  body.appendChild(name);
+  a.appendChild(ic);
+  a.appendChild(body);
+  return a;
+}
+
+function paint(){
+  const links = allLinks();
+  const tabs = document.getElementById('tabs');
+  const list = document.getElementById('list');
+  const foot = document.getElementById('foot');
+  const cnt = document.getElementById('favCnt');
+  const stage = document.getElementById('stage');
+  const groups = groupOrder(links);
+  const tabNames = ['전체'].concat(groups);
+
+  tabs.textContent = '';
+  for(const name of tabNames){
+    const id = name==='전체' ? '' : name;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', activeGroup===id ? 'true' : 'false');
+    b.textContent = name;
+    b.addEventListener('click', () => { activeGroup = id; paint(); });
+    tabs.appendChild(b);
+  }
+
+  foot.textContent = '눌러서 열기';
+
+  if(!links.length){
+    list.innerHTML = '<div class="empty"><div class="big">🔖</div><b>아직 즐겨찾기가 없어요</b><p>테슬라봇에게 추가를 요청해 주세요.</p></div>';
+    cnt.textContent = '';
+    return;
+  }
+
+  const q = query.trim().toLowerCase();
+  const shown = links.filter(it => {
+    if(activeGroup && groupName(it)!==activeGroup) return false;
+    if(!q) return true;
+    return String(it.name).toLowerCase().includes(q);
+  });
+
+  cnt.textContent = !shown.length ? '' :
+    (shown.length===links.length ? (links.length+'개') : (shown.length+' / '+links.length+'개'));
+
+  list.textContent = '';
+  if(!shown.length){
+    const empty = document.createElement('div');
+    empty.className = 'empty';
+    empty.innerHTML = '<div class="big">🔎</div><b>찾는 항목이 없어요</b><p>다른 분류를 고르거나 검색어를 바꿔 보세요.</p>';
+    list.appendChild(empty);
+    return;
+  }
+
+  const sectionNames = activeGroup ? [activeGroup] : groupOrder(shown);
+  for(const g of sectionNames){
+    const items = shown.filter(it => groupName(it)===g);
+    if(!items.length) continue;
+    const sec = document.createElement('section');
+    sec.className = 'sec';
+    const lab = document.createElement('div');
+    lab.className = 'sec-lab';
+    lab.textContent = g;
+    const card = document.createElement('div');
+    card.className = 'card';
+    items.forEach(it => card.appendChild(makeTile(it)));
+    sec.appendChild(lab);
+    sec.appendChild(card);
+    list.appendChild(sec);
+  }
+  if(stage && !stage.dataset.seen){
+    setTimeout(() => { stage.dataset.seen = '1'; }, 900);
+  }
+}
+
+function render(data){
+  DATA = data;
+  paint();
+}
+
+async function init(){
+  const pass = passFromHash();
+  if(!pass || !window.crypto || !crypto.subtle){ show('badlink'); return; }
+  let doc;
+  try{
+    const r = await fetch('links.enc.json?_='+Date.now(), {cache:'no-store'});
+    if(r.status===404){ show('notready'); return; }
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    doc = await r.json();
+  }catch(e){ show('notready'); return; }
+  try{
+    const data = await decryptDoc(doc, pass);
+    render(data);
+    show('app');
+  }catch(e){ show(e.badKey ? 'badlink' : 'notready'); }
+}
+document.getElementById('q').addEventListener('input', e => { query = e.target.value || ''; if(DATA) paint(); });
+window.addEventListener('hashchange', init);
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='preview';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('bvr')!==j.b){sessionStorage.setItem('bvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet"><title>아축 점수판</title>
+<style>:root{--ink:#000;--carbon:#191919;--paper:#fff;--mist:#f3f5f9;--hair:#e5e7eb;--blue:#1d4ed8;--blue-hi:#2f6bff;--red:#da291c;--yel:#ffd400;--disp:"Montserrat","Apple SD Gothic Neo","Noto Sans KR",-apple-system,sans-serif;--ko:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Montserrat",sans-serif}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ink);color:var(--paper);font-family:var(--ko);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-font-smoothing:antialiased}
+#app{height:100%;display:flex;flex-direction:column;padding:max(1.6vh,env(safe-area-inset-top)) max(2.4vw,env(safe-area-inset-right)) calc(10vh + env(safe-area-inset-bottom)) max(2.4vw,env(safe-area-inset-left));position:relative}
+.top{display:flex;justify-content:space-between;align-items:center;height:6.4vh;gap:2vw;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:2.1vh;color:var(--paper)}
+.top .brand{display:flex;align-items:center;gap:1vh;white-space:nowrap}
+.top .brand b{font-size:2.6vh;letter-spacing:-.02em;text-transform:none}
+.top .dt{font-family:var(--disp);font-size:2vh;letter-spacing:.06em;margin-left:.6vh}.top .brand i{font-style:normal;background:var(--paper);color:var(--ink);padding:.3vh 1vh;border-radius:999px;font-size:1.6vh}
+.live{font-family:var(--ko);letter-spacing:0;text-transform:none;font-weight:800;font-size:2.1vh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:right}
+.board{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.6vw;min-height:0;margin-top:1.4vh}
+.team{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:2.6vh;overflow:hidden;min-width:0;padding:2.4vh 1.4vw 3vh;isolation:isolate}
+.team::before{content:"";position:absolute;inset:-50%;z-index:-1;background:repeating-linear-gradient(-62deg,rgba(255,255,255,.06) 0 2.2vh,transparent 2.2vh 7vh);animation:drift 26s linear infinite;pointer-events:none}
+@keyframes drift{to{transform:translate3d(14vh,0,0)}}
+.team .flash{position:absolute;inset:0;background:var(--paper);opacity:0;z-index:2;pointer-events:none}
+.team.A{background:var(--ink);box-shadow:inset 0 0 0 .55vh var(--paper);order:1}
+.team.B{background:var(--blue);order:3}
+.board.sw .A{order:3}.board.sw .B{order:1}
+.id{display:flex;align-items:center;gap:1.2vh;max-width:100%}
+.tag{font-family:var(--disp);font-weight:800;letter-spacing:.1em;font-size:2.2vh;padding:.5vh 1.4vh;border-radius:999px;white-space:nowrap}
+.A .tag{background:var(--paper);color:var(--ink)}.B .tag{background:var(--paper);color:var(--blue)}
+.team h2{font-size:6.4vh;font-weight:900;line-height:1;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.scw{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;width:100%}
+.sc{font-family:var(--disp);font-size:min(54vh,32vw);font-weight:800;line-height:.78;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--paper);will-change:transform}
+.mid{order:2;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:3vw}
+.colon{font-family:var(--disp);font-size:12vh;font-weight:800;line-height:.7;color:var(--paper)}
+.clkw{display:flex;align-items:center;gap:1vh;background:var(--carbon);border:2px solid #3a3a3a;border-radius:999px;padding:.5vh 1.8vh}
+.clkw[hidden]{display:none}
+.dot{width:1.5vh;height:1.5vh;border-radius:50%;background:var(--red);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.clk{font-family:var(--disp);font-size:3.8vh;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--paper)}
+.livel{font-family:var(--disp);font-weight:800;font-size:1.7vh;letter-spacing:.1em;color:var(--paper)}
+#swb{position:fixed;left:50%;bottom:max(1.6vh,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--yel);color:var(--ink);border:0;font-size:2.6vh;font-weight:900;min-height:6.2vh;padding:0 3.2vh;border-radius:999px;z-index:5;font-family:var(--ko);touch-action:manipulation}
+#swb:active{transform:translateX(-50%) scale(.95)}
+#recb{position:fixed;right:max(2.4vw,env(safe-area-inset-right));bottom:max(1.6vh,env(safe-area-inset-bottom));z-index:6;background:var(--paper);color:var(--ink);border:0;font-size:2.6vh;font-weight:900;min-height:6.2vh;padding:0 3.2vh 0 2.6vh;border-radius:999px;font-family:var(--ko);touch-action:manipulation;display:flex;align-items:center;gap:1vh}
+#recb::before{content:"";width:1.6vh;height:1.6vh;border-radius:50%;background:var(--red)}
+#recb:active{transform:scale(.96)}
+/* goal moment */
+#fx{position:fixed;left:0;right:0;top:0;height:min(17vh,150px);z-index:20;pointer-events:none;overflow:hidden}
+.rib{position:absolute;left:-10vw;right:-10vw;top:1.2vh;height:calc(100% - 2.4vh);display:flex;align-items:center;justify-content:center;gap:3vw;transform:translateX(-120%) skewX(-14deg);color:var(--paper);font-family:var(--disp);font-weight:800;white-space:nowrap}
+.rib.A{background:var(--paper);color:var(--ink)}.rib.B{background:var(--blue)}.rib.og{background:var(--red);color:var(--paper)}.rib.minor{background:var(--carbon);border-top:.5vh solid var(--paper);border-bottom:.5vh solid var(--paper);height:calc(70% - 2.4vh)}
+.rib::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(255,255,255,.14) 6vh 7vh);pointer-events:none}.rib.A::after{background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(0,0,0,.08) 6vh 7vh)}.rib .w{font-size:11vh;letter-spacing:-.05em;line-height:.8;transform:skewX(14deg)}
+.rib.minor .w{font-size:6vh}
+.rib .who{font-family:var(--ko);font-size:5vh;font-weight:900;letter-spacing:-.02em;transform:skewX(14deg);display:flex;align-items:center;gap:1.4vh}
+.rib.minor .who{font-size:3.6vh}
+.rib .who small{font-family:var(--disp);font-size:2vh;letter-spacing:.1em;padding:.4vh 1.2vh;border-radius:999px;border:2px solid currentColor}
+.rib.go{animation:sweep 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.rib.minor.go{animation-duration:2s}
+@keyframes sweep{0%{transform:translateX(-120%) skewX(-14deg)}22%{transform:translateX(0) skewX(-14deg)}78%{transform:translateX(0) skewX(-14deg);opacity:1}100%{transform:translateX(120%) skewX(-14deg);opacity:0}}
+.team.hit .flash{animation:flash .9s ease-out}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
+.sc.slam{animation:slam .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{0%{transform:scale(1.55);filter:blur(.6vh);opacity:.2}60%{transform:scale(.94);filter:none;opacity:1}100%{transform:scale(1)}}
+.sc.drop{animation:drop .5s ease-out}
+@keyframes drop{0%{transform:translateY(-12%);opacity:.2}100%{transform:none;opacity:1}}
+.team.hit{animation:shake .5s ease-out}
+@keyframes shake{20%{transform:translateX(-.8vh)}40%{transform:translateX(.8vh)}60%{transform:translateX(-.4vh)}80%{transform:translateX(.3vh)}}
+.board.swapping .team{animation:swapin .45s cubic-bezier(.16,1,.3,1)}
+@keyframes swapin{0%{transform:scale(.94);opacity:.4}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rib.go{transform:translateX(0) skewX(-14deg)}}
+@media (orientation:portrait){.board{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr;gap:1.4vh}.colon{display:none}.mid{min-height:0}.sc{font-size:min(24vh,52vw)}.team h2{font-size:4.4vh}.tag{font-size:1.7vh}#swb{left:max(2.4vw,env(safe-area-inset-left));transform:none}#swb:active{transform:scale(.95)}#fx{height:12vh}.rib::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(255,255,255,.14) 6vh 7vh);pointer-events:none}.rib.A::after{background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(0,0,0,.08) 6vh 7vh)}.rib .w{font-size:7vh}.rib .who{font-size:3.4vh}.top .dt{display:none}.top{font-size:1.8vh}.live{font-size:1.8vh}.clk{font-size:3.2vh}}
+.msg{margin:auto;text-align:center;font-size:4vh;font-weight:800;color:var(--paper)}
+.keyf{margin:auto;width:min(560px,90vw);background:var(--paper);color:var(--ink);padding:28px;border-radius:24px;display:flex;flex-direction:column;gap:12px;font-size:18px}
+.keyf input,.keyf button{font-size:20px;padding:14px 18px;border-radius:999px;border:2px solid var(--hair);background:var(--paper);color:var(--ink);font-family:inherit}.keyf button{background:var(--ink);color:var(--paper);font-weight:800;border-color:var(--ink)}.err{color:var(--red);font-weight:800}
+/* record sheet: WHOOP light lab section for sunlight */
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+#sheet[hidden]{display:none}
+#sheet .panel{width:min(1040px,100%);max-height:66vh;overflow:auto;-webkit-overflow-scrolling:touch;background:var(--paper);color:var(--ink);border-radius:2.6vh 2.6vh 0 0;padding:2.4vh 3vw calc(2.4vh + env(safe-area-inset-bottom))}
+#sheet h3{font-family:var(--ko);font-size:3.2vh;font-weight:900;letter-spacing:-.02em;margin:0 0 .6vh}
+#sheet .hint{color:#333;font-size:1.9vh;font-weight:600;margin:0 0 1.2vh;line-height:1.35}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:2vw}
+#sheet .cols>div{background:var(--mist);border-radius:2vh;padding:1.4vh 1.4vh .6vh}
+#sheet .tl{font-weight:900;font-size:2.3vh;margin-bottom:1vh;display:flex;align-items:center;gap:1vh}
+#sheet .tl span{font-family:var(--disp);font-size:1.6vh;letter-spacing:.1em;padding:.3vh 1vh;border-radius:999px;background:var(--ink);color:var(--paper)}
+#sheet .tl.b span{background:var(--blue)}
+#sheet .pc{min-height:6.4vh;font-size:2.4vh;font-weight:900;border-radius:999px;border:3px solid transparent;margin:0 .6vh .8vh 0;padding:0 2.2vh;font-family:inherit;touch-action:manipulation}
+#sheet .pc.A{background:var(--ink);color:var(--paper)}
+#sheet .pc.B{background:var(--blue);color:var(--paper)}
+#sheet .pc.sel{outline:.6vh solid var(--yel);outline-offset:.2vh;border-color:var(--paper)}
+#sheet .pc.sel::before{content:"✓ "}
+#sheet .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:1vh;margin-top:1.4vh}
+#sheet .kinds button{min-height:7.4vh;font-size:2.5vh;font-weight:900;border-radius:999px;border:3px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;touch-action:manipulation}
+#sheet .kinds button[data-k="골"]{background:var(--ink);color:var(--paper)}
+#sheet .kinds button[data-k="자책골"]{border-color:var(--red);color:var(--red)}
+#sheet .kinds button:active,#sheet .pc:active{transform:scale(.97)}
+#sheet .row{display:flex;justify-content:space-between;align-items:center;gap:1vh;margin-top:1.2vh}
+#sheet .ghost{background:var(--paper);color:var(--ink);border:3px solid var(--hair);border-radius:999px;min-height:5.6vh;padding:0 2.4vh;font-weight:900;font-family:inherit;font-size:2.1vh;touch-action:manipulation}
+#sheet #rst{font-weight:800;color:var(--ink)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:11vh;z-index:40;background:var(--paper);color:var(--ink);border-radius:999px;padding:1vh 1vh 1vh 2.4vh;font-weight:900;font-size:2.2vh;display:flex;gap:1.4vh;align-items:center;max-width:92vw;box-shadow:0 0 0 .4vh var(--ink)}
+#toast.bad{background:var(--red);color:var(--paper)}
+#toast[hidden]{display:none}
+body:has(#sheet:not([hidden])) #toast{top:max(2vh,env(safe-area-inset-top));bottom:auto}
+#toast button{background:var(--ink);color:var(--paper);border:0;border-radius:999px;min-height:5vh;padding:0 2vh;font-weight:900;font-family:inherit;font-size:2vh;touch-action:manipulation}
+@media (orientation:portrait){#recb{font-size:2.2vh}#sheet .kinds{grid-template-columns:repeat(2,1fr)}#sheet .pc{min-height:5.6vh;font-size:2.1vh}#sheet .panel{max-height:72vh}}
+</style></head><body><div id="app"><div class="msg">불러오는 중…</div></div>
+<script>
+// 아축 아이패드 점수판 · 스포츠 디자인(Refero WHOOP+Ferrari DESIGN.md → /workspace/achuk-board-sport/design.md). 점수 = 저장된 경기 기록(골·자책골·상대골)만. 어시·슈퍼세이브는 득점 없음. 폴링 없음.
+let STORE='';
+// CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
+// File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
+// Passphrase = #k=<key> from the URL fragment (fragments are never sent to the server).
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const KEYC = {salt:null, iter:0, pass:null, key:null};
+async function aesKey(pass, salt, iter){
+  if(KEYC.key && KEYC.salt===salt && KEYC.iter===iter && KEYC.pass===pass) return KEYC.key; // derive once
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(salt), iterations:iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  Object.assign(KEYC, {salt, iter, pass, key}); return key;
+}
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const key = await aesKey(pass, doc.salt, doc.iter);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+// RECORD-LOGIC-BEGIN
+const REC_KINDS=['골','어시','자책골','세이브','유효슈팅','철벽수비'];
+function recLabel(k){return k==='세이브'?'슈퍼세이브':k}
+function assertAnon(obj){
+  const bad=['uid','user','writer','device','deviceId','by'];
+  for(const k of bad) if(obj&&Object.prototype.hasOwnProperty.call(obj,k)) throw new Error('identity');
+  return obj;
+}
+function scoreFromEvents(ev, match){
+  if(match&&match.base) return [+match.sa||0, +match.sb||0];
+  const seen={}; let a=0,b=0;
+  (ev||[]).forEach(g=>{
+    if(!g) return;
+    const id=g.eid||g.eventId||'';
+    if(id){ if(seen[id]) return; seen[id]=1; }
+    if(g.k==='골'){ if(g.t==='A') a++; else b++; }
+    else if(g.k==='자책골'){ if(g.t==='A') b++; else a++; }
+    else if(g.k==='상대골') b++;
+  });
+  return [a,b];
+}
+function persistedEvents(match, live, removed){
+  const rm=Object.assign({}, (match&&match.removedEvents)||{}, removed||{});
+  const out={};
+  ((match&&match.goals)||[]).forEach((g,i)=>{
+    const eid=g&&(g.eid||g.eventId||('legacy-'+i));
+    if(!eid||rm[eid]) return;
+    out[eid]=Object.assign({}, g, {eid});
+  });
+  Object.keys(live||{}).forEach(k=>{
+    const e=live[k]; if(!e) return;
+    const eid=e.eid||e.eventId||k;
+    if(!eid||rm[eid]||out[eid]||e.saved===false) return;
+    out[eid]=Object.assign({}, e, {eid});
+  });
+  return Object.values(out);
+}
+function applyPersistedEvent(match, ev){
+  const m=JSON.parse(JSON.stringify(match||{}));
+  const goals=Array.isArray(m.goals)?m.goals:[];
+  if(!goals.some(g=>g&&(g.eid===ev.eid||g.eventId===ev.eid))) goals.push({p:ev.p,k:ev.k,t:ev.t,eid:ev.eid,ts:ev.ts||0});
+  m.goals=goals;
+  if(!m.base){ const sc=scoreFromEvents(goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return m;
+}
+function addEventRequest(key, match, ev){
+  return assertAnon({key:key, op:'addEvent', id:match.id, eventId:ev.eid, p:ev.p, k:ev.k, t:ev.t});
+}
+function removeEventRequest(key, match, eventId){
+  return assertAnon({key:key, op:'removeEvent', id:match.id, eventId:eventId});
+}
+function livePayload(ev){ return assertAnon({p:ev.p, k:ev.k, t:ev.t}); }
+function entryAllowed(match, p, k, t){
+  if(!match||match.deleted||String(match.id||'').startsWith('pv-')) return false;
+  if(k==='상대골') return match.type==='external' && t==='B';
+  if(REC_KINDS.indexOf(k)<0) return false;
+  if(t!=='A'&&t!=='B') return false;
+  const roster=(match[t]&&match[t].players)||[];
+  return roster.indexOf(p)>=0;
+}
+function tapGuard(state, key, now){
+  const s=state||{busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  if(s.busyKey) return {ok:false, reason:'busy', state:s};
+  if(s.lastOk && s.lastKey===key && now-s.lastTs<800) return {ok:false, reason:'dup', state:s};
+  return {ok:true, state:{busyKey:key, lastKey:key, lastTs:now, lastOk:false}};
+}
+function finishGuard(state, ok){
+  return {busyKey:null, lastKey:state.lastKey, lastTs:state.lastTs, lastOk:!!ok};
+}
+async function saveRecord(match, ev, key, fetchImpl){
+  const request=addEventRequest(key, match, ev);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const base=(j.match&&typeof j.match==='object')?j.match:match;
+  return {ok:true, match:applyPersistedEvent(base, ev), request:request};
+}
+async function deleteRecord(match, eventId, key, fetchImpl){
+  const request=removeEventRequest(key, match, eventId);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const m=JSON.parse(JSON.stringify((j.match&&typeof j.match==='object')?j.match:match));
+  m.removedEvents=Object.assign({}, m.removedEvents, {[eventId]:1});
+  m.goals=(m.goals||[]).filter(g=>g&&g.eid!==eventId);
+  if(!m.base){ const sc=scoreFromEvents(m.goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return {ok:true, match:m, request:request};
+}
+function createRecorder(){
+  let guard={busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  return {
+    async add(match, ev, key, fetchImpl, now){
+      if(!entryAllowed(match, ev.p, ev.k, ev.t)) return {ok:false, reason:'reject', match:match};
+      const tap=ev.p+'|'+ev.k+'|'+ev.t;
+      const g=tapGuard(guard, tap, now==null?Date.now():now);
+      if(!g.ok) return {ok:false, reason:g.reason, match:match};
+      guard=g.state;
+      let res;
+      try{ res=await saveRecord(match, ev, key, fetchImpl); }
+      catch(e){ res={ok:false, match:match, error:String(e&&e.message||e)}; }
+      guard=finishGuard(guard, !!(res&&res.ok));
+      if(!res.ok) return {ok:false, reason:'fail', match:match, error:res.error};
+      return {ok:true, reason:'saved', match:res.match, request:res.request};
+    }
+  };
+}
+// RECORD-LOGIC-END
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY=()=>new Date(Date.now()+9*36e5).toISOString().slice(0,10),Q=new URLSearchParams(location.search);
+let KEY=(new URLSearchParams(location.hash.slice(1))).get('k')||'';
+try{if(KEY){localStorage.setItem('achuk_k',KEY);history.replaceState(null,'',location.pathname+location.search)}else KEY=localStorage.getItem('achuk_k')||''}catch(e){}
+function keyForm(msg){$('#app').innerHTML=`<div class="keyf"><b>🔑 처음 한 번만 키를 입력해 주세요</b>${msg?`<div class="err">${msg}</div>`:''}<input id="kin" type="password" autocomplete="off" placeholder="키 또는 #k= 링크 붙여넣기"><button id="kok">저장하고 열기</button><small>이 기기에만 저장돼요</small></div>`;
+ $('#kok').onclick=()=>{let v=$('#kin').value.trim();const m=v.match(/[#&]k=([^&]+)/);if(m)v=decodeURIComponent(m[1]);if(!v)return;try{localStorage.setItem('achuk_k',v)}catch(e){}KEY=v;load()}}
+let DB={},M=null,EV={},RM={},F=null,d=null,space='',KICK=0;
+async function get(){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({key:KEY,op:'get',matches:{}})});const j=await r.json();if(!j.ok)throw new Error(j.error||'server');DB=j.matches||{}}
+function pick(){const q=Q.get('m');if(q&&/^pv-/.test(q))return{id:q,date:TODAY(),A:{name:'블랙'},B:{name:'블루'},goals:[]};
+ if(q&&DB[q])return DB[q];const t=Q.get('d')||TODAY();return Object.values(DB).filter(x=>x&&!x.deleted&&String(x.date).slice(0,10)===t).sort((a,b)=>(+String(b.id).slice(2)||0)-(+String(a.id).slice(2)||0))[0]||null}
+function events(){if(!M)return [];return persistedEvents(M,EV,RM)}
+function score(){return scoreFromEvents(events(), M)}
+let LAST=null,SW=false;try{SW=localStorage.getItem('achuk_board_sw')==='1'}catch(e){}
+function canRec(){if(!M||!STORE||M.deleted||String(M.id).startsWith('pv-'))return false;if(String(M.date||'').slice(0,10)<TODAY())return false;if(M.type==='external')return true;return ((M.A&&M.A.players)||[]).length+((M.B&&M.B.players)||[]).length>0}
+function newEid(){const alphabet='-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';const bytes=crypto.getRandomValues(new Uint8Array(20));let s='';for(let i=0;i<20;i++)s+=alphabet[bytes[i]%alphabet.length];return s}
+function toast(msg,undo,bad){const el=$('#toast');if(!el)return;el.hidden=false;el.classList.toggle('bad',!!bad);el.innerHTML=`<span>${esc(msg)}</span>`+(undo?'<button type="button" id="undob">되돌리기</button>':'');clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true},undo?6000:2200);if(undo){const b=$('#undob');if(b)b.onclick=undo}}
+async function postJSON(body){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});let j=null;try{j=await r.json()}catch(e){throw new Error('bad-response')}return j}
+function publishLive(ev){if(!F||!d||!space||!M)return;const payload=livePayload(ev);F.set(F.ref(d,`achuk/${space}/live/${M.id}/events/${ev.eid}`),Object.assign({},payload,{ts:F.serverTimestamp()})).catch(()=>{});F.runTransaction(F.ref(d,`achuk/${space}/live/${M.id}/seq`),n=>(n||0)+1).catch(()=>{})}
+function publishRemoved(eventId){if(!F||!d||!space||!M)return;if(!/^[-_A-Za-z0-9]{20}$/.test(eventId))return;F.set(F.ref(d,`achuk/${space}/live/${M.id}/removed/${eventId}`),F.serverTimestamp()).catch(()=>{})}
+const REC=createRecorder();
+let SEL=null,ASST=null,SHEET=false;
+function paintSheet(){const el=$('#sheet');if(!el||!M)return;if(!SHEET){el.hidden=true;return}el.hidden=false;
+ const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('')||'<div class="hint">선수 없음</div>';
+ const kinds=REC_KINDS.map(k=>`<button type="button" data-k="${k}">${esc(recLabel(k))}</button>`).join('');
+ const opp=M.type==='external'?'<button type="button" class="pc B" id="opp">⚽ 상대팀 득점</button>':'';
+ const as=ASST&&ASST.until>Date.now()?`<div class="hint">⚽ ${esc(ASST.scorer)} 골 · 어시스트는? (점수는 그대로)</div>${((M[ASST.t]&&M[ASST.t].players)||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="ghost" id="asnone">어시 없음</button>`:'';
+ el.innerHTML=`<div class="panel" role="dialog" aria-label="기록 등록"><h3>기록 등록</h3><div class="hint">선수를 고른 뒤 종류를 누르면 저장돼요. 점수는 저장이 끝난 뒤에만 바뀌어요.</div><div class="cols"><div><div class="tl a"><span>BLACK</span>${esc(M.A&&M.A.name||'A')}</div>${chips('A')}</div><div><div class="tl b"><span>BLUE</span>${esc(M.B&&M.B.name||'B')}</div>${M.type==='external'?opp:chips('B')}</div></div>${as}<div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p)+' 선택됨 · 종류를 누르면 저장':'선수를 먼저 고르세요'}</div><div class="row"><span></span><button type="button" class="ghost" id="sheetx">닫기</button></div></div>`;
+ el.onclick=e=>{if(e.target===el){SHEET=false;el.hidden=true}};
+ const panel=el.querySelector('.panel');if(panel)panel.onclick=e=>e.stopPropagation();
+ el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,t=b.dataset.t;SEL=SEL&&SEL.p===p&&SEL.t===t?null:{p,t};paintSheet()});
+ el.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>chooseKind(b.dataset.k));
+ el.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{const p=b.dataset.as,t=ASST&&ASST.t;ASST=null;if(p&&t)commitRec(p,'어시',t);else paintSheet()});
+ const none=$('#asnone');if(none)none.onclick=()=>{ASST=null;paintSheet()};
+ const oppB=$('#opp');if(oppB)oppB.onclick=()=>commitRec(M.B&&M.B.name||'상대팀','상대골','B');
+ const x=$('#sheetx');if(x)x.onclick=()=>{SHEET=false;el.hidden=true}}
+async function commitRec(p,k,t){if(!M)return;const ev={eid:newEid(),p,k,t,ts:Date.now()};const res=await REC.add(M,ev,KEY,postJSON,Date.now());
+ if(!res.ok){if(res.reason==='fail')toast('저장되지 않았어요. 점수는 그대로입니다.',null,true);else if(res.reason==='reject')toast('이 기록은 저장할 수 없어요',null,true);const st=$('#rst');if(st&&res.reason==='fail')st.textContent='저장 실패 · 점수 유지';return}
+ M=res.match;if(M&&M.id)DB[M.id]=M;render();publishLive(ev);SEL=null;
+ if(k==='골'&&M[t]&&(M[t].players||[]).length>1){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
+ if(SHEET)paintSheet();
+ toast('저장됐어요',async()=>{const rm=await deleteRecord(M,ev.eid,KEY,postJSON);if(!rm.ok){toast('삭제되지 않았어요. 점수는 그대로입니다.',null,true);return}M=rm.match;if(M&&M.id)DB[M.id]=M;RM[ev.eid]=1;delete EV[ev.eid];if(ASST&&ASST.scorer===p)ASST=null;render();publishRemoved(ev.eid);if(SHEET)paintSheet();toast('되돌렸어요')})}
+function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');const st=$('#rst');if(st)st.textContent='선수를 먼저 고르세요';return}commitRec(SEL.p,k,SEL.t)}
+const SEEN={},BOOT_AT=Date.now();let BOOTED=false;
+const RM_MOTION=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+const KLABEL={'골':'GOAL','자책골':'OWN GOAL','상대골':'GOAL','어시':'ASSIST','세이브':'SUPER SAVE','유효슈팅':'SHOT ON TARGET','철벽수비':'WALL'};
+function celebrate(e){const fx=$('#fx');if(!fx||!e)return;const big=e.k==='골'||e.k==='자책골'||e.k==='상대골';
+ const side=e.k==='자책골'?(e.t==='A'?'B':'A'):(e.k==='상대골'?'B':e.t);const cls=e.k==='자책골'?'og':(big?side:'minor');
+ const tn=M&&M[e.t]&&M[e.t].name||'';const who=e.k==='상대골'?esc(tn||'상대팀'):`${esc(e.p||'')} <small>${esc(tn)}</small>`;
+ fx.innerHTML=`<div class="rib ${cls}" data-k="${esc(e.k)}"><span class="w">${KLABEL[e.k]||esc(e.k)}</span><span class="who">${who}</span></div>`;
+ const r=fx.firstChild;void r.offsetWidth;r.classList.add('go');clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.innerHTML=''},big?2700:2100);
+ if(big){const tm=document.querySelector('.team.'+side);if(tm&&!RM_MOTION()){tm.classList.remove('hit');void tm.offsetWidth;tm.classList.add('hit');setTimeout(()=>tm.classList.remove('hit'),950)}}
+ window.__fx&&window.__fx(e)}
+function render(){if(!M){$('#app').innerHTML=`<div class="msg">오늘(${TODAY()}) 경기가 아직 없어요<br><small>경기가 만들어지면 다시 열어 주세요</small></div>`;return}
+ const [a,b]=score();if(!$('#sa')){$('#app').innerHTML=`<div class="top"><span class="brand"><b>아축</b><i>SCORE</i><span class="dt">${esc(String(M.date).slice(0,10))}</span></span><div class="clkw" id="clkw" hidden><span class="dot"></span><span class="livel">LIVE</span><span class="clk" id="clk"></span></div><span id="live" class="live">⚪ 연결 중…</span></div>
+ <div class="board${SW?' sw':''}" id="brd"><section class="team A" aria-label="블랙 팀"><div class="flash"></div><div class="id"><span class="tag">BLACK</span><h2>${esc(M.A&&M.A.name||'A')}</h2></div><div class="scw"><div class="sc" id="sa">0</div></div></section><div class="mid"><div class="colon">:</div></div><section class="team B" aria-label="블루 팀"><div class="flash"></div><div class="id"><span class="tag">BLUE</span><h2>${esc(M.B&&M.B.name||'B')}</h2></div><div class="scw"><div class="sc" id="sb">0</div></div></section></div><button id="swb" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button>${canRec()?'<button id="recb" type="button" aria-label="기록 등록">기록</button>':''}<div id="fx" aria-live="polite"></div><div id="sheet" hidden></div><div id="toast" hidden></div>`;
+  $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_board_sw',SW?'1':'')}catch(e){}const br=$('#brd');br.classList.toggle('sw',SW);br.classList.remove('swapping');void br.offsetWidth;br.classList.add('swapping');setTimeout(()=>br.classList.remove('swapping'),500)};
+  const rb=$('#recb');if(rb)rb.onclick=()=>{SHEET=!SHEET;paintSheet()}}
+ const evs=events();const fresh=[];evs.forEach(e=>{if(!SEEN[e.eid]){SEEN[e.eid]=1;if(BOOTED&&!(+e.ts&&+e.ts<BOOT_AT-15000))fresh.push(e)}});
+ [['sa',a],['sb',b]].forEach(([id,v],i)=>{const el=$('#'+id);if(el.textContent!==String(v)){const up=LAST&&v>LAST[i];el.textContent=v;if(LAST){el.classList.remove('slam','drop');void el.offsetWidth;el.classList.add(up?'slam':'drop');setTimeout(()=>el.classList.remove('slam','drop'),750)}}});LAST=[a,b];
+ if(fresh.length){const pri=fresh.filter(e=>e.k==='골'||e.k==='자책골'||e.k==='상대골');celebrate((pri.length?pri:fresh)[ (pri.length?pri:fresh).length-1 ])}
+ BOOTED=true;
+ const ts=evs.map(e=>+e.ts).filter(Boolean);KICK=+M.kick||(ts.length?Math.min(...ts):0);tick()}
+function tick(){const el=$('#clk'),w=$('#clkw');if(!el||!M)return;const show=v=>{if(w)w.hidden=!v};if(!KICK||String(M.date).slice(0,10)!==TODAY()){el.textContent='';show(false);return}const s=Math.max(0,Math.floor((Date.now()-KICK)/1000));if(s>3*3600){el.textContent='';show(false);return}el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');show(true)}
+setInterval(tick,1000); // 화면 시계만 (데이터 폴링 아님)
+function status(s){const el=$('#live');if(el)el.textContent=s==='on'?'🟢 실시간':s==='re'?'🟡 재연결 중…':'⚪ 연결 중…'}
+async function live(fb){const V='10.14.1';const [A,AU,DBm]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`)]);
+ F=DBm;const app=A.initializeApp(fb,'achuk-board');const au=AU.getAuth(app);d=F.getDatabase(app);
+ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+KEY));space='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+ await AU.signInAnonymously(au);let first=true;F.onValue(F.ref(d,'.info/connected'),s=>{if(s.val()){first=false;status('on')}else status(first?'':'re')});
+ const P=`achuk/${space}/live/${M.id}`;
+ F.onChildAdded(F.ref(d,P+'/events'),s=>{EV[s.key]=Object.assign({eid:s.key},s.val());render();window.__rx&&window.__rx(s.key)});
+ F.onChildAdded(F.ref(d,P+'/removed'),s=>{RM[s.key]=1;render()})}
+let BASE='../',FB=null;
+async function load(){if(!KEY){keyForm('');return}
+ try{const r=await fetch(BASE+'cfg.enc.json?_='+Date.now(),{cache:'no-store'});const c=await decryptDoc(await r.json(),KEY);STORE=c.store||'';FB=c.fb||null}
+ catch(e){if(e.badKey){try{localStorage.removeItem('achuk_k')}catch(_){}KEY='';keyForm('키가 맞지 않아요');return}$('#app').innerHTML='<div class="msg">설정을 불러오지 못했어요</div>';return}
+ try{if(STORE)await get()}catch(e){if(!/^pv-/.test(Q.get('m')||'')){$('#app').innerHTML='<div class="msg">서버 연결 실패 · 다시 열어 주세요</div>';return}}
+ M=pick();render();if(M&&FB)live(FB).catch(e=>status(''))}
+// PREVIEW-MOCK-BEGIN — 미리보기 전용. 설정·스토어·Firebase에 접근하지 않고, 기록은 이 탭 메모리에만 남아요(새로고침하면 초기화).
+(function(){
+ const now=Date.now(),min=60e3;
+ KEY='preview';STORE='mock://preview';FB=null;
+ const A=['김민준','이서준','박도윤','최시우','정하준','윤지호'],B=['강지호','윤준우','장도현','임건우','한우진','오시훈'];
+ M={id:'demo-1',date:TODAY(),type:'internal',A:{name:'블랙',players:A},B:{name:'블루',players:B},kick:now-23*min-17e3,
+    goals:[{p:'김민준',k:'골',t:'A',eid:'seed-0000000000000001',ts:now-19*min},{p:'강지호',k:'골',t:'B',eid:'seed-0000000000000002',ts:now-12*min},{p:'이서준',k:'골',t:'A',eid:'seed-0000000000000003',ts:now-5*min}]};
+ DB[M.id]=M;
+ window.__mock={fail:false,delay:350,calls:[]};
+ postJSON=async body=>{window.__mock.calls.push(JSON.parse(JSON.stringify(body)));await new Promise(r=>setTimeout(r,window.__mock.delay));
+  if(window.__mock.fail)return {ok:false,error:'mock-fail'};return {ok:true,applied:true,match:JSON.parse(JSON.stringify(M))}};
+ window.__simRemote=(p,k,t)=>{const eid=newEid();EV[eid]={eid,p,k,t,ts:Date.now()};render();return eid};
+ window.__state=()=>({score:score(),sw:SW,events:events().length});
+ render();status=()=>{};const lv=$('#live');if(lv){lv.textContent='🧪 미리보기 · 실제 저장 안 됨';lv.style.color='#ffd400'}
+})();
+// PREVIEW-MOCK-END
+</script></body></html>

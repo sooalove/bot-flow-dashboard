@@ -1,0 +1,538 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="apple-mobile-web-app-capable" content="yes"><script>(()=>{const B='20261117231520';const chk=()=>fetch('version.json?_='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.b&&j.b!==B&&sessionStorage.getItem('bvr')!==j.b){sessionStorage.setItem('bvr',j.b);const u=new URL(location.href);u.searchParams.set('v',j.b);location.replace(u.toString())}}).catch(()=>{});chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})()</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet"><title>아축 점수판</title>
+<style>:root{--ink:#000;--carbon:#191919;--paper:#fff;--mist:#f3f5f9;--hair:#e5e7eb;--blue:#1d4ed8;--blue-hi:#2f6bff;--red:#da291c;--yel:#ffd400;--disp:"Montserrat","Apple SD Gothic Neo","Noto Sans KR",-apple-system,sans-serif;--ko:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Montserrat",sans-serif}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ink);color:var(--paper);font-family:var(--ko);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-font-smoothing:antialiased}
+#app{height:100%;display:flex;flex-direction:column;padding:max(1.6vh,env(safe-area-inset-top)) max(2.4vw,env(safe-area-inset-right)) calc(10vh + env(safe-area-inset-bottom)) max(2.4vw,env(safe-area-inset-left));position:relative}
+.top{display:flex;justify-content:space-between;align-items:center;height:6.4vh;gap:2vw;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:2.1vh;color:var(--paper)}
+.top .brand{display:flex;align-items:center;gap:1vh;white-space:nowrap}
+.top .brand b{font-size:2.6vh;letter-spacing:-.02em;text-transform:none}
+.top .dt{font-family:var(--disp);font-size:2vh;letter-spacing:.06em;margin-left:.6vh}.top .brand i{font-style:normal;background:var(--paper);color:var(--ink);padding:.3vh 1vh;border-radius:999px;font-size:1.6vh}
+.live{font-family:var(--ko);letter-spacing:0;text-transform:none;font-weight:800;font-size:2.1vh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:right}
+.board{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.6vw;min-height:0;margin-top:1.4vh}
+.team{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:2.6vh;overflow:hidden;min-width:0;padding:2.4vh 1.4vw 3vh;isolation:isolate}
+.team::before{content:"";position:absolute;inset:-50%;z-index:-1;background:repeating-linear-gradient(-62deg,rgba(255,255,255,.06) 0 2.2vh,transparent 2.2vh 7vh);animation:drift 26s linear infinite;pointer-events:none}
+@keyframes drift{to{transform:translate3d(14vh,0,0)}}
+.team .flash{position:absolute;inset:0;background:var(--paper);opacity:0;z-index:2;pointer-events:none}
+.team.A{background:var(--ink);box-shadow:inset 0 0 0 .55vh var(--paper);order:1}
+.team.B{background:var(--blue);order:3}
+.board.sw .A{order:3}.board.sw .B{order:1}
+.id{display:flex;align-items:center;gap:1.2vh;max-width:100%}
+.tag{font-family:var(--disp);font-weight:800;letter-spacing:.1em;font-size:2.2vh;padding:.5vh 1.4vh;border-radius:999px;white-space:nowrap}
+.A .tag{background:var(--paper);color:var(--ink)}.B .tag{background:var(--paper);color:var(--blue)}
+.team h2{font-size:6.4vh;font-weight:900;line-height:1;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.scw{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;width:100%}
+.sc{font-family:var(--disp);font-size:min(54vh,32vw);font-weight:800;line-height:.78;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--paper);will-change:transform}
+.mid{order:2;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:3vw}
+.colon{font-family:var(--disp);font-size:12vh;font-weight:800;line-height:.7;color:var(--paper)}
+.clkw{display:flex;align-items:center;gap:1vh;background:var(--carbon);border:2px solid #3a3a3a;border-radius:999px;padding:.5vh 1.8vh}
+.clkw[hidden]{display:none}
+.dot{width:1.5vh;height:1.5vh;border-radius:50%;background:var(--red);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.clk{font-family:var(--disp);font-size:3.8vh;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--paper)}
+.livel{font-family:var(--disp);font-weight:800;font-size:1.7vh;letter-spacing:.1em;color:var(--paper)}
+#swb{position:fixed;left:50%;bottom:max(1.6vh,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--yel);color:var(--ink);border:0;font-size:2.6vh;font-weight:900;min-height:6.2vh;padding:0 3.2vh;border-radius:999px;z-index:5;font-family:var(--ko);touch-action:manipulation}
+#swb:active{transform:translateX(-50%) scale(.95)}
+#recb{position:fixed;right:max(2.4vw,env(safe-area-inset-right));bottom:max(1.6vh,env(safe-area-inset-bottom));z-index:6;background:var(--paper);color:var(--ink);border:0;font-size:2.6vh;font-weight:900;min-height:6.2vh;padding:0 3.2vh 0 2.6vh;border-radius:999px;font-family:var(--ko);touch-action:manipulation;display:flex;align-items:center;gap:1vh}
+#recb::before{content:"";width:1.6vh;height:1.6vh;border-radius:50%;background:var(--red)}
+#recb:active{transform:scale(.96)}
+/* goal moment */
+#fx{position:fixed;left:0;right:0;top:0;height:min(17vh,150px);z-index:20;pointer-events:none;overflow:hidden}
+.rib{position:absolute;left:-10vw;right:-10vw;top:1.2vh;height:calc(100% - 2.4vh);display:flex;align-items:center;justify-content:center;gap:3vw;transform:translateX(-120%) skewX(-14deg);color:var(--paper);font-family:var(--disp);font-weight:800;white-space:nowrap}
+.rib.A{background:var(--paper);color:var(--ink)}.rib.B{background:var(--blue)}.rib.og{background:var(--red);color:var(--paper)}.rib.minor{background:var(--carbon);border-top:.5vh solid var(--paper);border-bottom:.5vh solid var(--paper);height:calc(70% - 2.4vh)}
+.rib::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(255,255,255,.14) 6vh 7vh);pointer-events:none}.rib.A::after{background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(0,0,0,.08) 6vh 7vh)}.rib .w{font-size:11vh;letter-spacing:-.05em;line-height:.8;transform:skewX(14deg)}
+.rib.minor .w{font-size:6vh}
+.rib .who{font-family:var(--ko);font-size:5vh;font-weight:900;letter-spacing:-.02em;transform:skewX(14deg);display:flex;align-items:center;gap:1.4vh}
+.rib.minor .who{font-size:3.6vh}
+.rib .who small{font-family:var(--disp);font-size:2vh;letter-spacing:.1em;padding:.4vh 1.2vh;border-radius:999px;border:2px solid currentColor}
+.rib.go{animation:sweep 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.rib.minor.go{animation-duration:2s}
+@keyframes sweep{0%{transform:translateX(-120%) skewX(-14deg)}22%{transform:translateX(0) skewX(-14deg)}78%{transform:translateX(0) skewX(-14deg);opacity:1}100%{transform:translateX(120%) skewX(-14deg);opacity:0}}
+.team.hit .flash{animation:flash .9s ease-out}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
+.sc.slam{animation:slam .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{0%{transform:scale(1.55);filter:blur(.6vh);opacity:.2}60%{transform:scale(.94);filter:none;opacity:1}100%{transform:scale(1)}}
+.sc.drop{animation:drop .5s ease-out}
+@keyframes drop{0%{transform:translateY(-12%);opacity:.2}100%{transform:none;opacity:1}}
+.team.hit{animation:shake .5s ease-out}
+@keyframes shake{20%{transform:translateX(-.8vh)}40%{transform:translateX(.8vh)}60%{transform:translateX(-.4vh)}80%{transform:translateX(.3vh)}}
+.board.swapping .team{animation:swapin .45s cubic-bezier(.16,1,.3,1)}
+@keyframes swapin{0%{transform:scale(.94);opacity:.4}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rib.go{transform:translateX(0) skewX(-14deg)}}
+@media (orientation:portrait){.board{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr;gap:1.4vh}.colon{display:none}.mid{min-height:0}.sc{font-size:min(24vh,52vw)}.team h2{font-size:4.4vh}.tag{font-size:1.7vh}#swb{left:max(2.4vw,env(safe-area-inset-left));transform:none}#swb:active{transform:scale(.95)}#fx{height:12vh}.rib::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(255,255,255,.14) 6vh 7vh);pointer-events:none}.rib.A::after{background:repeating-linear-gradient(90deg,transparent 0 6vh,rgba(0,0,0,.08) 6vh 7vh)}.rib .w{font-size:7vh}.rib .who{font-size:3.4vh}.top .dt{display:none}.top{font-size:1.8vh}.live{font-size:1.8vh}.clk{font-size:3.2vh}}
+.msg{margin:auto;text-align:center;font-size:4vh;font-weight:800;color:var(--paper)}
+.keyf{margin:auto;width:min(560px,90vw);background:var(--paper);color:var(--ink);padding:28px;border-radius:24px;display:flex;flex-direction:column;gap:12px;font-size:18px}
+.keyf input,.keyf button{font-size:20px;padding:14px 18px;border-radius:999px;border:2px solid var(--hair);background:var(--paper);color:var(--ink);font-family:inherit}.keyf button{background:var(--ink);color:var(--paper);font-weight:800;border-color:var(--ink)}.err{color:var(--red);font-weight:800}
+/* record sheet: compact floating card, bottom-right on landscape so score digits stay visible */
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.2);display:flex;align-items:flex-end;justify-content:flex-end;padding:0 max(1.2vw,env(safe-area-inset-right)) max(1.2vh,env(safe-area-inset-bottom)) 0}
+#sheet[hidden]{display:none}
+#sheet .panel{position:relative;width:38vw;max-width:40vw;min-width:34vw;max-height:28vh;overflow:auto;-webkit-overflow-scrolling:touch;background:var(--paper);color:var(--ink);border-radius:1.2vh;padding:44px .9vw .6vh;box-shadow:0 1vh 3vh rgba(0,0,0,.45)}
+#sheet h3{position:absolute;top:0;left:.9vw;right:.9vw;height:28px;font-family:var(--ko);font-size:1.6vh;font-weight:900;letter-spacing:-.02em;margin:0;display:flex;align-items:flex-end;padding:0}
+#sheet .hint{color:#333;font-size:1.2vh;font-weight:600;margin:0 0 .4vh;line-height:1.3}
+#sheet h3 + .hint{display:none}
+#sheet .cols{display:grid;grid-template-columns:1fr 1fr;gap:.5vw}
+#sheet .cols>div{background:var(--mist);border-radius:.7vh;padding:.3vh .45vh;display:flex;flex-wrap:wrap;align-items:center;gap:.3vh}
+#sheet .tl{font-weight:900;font-size:1.2vh;margin:0 0 .15vh;display:flex;align-items:center;gap:.35vh;line-height:1.2;width:100%}
+#sheet .tl span{font-family:var(--disp);font-size:1.05vh;letter-spacing:.08em;padding:.1vh .45vh;border-radius:999px;background:var(--ink);color:var(--paper)}
+#sheet .tl.b span{background:var(--blue)}
+#sheet .pc{min-height:44px;min-width:44px;font-size:1.45vh;font-weight:900;border-radius:999px;border:2px solid transparent;margin:0;padding:0 .8vh;font-family:inherit;touch-action:manipulation}
+#sheet .pc.A{background:var(--ink);color:var(--paper)}
+#sheet .pc.B{background:var(--blue);color:var(--paper)}
+#sheet .pc.sel{outline:.35vh solid var(--yel);outline-offset:.15vh;border-color:var(--paper)}
+#sheet .pc.sel::before{content:"✓ "}
+#sheet .kinds{display:grid;grid-template-columns:repeat(5,1fr);gap:.35vh;margin-top:.45vh}
+#sheet .kinds button{min-height:40px;min-width:0;font-size:1.15vh;font-weight:800;border-radius:999px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;touch-action:manipulation;padding:0 .15vh;line-height:1.15}
+#sheet .kinds button[data-k="골"]{grid-column:1/-1;min-height:44px;font-size:1.55vh;font-weight:900;background:var(--ink);color:var(--paper)}
+#sheet .kinds button[data-k="자책골"]{border-color:var(--red);color:var(--red)}
+#sheet .kinds button:active,#sheet .pc:active{transform:scale(.97)}
+#sheet .assist{display:flex;flex-direction:column;gap:.45vh}
+#sheet .assist .hint{display:block;font-size:1.35vh;margin:0;color:var(--ink);font-weight:800}
+#sheet .aschips{display:flex;flex-wrap:wrap;gap:.4vh}
+#sheet .asmode #asnone{margin-top:.15vh;align-self:flex-start}
+#sheet .idlebar{position:absolute;top:0;left:0;right:0;height:3px;background:var(--t-red,var(--red));transform-origin:left center;transform:scaleX(1);pointer-events:none;z-index:4;opacity:.9;border-radius:.8vh .8vh 0 0}
+@keyframes sheetidle{to{transform:scaleX(0)}}
+@media (prefers-reduced-motion:reduce){#sheet .idlebar{animation:none!important;opacity:.4}}
+#sheet .row{position:absolute;top:0;right:.9vw;height:44px;display:flex;justify-content:flex-end;align-items:center;gap:.4vh;margin:0;z-index:3}
+#sheet .row>span{display:none}
+#sheet .ghost{background:var(--paper);color:var(--ink);border:2px solid var(--hair);border-radius:999px;min-height:44px;min-width:44px;padding:0 1.4vh;font-weight:900;font-family:inherit;font-size:1.4vh;touch-action:manipulation}
+#sheet #rst{position:absolute;top:26px;left:.9vw;right:.9vw;margin:0;font-weight:800;color:var(--ink);font-size:1.15vh;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:3}
+#sheet #asnone{margin-top:.3vh}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:11vh;z-index:40;background:var(--paper);color:var(--ink);border-radius:999px;padding:1vh 1vh 1vh 2.4vh;font-weight:900;font-size:2.2vh;display:flex;gap:1.4vh;align-items:center;max-width:92vw;box-shadow:0 0 0 .4vh var(--ink)}
+#toast.bad{background:var(--red);color:var(--paper)}
+#toast[hidden]{display:none}
+body:has(#sheet:not([hidden])) #toast{top:max(2vh,env(safe-area-inset-top));bottom:auto}
+#toast button{background:var(--ink);color:var(--paper);border:0;border-radius:999px;min-height:5vh;padding:0 2vh;font-weight:900;font-family:inherit;font-size:2vh;touch-action:manipulation}
+@media (orientation:portrait){#recb{font-size:2.2vh}#sheet{justify-content:flex-end;align-items:flex-end}#sheet .panel{width:min(72vw,420px);max-width:78vw;min-width:min(56vw,calc(100vw - 2.4vw));max-height:40vh}#sheet .kinds{grid-template-columns:repeat(5,1fr)}#sheet .pc{min-height:44px;font-size:1.6vh}#sheet h3 + .hint{display:none}}
+@media (orientation:portrait) and (max-width:700px){#sheet .panel{width:min(94vw,100%);max-width:96vw;min-width:0;max-height:44vh}#sheet .kinds{grid-template-columns:repeat(5,1fr)}#sheet .kinds button:not([data-k="골"]){font-size:1.05vh}}
+
+@media (orientation:landscape) and (max-height:900px){#sheet h3 + .hint{display:none}}
+
+/* Peloton — "red beacon on charcoal runway" (live-streamed classes): Carbon Black #181a1d stage, white plates, one red ON-AIR accent.
+   Rendered as football TV broadcast graphics: slanted team plates, score bug, lower-third goal graphic. */
+.th-tv{--t-red:#df1c2f;--t-carbon:#181a1d;--t-mist:#f7f7f7;--t-silver:#e4e6e7;--t-blue:#1d4ed8;--t-d:"Inter","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+html:has(.th-tv),body.th-tv{background:radial-gradient(120% 90% at 50% 0%,#2a2d32 0,#181a1d 55%,#0e0f11 100%)}
+.th-tv .top{font-family:var(--t-d);letter-spacing:.08em}
+.th-tv .top .brand{background:var(--t-mist);color:#000;padding:.6vh 1.6vh .6vh 0;clip-path:polygon(0 0,100% 0,calc(100% - 1.6vh) 100%,0 100%)}
+.th-tv .top .brand b{background:var(--t-red);color:#fff;padding:.6vh 2vh .6vh 1.6vh;margin:-.6vh 0;font-style:italic;font-weight:900;clip-path:polygon(0 0,100% 0,calc(100% - 1.4vh) 100%,0 100%)}
+.th-tv .top .brand i{background:none;color:#000;font-weight:900;font-style:italic;padding:0}
+.th-tv .top .dt{color:#000;font-weight:900}
+.th-tv .clkw{background:var(--t-mist);border:0;border-radius:.4vh;padding:0 1.6vh 0 0;overflow:hidden;gap:1.4vh}
+.th-tv .clkw .dot{display:none}
+.th-tv .livel{background:var(--t-red);color:#fff;font-family:var(--t-d);font-weight:900;font-style:italic;padding:1.2vh 1.6vh;font-size:1.9vh;animation:onair 1.6s ease-in-out infinite}
+@keyframes onair{50%{background:#9e1020}}
+.th-tv .clk{color:#000;font-family:var(--t-d);font-weight:900;font-size:3.8vh}
+.th-tv .board{gap:1vw;margin-top:2vh}
+.th-tv .team{border-radius:.6vh;padding:0 1.2vw 2vh;justify-content:flex-start;background:linear-gradient(180deg,#2c2f35 0,#1b1d21 60%,#141518 100%)}
+.th-tv .team::before{inset:0;animation:none;background:linear-gradient(115deg,transparent 0 62%,rgba(255,255,255,.05) 62% 70%,transparent 70%)}
+.th-tv .team.A{background:linear-gradient(180deg,#2c2f35 0,#1b1d21 60%,#141518 100%);box-shadow:inset 1.4vh 0 0 #fff,inset 0 -.5vh 0 #fff}
+.th-tv .team.B{background:linear-gradient(180deg,#22345f 0,#18264a 55%,#121c38 100%);box-shadow:inset 1.4vh 0 0 var(--t-blue),inset 0 -.5vh 0 var(--t-blue)}
+.th-tv .board.sw .team.A{box-shadow:inset -1.4vh 0 0 #fff,inset 0 -.5vh 0 #fff}.th-tv .board.sw .team.B{box-shadow:inset -1.4vh 0 0 var(--t-blue),inset 0 -.5vh 0 var(--t-blue)}
+.th-tv .team .flash{background:#fff}
+.th-tv .id{align-self:stretch;margin:0 -1.2vw;padding:1.3vh 2.6vw 1.3vh 3vw;gap:1.6vh;justify-content:flex-start;clip-path:polygon(0 0,100% 0,calc(100% - 3vh) 100%,0 100%);margin-right:12%}
+.th-tv .A .id{background:var(--t-mist);color:#000}.th-tv .B .id{background:var(--t-blue);color:#fff}
+.th-tv .tag{border-radius:.3vh;font-family:var(--t-d);font-weight:900;font-style:italic;letter-spacing:.08em}
+.th-tv .A .tag{background:#000;color:#fff}.th-tv .B .tag{background:#fff;color:var(--t-blue)}
+.th-tv .team h2{font-size:5.6vh;font-style:italic;letter-spacing:-.02em}
+.th-tv .sc{font-family:var(--t-d);font-weight:900;font-style:italic;letter-spacing:-.06em;line-height:.78;color:#fff;font-size:min(52vh,30vw)}
+.th-tv .colon{font-family:var(--t-d);font-style:italic;color:#fff;font-weight:900}
+.th-tv .mid{min-width:2vw}
+.th-tv #swb{background:#ffd400;color:#000;border-radius:.4vh;font-weight:900;font-style:italic}
+.th-tv #recb{background:var(--t-mist);color:#000;border-radius:.4vh;font-weight:900}
+.th-tv #recb::before{background:var(--t-red);border-radius:50%}
+/* goal moment: broadcast lower-third, slides in from left over the bottom of the board */
+.th-tv #fx{top:auto;bottom:calc(10vh + env(safe-area-inset-bottom));height:min(19vh,160px)}
+.th-tv .rib{left:3vw;right:3vw;top:0;height:100%;transform:translateX(-120%);justify-content:flex-start;gap:0;font-family:var(--t-d);font-weight:900;font-style:italic;background:var(--t-mist)!important;color:#000!important;border-radius:.6vh;overflow:hidden;box-shadow:0 1.2vh 3vh rgba(0,0,0,.55)}
+.th-tv .rib::after{background:none!important}
+.th-tv .rib .w,.th-tv .rib .who{transform:none}
+.th-tv .rib .w{align-self:stretch;display:flex;align-items:center;padding:0 5vh 0 3vh;font-size:11vh;letter-spacing:-.04em;color:#fff;clip-path:polygon(0 0,100% 0,calc(100% - 4vh) 100%,0 100%)}
+.th-tv .rib.A .w{background:#000}.th-tv .rib.B .w{background:var(--t-blue)}.th-tv .rib.og .w{background:var(--t-red)}.th-tv .rib.minor .w{background:#2c2f35;font-size:6vh}
+.th-tv .rib .who{padding:0 3vh;color:#000;font-size:5.4vh}
+.th-tv .rib .who small{border-radius:.3vh;font-family:var(--t-d);font-style:normal}
+.th-tv .rib.minor{height:70%;border:0}
+.th-tv .rib.go{animation:lower3 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.th-tv .rib.go .w{animation:l3w 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.th-tv .rib.minor.go{animation-duration:2s}
+@keyframes lower3{0%{transform:translateX(-120%)}16%{transform:none}84%{transform:none;opacity:1}100%{transform:translateY(40%);opacity:0}}
+@keyframes l3w{0%,10%{transform:translateX(-30%)}30%{transform:none}}
+.th-tv .sc.slam{animation:tvslam .65s cubic-bezier(.2,1.4,.4,1)}
+@keyframes tvslam{0%{transform:translateX(-30%) skewX(-12deg);opacity:0}100%{transform:none;opacity:1}}
+.th-tv #sheet .panel{border-radius:.8vh;border-top:.55vh solid var(--t-red)}
+.th-tv #toast{box-shadow:0 1vh 3vh rgba(0,0,0,.5)}
+@media (prefers-reduced-motion:reduce){.th-tv .rib.go{transform:none}}
+@media (orientation:portrait){.th-tv .sc{font-size:min(24vh,52vw)}.th-tv .rib .w{font-size:7vh}.th-tv .rib .who{font-size:3.4vh}.th-tv .team h2{font-size:4.2vh}}
+/* toast goes to the top so it never covers the lower-third */
+body.th-tv #toast{top:max(1.2vh,env(safe-area-inset-top));bottom:auto}
+
+/* ===== 득점 연출 강화 (중계 그래픽) — 총 2.6s. 0~0.6s 전체 화면 와이프, 0.35s 패널 플래시·숫자 튕김, 0.45~2.6s 득점자 자막 카드 ===== */
+.th-tv #fx{top:0;bottom:0;left:0;right:0;height:auto;overflow:hidden}
+.th-tv .rib{top:auto;bottom:calc(10vh + env(safe-area-inset-bottom));height:min(16vh,140px);left:3vw;right:3vw}
+.th-tv .rib.minor{height:min(11vh,96px)}
+/* full-screen wipe: team-colour slab + white trailing slab + giant italic GOAL, crosses the screen in ~0.6s */
+.wipe{position:absolute;inset:0;pointer-events:none;transform:translateX(-140%);display:flex;align-items:center;justify-content:center}
+.wipe i{position:absolute;top:-20%;bottom:-20%;left:-15%;right:-15%;transform:skewX(-18deg)}
+.wipe .s1{background:var(--t-blue)}
+.wipe.to-A .s1{background:#000;box-shadow:inset 0 0 0 1.2vh #fff}
+.wipe.og .s1{background:var(--t-red)}
+.wipe .s2{background:#fff;left:auto;width:14vw;right:-22vw}
+.wipe b{position:relative;font-family:var(--t-d);font-weight:900;font-style:italic;font-size:30vh;letter-spacing:-.06em;line-height:.8;color:#fff;white-space:nowrap;text-shadow:0 1.4vh 0 rgba(0,0,0,.25)}
+.wipe.og b{font-size:22vh}
+.wipe.go{animation:tvwipe .72s cubic-bezier(.7,0,.25,1) forwards}
+.wipe.go b{animation:tvwipeb .72s cubic-bezier(.7,0,.25,1) forwards}
+@keyframes tvwipe{0%{transform:translateX(-140%)}38%{transform:translateX(-4%)}58%{transform:translateX(4%)}100%{transform:translateX(150%)}}
+@keyframes tvwipeb{0%{transform:translateX(-30vw) scale(.8)}45%{transform:none scale(1)}60%{transform:translateX(3vw) scale(1.04)}100%{transform:translateX(30vw)}}
+/* lower-third name card: arrives after the wipe, plate first, then name slides out of it */
+.th-tv .rib.go{animation:lower3x 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.th-tv .rib.minor.go{animation:lower3m 2s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes lower3x{0%,17%{transform:translateX(-120%);opacity:1}32%{transform:none}86%{transform:none;opacity:1}100%{transform:translateY(60%);opacity:0}}
+@keyframes lower3m{0%{transform:translateX(-120%)}16%{transform:none}84%{transform:none;opacity:1}100%{transform:translateY(40%);opacity:0}}
+.th-tv .rib.go .w{animation:l3wx 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.th-tv .rib.go .who{animation:l3who 2.6s cubic-bezier(.16,1,.3,1) forwards}
+.th-tv .rib.minor.go .w,.th-tv .rib.minor.go .who{animation-duration:2s}
+@keyframes l3wx{0%,24%{transform:scaleX(.2);transform-origin:left}36%{transform:none}}
+@keyframes l3who{0%,30%{transform:translateX(-14vw);opacity:0}44%{transform:none;opacity:1}}
+/* shine sweeping across the name card once */
+.th-tv .rib::before{content:"";position:absolute;top:0;bottom:0;width:18vw;left:-25vw;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);z-index:2;pointer-events:none}
+.th-tv .rib.go::before{animation:shine 2.6s ease-out forwards}
+@keyframes shine{0%,40%{left:-25vw}62%,100%{left:110vw}}
+/* own goal: red plate + 자책골 tag so it is never mistaken for a normal goal */
+.th-tv .rib.og .who::after{content:"자책골 · 상대 득점";font-family:var(--t-d);font-style:normal;font-size:2.2vh;font-weight:900;background:var(--t-red);color:#fff;padding:.6vh 1.2vh;border-radius:.3vh;margin-left:1.2vh}
+.th-tv .rib.og{box-shadow:0 0 0 .5vh var(--t-red),0 1.2vh 3vh rgba(0,0,0,.55)}
+/* scoring team panel: team-colour flash + glow ring, starts when the wipe passes */
+.th-tv .team.A .flash{background:#fff}.th-tv .team.B .flash{background:#5b8cff}
+.th-tv .team.hit .flash{animation:tvflash .95s ease-out .3s both}
+@keyframes tvflash{0%{opacity:0}12%{opacity:.9}100%{opacity:0}}
+.th-tv .team.hit{animation:tvhit .95s cubic-bezier(.2,1.4,.4,1) .3s both}
+@keyframes tvhit{0%{transform:none}15%{transform:scale(1.035)}35%{transform:scale(.985)}60%{transform:scale(1.01)}100%{transform:none}}
+/* score number: drops in from above and bounces (delayed so it lands right after the wipe) */
+.th-tv .sc.slam{animation:tvbounce .95s cubic-bezier(.3,1.6,.5,1) .32s both}
+@keyframes tvbounce{0%{transform:translateY(-60%) skewX(-12deg) scale(1.3);opacity:0}35%{transform:translateY(6%) scale(1.08,.9);opacity:1}55%{transform:translateY(-4%) scale(.97,1.04)}75%{transform:translateY(1%)}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.wipe{display:none}.th-tv .rib.go,.th-tv .rib.minor.go{transform:none;opacity:1}.th-tv .rib.go .w,.th-tv .rib.go .who{transform:none;opacity:1}}
+@media (orientation:portrait){.wipe b{font-size:16vh}.wipe.og b{font-size:11vh}}
+/* sound toggle (bottom-left) */
+#sndb{position:fixed;left:max(2.4vw,env(safe-area-inset-left));bottom:max(1.6vh,env(safe-area-inset-bottom));z-index:6;min-height:6.2vh;min-width:6.2vh;padding:0 2vh;border:0;border-radius:.4vh;background:var(--t-mist);color:#000;font-size:3vh;line-height:1;touch-action:manipulation}
+#sndb.off{background:#3a3d43;color:#fff}
+#sndb.lock{animation:sndpulse 1.6s ease-in-out infinite}@keyframes sndpulse{50%{opacity:.45}}@media (prefers-reduced-motion:reduce){#sndb.lock{animation:none;opacity:.6}}
+#sndb:active{transform:scale(.95)}
+@media (orientation:portrait){#sndb{bottom:calc(max(1.6vh,env(safe-area-inset-bottom)) + 7.4vh)}}
+/* 📣 관중 응원 배경 토글 (🔊 오른쪽) */
+#crwb{position:fixed;left:calc(max(2.4vw,env(safe-area-inset-left)) + 8.6vh);bottom:max(1.6vh,env(safe-area-inset-bottom));z-index:6;min-height:6.2vh;padding:0 2vh;border:0;border-radius:.4vh;background:#3a3d43;color:#fff;font-size:2.4vh;font-weight:900;font-style:italic;line-height:1;letter-spacing:.02em;touch-action:manipulation;display:flex;align-items:center;gap:.8vh;font-family:var(--ko,inherit)}
+#crwb.on{background:#ffd400;color:#000}
+#crwb:active{transform:scale(.95)}
+#unlk{position:fixed;inset:0;z-index:45;display:none;align-items:center;justify-content:center;background:rgba(8,9,11,.58);-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;user-select:none}
+#unlk.show{display:flex}
+#unlk .pl{display:flex;align-items:stretch;transform:skewX(-10deg);box-shadow:0 1.4vh 4vh rgba(0,0,0,.55);animation:unlkin .35s ease-out}
+#unlk .pl i{display:block;width:1.6vh;background:var(--t-red,#df1c2f)}
+#unlk .pl b{display:block;background:var(--t-carbon,#181a1d);color:#fff;padding:2.6vh 5vh 2.2vh;font-family:var(--t-d,inherit);font-weight:900;font-size:6vh;letter-spacing:-.01em;line-height:1.1;white-space:nowrap}
+#unlk .pl b>*{display:block;transform:skewX(10deg)}
+#unlk .pl small{margin-top:1vh;font-size:2.1vh;font-weight:800;letter-spacing:.14em;color:var(--t-silver,#e4e6e7);opacity:.85}
+#unlk .pl em{display:block;width:1.6vh;background:var(--t-mist,#f7f7f7);margin-left:.8vh}
+#unlk .pl b span{animation:unlkp 1.6s ease-in-out infinite}
+@keyframes unlkp{50%{opacity:.62}}@keyframes unlkin{from{opacity:0;transform:skewX(-10deg) scale(.94)}}
+@media (orientation:portrait){#unlk .pl b{font-size:3.6vh;padding:2vh 3.4vh 1.8vh}#unlk .pl small{font-size:1.5vh}}
+@media (prefers-reduced-motion:reduce){#unlk .pl,#unlk .pl b span{animation:none}}
+@media (orientation:portrait){#crwb{bottom:calc(max(1.6vh,env(safe-area-inset-bottom)) + 7.4vh)}}
+</style></head><body class="th-tv"><div id="app"><div class="msg">불러오는 중…</div></div>
+<script>
+// 아축 아이패드 점수판 · 중계 그래픽 디자인(Refero Peloton DESIGN.md → /workspace/achuk-board-sport-alt/design/peloton.design.md). 점수 = 저장된 경기 기록(골·자책골·상대골)만. 어시·슈퍼세이브는 득점 없음. 폴링 없음.
+let STORE='';
+// CRYPTO-BEGIN (kept self-contained so test_pages_crypto.mjs can run exactly this code in node)
+// File format: {v:1, alg:'PBKDF2-SHA256/AES-256-GCM', salt, iter, iv, ct, updated}  (salt/iv/ct = base64; ct includes the GCM tag)
+// Passphrase = #k=<key> from the URL fragment (fragments are never sent to the server).
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const KEYC = {salt:null, iter:0, pass:null, key:null};
+async function aesKey(pass, salt, iter){
+  if(KEYC.key && KEYC.salt===salt && KEYC.iter===iter && KEYC.pass===pass) return KEYC.key; // derive once
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64d(salt), iterations:iter, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  Object.assign(KEYC, {salt, iter, pass, key}); return key;
+}
+async function decryptDoc(doc, pass){
+  if(!doc || doc.v!==1 || !doc.salt || !doc.iv || !doc.ct || !(doc.iter>0)) throw new Error('형식 오류');
+  const key = await aesKey(pass, doc.salt, doc.iter);
+  let pt;
+  try{ pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64d(doc.iv)}, key, b64d(doc.ct)); }
+  catch(e){ const err=new Error('키 불일치'); err.badKey=true; throw err; }
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+// CRYPTO-END
+// RECORD-LOGIC-BEGIN
+const REC_KINDS=['골','어시','자책골','세이브','유효슈팅','철벽수비'];
+function recLabel(k){return k==='세이브'?'슈퍼세이브':k}
+function assertAnon(obj){
+  const bad=['uid','user','writer','device','deviceId','by'];
+  for(const k of bad) if(obj&&Object.prototype.hasOwnProperty.call(obj,k)) throw new Error('identity');
+  return obj;
+}
+function scoreFromEvents(ev, match){
+  if(match&&match.base) return [+match.sa||0, +match.sb||0];
+  const seen={}; let a=0,b=0;
+  (ev||[]).forEach(g=>{
+    if(!g) return;
+    const id=g.eid||g.eventId||'';
+    if(id){ if(seen[id]) return; seen[id]=1; }
+    if(g.k==='골'){ if(g.t==='A') a++; else b++; }
+    else if(g.k==='자책골'){ if(g.t==='A') b++; else a++; }
+    else if(g.k==='상대골') b++;
+  });
+  return [a,b];
+}
+function persistedEvents(match, live, removed){
+  const rm=Object.assign({}, (match&&match.removedEvents)||{}, removed||{});
+  const out={};
+  ((match&&match.goals)||[]).forEach((g,i)=>{
+    const eid=g&&(g.eid||g.eventId||('legacy-'+i));
+    if(!eid||rm[eid]) return;
+    out[eid]=Object.assign({}, g, {eid});
+  });
+  Object.keys(live||{}).forEach(k=>{
+    const e=live[k]; if(!e) return;
+    const eid=e.eid||e.eventId||k;
+    if(!eid||rm[eid]||out[eid]||e.saved===false) return;
+    out[eid]=Object.assign({}, e, {eid});
+  });
+  return Object.values(out);
+}
+function applyPersistedEvent(match, ev){
+  const m=JSON.parse(JSON.stringify(match||{}));
+  const goals=Array.isArray(m.goals)?m.goals:[];
+  if(!goals.some(g=>g&&(g.eid===ev.eid||g.eventId===ev.eid))) goals.push({p:ev.p,k:ev.k,t:ev.t,eid:ev.eid,ts:ev.ts||0});
+  m.goals=goals;
+  if(!m.base){ const sc=scoreFromEvents(goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return m;
+}
+function addEventRequest(key, match, ev){
+  return assertAnon({key:key, op:'addEvent', id:match.id, eventId:ev.eid, p:ev.p, k:ev.k, t:ev.t});
+}
+function removeEventRequest(key, match, eventId){
+  return assertAnon({key:key, op:'removeEvent', id:match.id, eventId:eventId});
+}
+function livePayload(ev){ return assertAnon({p:ev.p, k:ev.k, t:ev.t}); }
+function entryAllowed(match, p, k, t){
+  if(!match||match.deleted||String(match.id||'').startsWith('pv-')) return false;
+  if(k==='상대골') return match.type==='external' && t==='B';
+  if(REC_KINDS.indexOf(k)<0) return false;
+  if(t!=='A'&&t!=='B') return false;
+  const roster=(match[t]&&match[t].players)||[];
+  return roster.indexOf(p)>=0;
+}
+function tapGuard(state, key, now){
+  const s=state||{busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  if(s.busyKey) return {ok:false, reason:'busy', state:s};
+  if(s.lastOk && s.lastKey===key && now-s.lastTs<800) return {ok:false, reason:'dup', state:s};
+  return {ok:true, state:{busyKey:key, lastKey:key, lastTs:now, lastOk:false}};
+}
+function finishGuard(state, ok){
+  return {busyKey:null, lastKey:state.lastKey, lastTs:state.lastTs, lastOk:!!ok};
+}
+async function saveRecord(match, ev, key, fetchImpl){
+  const request=addEventRequest(key, match, ev);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const base=(j.match&&typeof j.match==='object')?j.match:match;
+  return {ok:true, match:applyPersistedEvent(base, ev), request:request};
+}
+async function deleteRecord(match, eventId, key, fetchImpl){
+  const request=removeEventRequest(key, match, eventId);
+  let j;
+  try{ j=await fetchImpl(request); }
+  catch(e){ return {ok:false, match:match, error:(e&&e.message)||'fail'}; }
+  if(!j||j.ok!==true||j.applied!==true) return {ok:false, match:match, error:(j&&j.error)||'fail'};
+  const m=JSON.parse(JSON.stringify((j.match&&typeof j.match==='object')?j.match:match));
+  m.removedEvents=Object.assign({}, m.removedEvents, {[eventId]:1});
+  m.goals=(m.goals||[]).filter(g=>g&&g.eid!==eventId);
+  if(!m.base){ const sc=scoreFromEvents(m.goals, m); m.sa=sc[0]; m.sb=sc[1]; }
+  return {ok:true, match:m, request:request};
+}
+function createRecorder(){
+  let guard={busyKey:null,lastKey:'',lastTs:0,lastOk:false};
+  return {
+    async add(match, ev, key, fetchImpl, now){
+      if(!entryAllowed(match, ev.p, ev.k, ev.t)) return {ok:false, reason:'reject', match:match};
+      const tap=ev.p+'|'+ev.k+'|'+ev.t;
+      const g=tapGuard(guard, tap, now==null?Date.now():now);
+      if(!g.ok) return {ok:false, reason:g.reason, match:match};
+      guard=g.state;
+      let res;
+      try{ res=await saveRecord(match, ev, key, fetchImpl); }
+      catch(e){ res={ok:false, match:match, error:String(e&&e.message||e)}; }
+      guard=finishGuard(guard, !!(res&&res.ok));
+      if(!res.ok) return {ok:false, reason:'fail', match:match, error:res.error};
+      return {ok:true, reason:'saved', match:res.match, request:res.request};
+    }
+  };
+}
+// RECORD-LOGIC-END
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY=()=>new Date(Date.now()+9*36e5).toISOString().slice(0,10),Q=new URLSearchParams(location.search);
+let KEY=(new URLSearchParams(location.hash.slice(1))).get('k')||'';
+try{if(KEY){localStorage.setItem('achuk_k',KEY);history.replaceState(null,'',location.pathname+location.search)}else KEY=localStorage.getItem('achuk_k')||''}catch(e){}
+function keyForm(msg){$('#app').innerHTML=`<div class="keyf"><b>🔑 처음 한 번만 키를 입력해 주세요</b>${msg?`<div class="err">${msg}</div>`:''}<input id="kin" type="password" autocomplete="off" placeholder="키 또는 #k= 링크 붙여넣기"><button id="kok">저장하고 열기</button><small>이 기기에만 저장돼요</small></div>`;
+ $('#kok').onclick=()=>{let v=$('#kin').value.trim();const m=v.match(/[#&]k=([^&]+)/);if(m)v=decodeURIComponent(m[1]);if(!v)return;try{localStorage.setItem('achuk_k',v)}catch(e){}KEY=v;load()}}
+let DB={},M=null,EV={},RM={},F=null,d=null,space='',KICK=0;
+async function get(){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({key:KEY,op:'get',matches:{}})});const j=await r.json();if(!j.ok)throw new Error(j.error||'server');DB=j.matches||{}}
+function pick(){const q=Q.get('m');if(q&&/^pv-/.test(q))return{id:q,date:TODAY(),A:{name:'블랙'},B:{name:'블루'},goals:[]};
+ if(q&&DB[q])return DB[q];const t=Q.get('d')||TODAY();return Object.values(DB).filter(x=>x&&!x.deleted&&String(x.date).slice(0,10)===t).sort((a,b)=>(+String(b.id).slice(2)||0)-(+String(a.id).slice(2)||0))[0]||null}
+function events(){if(!M)return [];return persistedEvents(M,EV,RM)}
+function score(){return scoreFromEvents(events(), M)}
+let LAST=null,SW=false;try{SW=localStorage.getItem('achuk_board_sw')==='1'}catch(e){}
+function canRec(){if(!M||!STORE||M.deleted||String(M.id).startsWith('pv-'))return false;if(String(M.date||'').slice(0,10)<TODAY())return false;if(M.type==='external')return true;return ((M.A&&M.A.players)||[]).length+((M.B&&M.B.players)||[]).length>0}
+function newEid(){const alphabet='-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';const bytes=crypto.getRandomValues(new Uint8Array(20));let s='';for(let i=0;i<20;i++)s+=alphabet[bytes[i]%alphabet.length];return s}
+function toast(msg,undo,bad){const el=$('#toast');if(!el)return;el.hidden=false;el.classList.toggle('bad',!!bad);el.innerHTML=`<span>${esc(msg)}</span>`+(undo?'<button type="button" id="undob">되돌리기</button>':'');clearTimeout(el._t);el._t=setTimeout(()=>{el.hidden=true},undo?6000:2200);if(undo){const b=$('#undob');if(b)b.onclick=undo}}
+async function postJSON(body){const r=await fetch(STORE,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});let j=null;try{j=await r.json()}catch(e){throw new Error('bad-response')}return j}
+function publishLive(ev){if(!F||!d||!space||!M)return;const payload=livePayload(ev);F.set(F.ref(d,`achuk/${space}/live/${M.id}/events/${ev.eid}`),Object.assign({},payload,{ts:F.serverTimestamp()})).catch(()=>{});F.runTransaction(F.ref(d,`achuk/${space}/live/${M.id}/seq`),n=>(n||0)+1).catch(()=>{})}
+function publishRemoved(eventId){if(!F||!d||!space||!M)return;if(!/^[-_A-Za-z0-9]{20}$/.test(eventId))return;F.set(F.ref(d,`achuk/${space}/live/${M.id}/removed/${eventId}`),F.serverTimestamp()).catch(()=>{})}
+const REC=createRecorder();
+let SEL=null,ASST=null,SHEET=false,SHEET_IDLE=null,SHEET_SAVING=0,SHEET_IDLE_DUE=false;
+const SHEET_IDLE_MS=5000;
+function sheetClearIdle(){if(SHEET_IDLE){clearTimeout(SHEET_IDLE);SHEET_IDLE=null}const bar=document.querySelector('#sheet .idlebar');if(bar)bar.style.animation='none'}
+function sheetClose(){SHEET=false;SHEET_IDLE_DUE=false;sheetClearIdle();const el=$('#sheet');if(el)el.hidden=true}
+function sheetArmIdle(){sheetClearIdle();if(!SHEET)return;const bar=document.querySelector('#sheet .idlebar');if(bar){bar.style.animation='none';void bar.offsetWidth;bar.style.animation='sheetidle '+SHEET_IDLE_MS+'ms linear forwards'}
+ SHEET_IDLE=setTimeout(()=>{SHEET_IDLE=null;if(!SHEET)return;if(SHEET_SAVING){SHEET_IDLE_DUE=true;return}sheetClose()},SHEET_IDLE_MS)}
+function sheetBindIdle(el){if(!el||el._idleBound)return;el._idleBound=true;
+ const go=e=>{if(!SHEET)return;const panel=el.querySelector('.panel');if(panel&&panel.contains(e.target))sheetArmIdle()};
+ ['pointerdown','touchstart','click'].forEach(tp=>el.addEventListener(tp,go,{capture:true}))}
+function paintSheet(){const el=$('#sheet');if(!el||!M)return;if(!SHEET){sheetClose();return}el.hidden=false;sheetBindIdle(el);
+ const chips=sd=>((M[sd]&&M[sd].players)||[]).map(p=>`<button type="button" class="pc ${sd}${SEL&&SEL.p===p&&SEL.t===sd?' sel':''}" data-p="${esc(p)}" data-t="${sd}">${esc(p)}</button>`).join('')||'<div class="hint">선수 없음</div>';
+ const kinds=REC_KINDS.map(k=>`<button type="button" data-k="${k}">${esc(recLabel(k))}</button>`).join('');
+ const opp=M.type==='external'?'<button type="button" class="pc B" id="opp">⚽ 상대팀 득점</button>':'';
+ const asOn=ASST&&ASST.until>Date.now();
+ const asBody=asOn?`<div class="assist"><div class="hint">⚽ ${esc(ASST.scorer)} 골 · 어시스트는? (점수는 그대로)</div><div class="aschips">${((M[ASST.t]&&M[ASST.t].players)||[]).filter(p=>p!==ASST.scorer).map(p=>`<button type="button" class="pc ${ASST.t}" data-as="${esc(p)}">${esc(p)}</button>`).join('')}</div><button type="button" class="ghost" id="asnone">어시 없음</button></div>`:`<div class="cols"><div><div class="tl a"><span>BLACK</span>${esc(M.A&&M.A.name||'A')}</div>${chips('A')}</div><div><div class="tl b"><span>BLUE</span>${esc(M.B&&M.B.name||'B')}</div>${M.type==='external'?opp:chips('B')}</div></div><div class="kinds">${kinds}</div><div class="hint" id="rst">${SEL?esc(SEL.p)+' 선택됨 · 종류를 누르면 저장':'선수를 먼저 고르세요'}</div>`;
+ el.innerHTML=`<div class="panel${asOn?' asmode':''}" role="dialog" aria-label="기록 등록"><div class="idlebar" aria-hidden="true"></div><h3>${asOn?'어시스트':'기록 등록'}</h3>${asOn?'':`<div class="hint">선수를 고른 뒤 종류를 누르면 저장돼요. 점수는 저장이 끝난 뒤에만 바뀌어요.</div>`}${asBody}</div>`;
+ el.onclick=e=>{if(e.target===el)sheetClose()};
+ const panel=el.querySelector('.panel');if(panel)panel.onclick=e=>e.stopPropagation();
+ el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,t=b.dataset.t;SEL=SEL&&SEL.p===p&&SEL.t===t?null:{p,t};paintSheet()});
+ el.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>chooseKind(b.dataset.k));
+ el.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{const p=b.dataset.as,t=ASST&&ASST.t;ASST=null;if(p&&t)commitRec(p,'어시',t);else paintSheet()});
+ const none=$('#asnone');if(none)none.onclick=()=>{ASST=null;sheetClose()};
+ const oppB=$('#opp');if(oppB)oppB.onclick=()=>commitRec(M.B&&M.B.name||'상대팀','상대골','B');
+ sheetArmIdle()}
+// KICKOFF-AUTO (2026-11-17): 관리 페이지와 같은 규칙. 수동 킥오프·종료·지난 경기·base는 건드리지 않음. 값이 첫 기록 시각으로 같아 여러 기기가 동시에 해도 결과 동일.
+function autoKickTs(m,today){if(!m||m.deleted||m.base||m.kick||m.end||String(m.id||'').startsWith('pv-'))return 0;if(String(m.date||'').slice(0,10)!==today)return 0;const t=(m.goals||[]).map(g=>+g.ts).filter(Boolean);return t.length?Math.min(...t):0}
+const AUTOK={};async function autoKick(){const m0=M,k=autoKickTs(m0,TODAY());if(!k||AUTOK[m0.id])return;AUTOK[m0.id]=1;try{const m=JSON.parse(JSON.stringify(m0));m.kick=k;m.updatedAt=Date.now();const j=await postJSON({key:KEY,op:'put',matches:{[m.id]:m}});if(!j||!j.ok){AUTOK[m0.id]=0;return}if(j.matches)DB=j.matches;const s=DB[m.id];if(M&&M.id===m.id){M=s&&s.kick?s:Object.assign({},M,{kick:k});DB[m.id]=M;render()}}catch(e){AUTOK[m0.id]=0}}
+async function commitRec(p,k,t){if(!M)return;SHEET_SAVING++;
+ try{const ev={eid:newEid(),p,k,t,ts:Date.now()};const res=await REC.add(M,ev,KEY,postJSON,Date.now());
+ if(!res.ok){if(res.reason==='fail')toast('저장되지 않았어요. 점수는 그대로입니다.',null,true);else if(res.reason==='reject')toast('이 기록은 저장할 수 없어요',null,true);const st=$('#rst');if(st&&res.reason==='fail')st.textContent='저장 실패 · 점수 유지';if(SHEET&&SHEET_IDLE_DUE){SHEET_IDLE_DUE=false;sheetClose()}else if(SHEET)sheetArmIdle();return}
+ M=res.match;if(M&&M.id)DB[M.id]=M;render();publishLive(ev);SEL=null;autoKick();
+ if(k==='골'&&M[t]&&(M[t].players||[]).length>1){ASST={t,scorer:p,until:Date.now()+8000};setTimeout(()=>{if(ASST&&ASST.scorer===p){ASST=null;if(SHEET)paintSheet()}},8100)}else ASST=null;
+ if(SHEET){SHEET_IDLE_DUE=false;if(ASST)paintSheet();else sheetClose()}
+ toast('저장됐어요',async()=>{const rm=await deleteRecord(M,ev.eid,KEY,postJSON);if(!rm.ok){toast('삭제되지 않았어요. 점수는 그대로입니다.',null,true);return}M=rm.match;if(M&&M.id)DB[M.id]=M;RM[ev.eid]=1;delete EV[ev.eid];if(ASST&&ASST.scorer===p)ASST=null;render();publishRemoved(ev.eid);if(SHEET)paintSheet();toast('되돌렸어요')})}
+ finally{SHEET_SAVING=Math.max(0,SHEET_SAVING-1)}}
+function chooseKind(k){if(!SEL){toast('먼저 선수를 탭하세요');const st=$('#rst');if(st)st.textContent='선수를 먼저 고르세요';return}commitRec(SEL.p,k,SEL.t)}
+const SEEN={},BOOT_AT=Date.now();let BOOTED=false;
+const RM_MOTION=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+const KLABEL={'골':'GOAL','자책골':'OWN GOAL','상대골':'GOAL','어시':'ASSIST','세이브':'SUPER SAVE','유효슈팅':'SHOT ON TARGET','철벽수비':'WALL'};
+// ---- 득점 사운드 (아나운서 TTS + 합성 함성, /achuk/sfx/). 첫 탭에서 잠금 해제, 🔊/🔇 설정은 이 기기 localStorage. 연출(새 기록)과 같은 때만 재생.
+const SFX_BASE='../../achuk/sfx/',SFX={goal:'goal.mp3',owngoal:'owngoal.mp3',opp:'opp.mp3',save:'save.mp3',shot:'shot.mp3',defense:'defense.mp3',assist:'assist.mp3'};
+const SFXQ='?v=20261117231520';  // 소리 파일 교체 시 아이패드 캐시 무시(버전마다 새로 받음)
+let SND=true;try{SND=localStorage.getItem('achuk_board_snd')!=='0'}catch(e){}
+// iOS: 무음 모드에서도 소리가 나도록 오디오 세션을 '재생'으로 (Safari 16.4+/iPadOS 17+)
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+// 소리 규칙(2026-11-17 snd6fix): ① 잠금 해제는 페이지당 1번(+멈춘 경우에만 다시) ② 해제할 때 실제 소리 파일은 절대 재생 안 함(무음 1샘플/무음 클립만)
+// ③ 기록 1건당 소리 1번(같은 기록 id 중복 무시) ④ 재생 경로는 하나: WebAudio(미리 디코딩) 우선, WebAudio가 없거나 디코딩 실패일 때만 HTMLAudio ⑤ 새 소리 전 이전 소리 정지
+const SNDLOG=window.__sndLog={unlocked:false,unlocks:0,plays:[]};
+let ACTX=null,SBUF={},SFAIL={},SLOADING=false,SEL1=null,SCUR=null,SDONE={},SLAST={k:'',at:0};
+const SILENT_WAV='data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA==';
+function sfxLoad(){if(SLOADING||!ACTX)return;SLOADING=true;Object.keys(SFX).forEach(k=>{fetch(SFX_BASE+SFX[k]+SFXQ).then(r=>{if(!r.ok)throw new Error('sfx');return r.arrayBuffer()}).then(ab=>new Promise((ok,no)=>{const p=ACTX.decodeAudioData(ab,ok,no);if(p&&p.then)p.then(ok,no)})).then(b=>{SBUF[k]=b}).catch(()=>{SFAIL[k]=true})})}
+function sfxUnlock(){
+ // 이미 해제됐고 컨텍스트가 돌고 있으면 아무것도 안 함(탭마다 반복 금지)
+ if(SNDLOG.unlocked&&(!ACTX||ACTX.state==='running'))return;
+ try{if(!ACTX){const C=window.AudioContext||window.webkitAudioContext;if(C)ACTX=new C();try{ACTX.addEventListener('statechange',()=>{if(ACTX.state==='running'){if(OVRELOCK){OVRELOCK=false;updOv()}}else if(!document.hidden)ovRecheck()})}catch(e){}}
+  if(ACTX){if(ACTX.state!=='running')ACTX.resume().catch(()=>{});const b=ACTX.createBuffer(1,1,22050),s=ACTX.createBufferSource();s.buffer=b;s.connect(ACTX.destination);s.start(0);sfxLoad()}
+  else if(!SEL1){SEL1=new Audio(SILENT_WAV);SEL1.setAttribute('playsinline','');const p=SEL1.play();if(p&&p.catch)p.catch(()=>{})}  // WebAudio 없는 기기만: 무음 클립으로 요소 해제
+ }catch(e){}
+ if(!SNDLOG.unlocked){SNDLOG.unlocked=true;paintSnd()}SNDLOG.unlocks++;OVRELOCK=false;updOv();if(CRW)setTimeout(crowdSync,0)}
+['touchend','click','keydown'].forEach(t=>document.addEventListener(t,sfxUnlock,{capture:true,passive:true}));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ACTX&&ACTX.state!=='running')ACTX.resume().catch(()=>{})});
+function sfxStop(){try{if(SCUR){SCUR.stop();SCUR=null}}catch(e){SCUR=null}try{if(SEL1&&!SEL1.paused)SEL1.pause()}catch(e){}}
+function sfx(k,id){const now=Date.now();
+ if(id){if(SDONE[id])return;SDONE[id]=1}else if(SLAST.k===k&&now-SLAST.at<800)return;   // 같은 기록 중복 트리거 무시
+ SLAST={k,at:now};const rec={k,id:id||'',at:now,on:SND,played:false,via:''};SNDLOG.plays.push(rec);if(!SND)return;
+ sfxStop();
+ const useWA=ACTX&&!SFAIL[k];
+ if(useWA){const go=()=>{if(!SBUF[k]||SLAST.at!==now)return;try{const s=ACTX.createBufferSource();s.buffer=SBUF[k];s.connect(ACTX.destination);s.onended=()=>{if(SCUR===s)SCUR=null};s.start(0);SCUR=s;rec.played=true;rec.via='webaudio';crowdDuck(SBUF[k].duration)}catch(e){}};
+  if(ACTX.state==='running')go();else ACTX.resume().then(go).catch(()=>{});return}
+ // WebAudio 없음/디코딩 실패일 때만 HTMLAudio 하나로
+ try{if(!SEL1){SEL1=new Audio();SEL1.setAttribute('playsinline','')}SEL1.src=SFX_BASE+SFX[k]+SFXQ;const p=SEL1.play();rec.via='html';crowdDuck(3);if(p&&p.then)p.then(()=>{rec.played=true}).catch(()=>{});else rec.played=true}catch(e){}}
+// ---- 📣 관중 응원 배경 루프 (/achuk/sfx/crowd_loop.mp3, CC0 실제 응원 녹음으로 만든 45초 이음매 없는 루프). 🔊(득점 소리)와 별개, 기본 꺼짐, 이 기기 localStorage.
+// 잠금 해제 뒤에만 재생 · 소스는 항상 1개 · 득점 소리 동안 −10dB 덕킹 · 화면 숨기면 정지, 돌아오면 다시
+const CROWD_URL=SFX_BASE+'crowd_loop.mp3'+SFXQ,CROWD_LV=1.0,CROWD_DUCK=0.316;
+let CRW=false;try{CRW=localStorage.getItem('achuk_board_crowd')==='1'}catch(e){}
+const CRLOG=window.__crowdLog={starts:0,stops:0,ducks:0};
+let CRBUF=null,CRLOAD=false,CRFAIL=false,CRCUR=null,CRDUCK=null,CREL=null,CRLIVE=0;
+function crowdLoad(){if(CRLOAD||!ACTX)return;CRLOAD=true;fetch(CROWD_URL).then(r=>{if(!r.ok)throw new Error('crowd');return r.arrayBuffer()}).then(ab=>new Promise((ok,no)=>{const p=ACTX.decodeAudioData(ab,ok,no);if(p&&p.then)p.then(ok,no)})).then(b=>{CRBUF=b;crowdSync()}).catch(()=>{CRFAIL=true;crowdSync()})}
+function crowdTrim(b){const d=b.getChannelData(0),n=d.length,th=1e-4;let a=0,e=n-1;while(a<Math.min(n,8192)&&Math.abs(d[a])<th)a++;while(e>Math.max(0,n-16384)&&Math.abs(d[e])<th)e--;return [a/b.sampleRate,(e+1)/b.sampleRate]}  // mp3 앞뒤 무음 패딩 건너뛰기(이음매 끊김 방지)
+function gRamp(p,v,sec){const t=ACTX.currentTime;try{p.cancelScheduledValues(t);p.setValueAtTime(p.value,t);p.linearRampToValueAtTime(v,t+sec)}catch(e){p.value=v}}
+function crowdStart(){if(!SNDLOG.unlocked||!CRW||document.hidden)return;
+ if(ACTX&&!CRFAIL){if(CRCUR)return;if(!CRBUF){crowdLoad();return}
+  if(ACTX.state!=='running'){ACTX.resume().then(()=>{if(ACTX.state==='running')crowdSync()}).catch(()=>{});return}
+  if(!CRDUCK){CRDUCK=ACTX.createGain();CRDUCK.gain.value=1;CRDUCK.connect(ACTX.destination)}
+  const s=ACTX.createBufferSource(),g=ACTX.createGain(),tr=crowdTrim(CRBUF);s.buffer=CRBUF;s.loop=true;s.loopStart=tr[0];s.loopEnd=tr[1];g.gain.value=0;s.connect(g);g.connect(CRDUCK);
+  s.onended=()=>{CRLIVE=Math.max(0,CRLIVE-1)};s.start(0,tr[0]);CRLIVE++;CRCUR={s,g};CRLOG.starts++;gRamp(g.gain,CROWD_LV,0.5);return}
+ if(!CREL){CREL=new Audio(CROWD_URL);CREL.loop=true;CREL.setAttribute('playsinline','')}   // WebAudio 없음/디코딩 실패일 때만
+ if(CREL.paused){try{CREL.volume=0.8}catch(e){}const p=CREL.play();if(p&&p.catch)p.catch(()=>{});CRLOG.starts++}}
+function crowdStop(fast){if(CRCUR){const {s,g}=CRCUR;CRCUR=null;CRLOG.stops++;if(fast||!ACTX){try{s.stop()}catch(e){}}else{gRamp(g.gain,0,0.5);setTimeout(()=>{try{s.stop()}catch(e){}},560)}}
+ if(CREL&&!CREL.paused){try{CREL.pause()}catch(e){}CRLOG.stops++}}
+function crowdSync(){if(CRW&&!document.hidden&&SNDLOG.unlocked)crowdStart();else crowdStop(document.hidden)}
+function crowdDuck(sec){if(!CRCUR||!CRDUCK||!ACTX)return;CRLOG.ducks++;const p=CRDUCK.gain,t=ACTX.currentTime,d=Math.max(1,+sec||3);
+ try{p.cancelScheduledValues(t);p.setValueAtTime(p.value,t);p.linearRampToValueAtTime(CROWD_DUCK,t+0.25);p.setValueAtTime(CROWD_DUCK,t+d-0.2);p.linearRampToValueAtTime(1,t+d+0.6)}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)crowdStop(true);else setTimeout(crowdSync,50)});
+function paintCrowd(){const b=$('#crwb');if(!b)return;setTimeout(updOv,0);b.classList.toggle('on',CRW);b.setAttribute('aria-pressed',CRW?'true':'false');b.title=CRW?'관중 응원 끄기':'관중 응원 켜기'}
+// ---- 소리 켜기 안내 오버레이(2026-11-17 unlockov): 소리가 잠겨 있고 🔊 또는 📣가 켜져 있을 때만 화면 가운데 크게.
+// 탭하면 기존 1회 해제(무음 버퍼만, 실제 소리 파일 재생 없음) 후 사라짐. 아이패드 잠금·백그라운드 뒤 자동 재개 실패 시 다시 표시.
+// 표시만 할 뿐 실시간 갱신·렌더는 그대로 진행(오버레이는 #app 밖 별도 요소).
+let OVRELOCK=false;
+function ovEl(){let o=document.getElementById('unlk');if(o||!document.body)return o;
+ o=document.createElement('div');o.id='unlk';o.setAttribute('role','button');o.setAttribute('aria-label','탭해서 소리 켜기');o.tabIndex=0;
+ o.innerHTML='<div class="pl"><i></i><b><span>🔊 탭해서 소리 켜기</span><small>TAP TO ENABLE SOUND</small></b><em></em></div>';
+ const tap=ev=>{if(ev.type==='touchend'&&ev.cancelable)ev.preventDefault();OVRELOCK=false;sfxUnlock();if(ACTX&&ACTX.state!=='running')ACTX.resume().catch(()=>{});o.classList.remove('show');if(CRW)setTimeout(crowdSync,0)};
+ o.addEventListener('touchend',tap,{passive:false});o.addEventListener('click',tap);o.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' ')tap(ev)});
+ document.body.appendChild(o);return o}
+function updOv(){const o=ovEl();if(!o)return;const show=(SND||CRW)&&!document.hidden&&(!SNDLOG.unlocked||OVRELOCK);o.classList.toggle('show',show);window.__ovShown=show}
+function ovRecheck(){if(!ACTX||document.hidden||!SNDLOG.unlocked)return;
+ if(ACTX.state==='running'){if(OVRELOCK){OVRELOCK=false;updOv()}return}
+ ACTX.resume().catch(()=>{});setTimeout(()=>{if(!document.hidden&&ACTX.state!=='running'){OVRELOCK=true;updOv()}else if(ACTX.state==='running'&&OVRELOCK){OVRELOCK=false;updOv()}},900)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(ovRecheck,100);else updOv()});
+window.addEventListener('pageshow',()=>setTimeout(ovRecheck,100));
+function paintSnd(){const b=$('#sndb');if(!b)return;b.textContent=SND?'🔊':'🔇';b.setAttribute('aria-pressed',SND?'true':'false');b.classList.toggle('off',!SND);b.classList.toggle('lock',SND&&!SNDLOG.unlocked);b.title=SND&&!SNDLOG.unlocked?'화면을 한 번 누르면 소리가 켜져요':'';updOv()}
+function celebrate(e){const fx=$('#fx');if(!fx||!e)return;const big=e.k==='골'||e.k==='자책골'||e.k==='상대골';
+ const side=e.k==='자책골'?(e.t==='A'?'B':'A'):(e.k==='상대골'?'B':e.t);const cls=e.k==='자책골'?'og':(big?side:'minor');
+ const tn=M&&M[e.t]&&M[e.t].name||'';const who=e.k==='상대골'?esc(tn||'상대팀'):`${esc(e.p||'')} <small>${esc(tn)}</small>`;
+ fx.innerHTML=`<div class="rib ${cls}" data-k="${esc(e.k)}"><span class="w">${KLABEL[e.k]||esc(e.k)}</span><span class="who">${who}</span></div>`+(big&&!RM_MOTION()?`<div class="wipe ${cls} to-${side}" aria-hidden="true"><i class="s1"></i><i class="s2"></i><b>${KLABEL[e.k]||esc(e.k)}</b></div>`:'');
+ const r=fx.firstChild;void r.offsetWidth;fx.querySelectorAll('.rib,.wipe').forEach(x=>x.classList.add('go'));clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.innerHTML=''},big?2700:2100);
+ {const sk={'골':'goal','자책골':'owngoal','상대골':'opp','세이브':'save','유효슈팅':'shot','철벽수비':'defense','어시':'assist'}[e.k];if(sk)sfx(sk,e.eid)}  // 기록 종류별 소리(같은 1회 재생 경로)
+ if(big){const tm=document.querySelector('.team.'+side);if(tm&&!RM_MOTION()){tm.classList.remove('hit');void tm.offsetWidth;tm.classList.add('hit');setTimeout(()=>tm.classList.remove('hit'),950)}}
+ window.__fx&&window.__fx(e)}
+function render(){if(!M){$('#app').innerHTML=`<div class="msg">오늘(${TODAY()}) 경기가 아직 없어요<br><small>경기가 만들어지면 다시 열어 주세요</small></div>`;return}
+ const [a,b]=score();if(!$('#sa')){$('#app').innerHTML=`<div class="top"><span class="brand"><b>아축</b><i>SCORE</i><span class="dt">${esc(String(M.date).slice(0,10))}</span></span><div class="clkw" id="clkw" hidden><span class="dot"></span><span class="livel">LIVE</span><span class="clk" id="clk"></span></div><span id="live" class="live">⚪ 연결 중…</span></div>
+ <div class="board${SW?' sw':''}" id="brd"><section class="team A" aria-label="블랙 팀"><div class="flash"></div><div class="id"><span class="tag">BLACK</span><h2>${esc(M.A&&M.A.name||'A')}</h2></div><div class="scw"><div class="sc" id="sa">0</div></div></section><div class="mid"><div class="colon">:</div></div><section class="team B" aria-label="블루 팀"><div class="flash"></div><div class="id"><span class="tag">BLUE</span><h2>${esc(M.B&&M.B.name||'B')}</h2></div><div class="scw"><div class="sc" id="sb">0</div></div></section></div><button id="swb" aria-label="좌우 바꾸기">⇄ 좌우 바꾸기</button><button id="sndb" type="button" aria-label="득점 소리 켜기/끄기">🔊</button><button id="crwb" type="button" aria-label="관중 응원 배경 소리 켜기/끄기" aria-pressed="false">📣 관중</button>${canRec()?'<button id="recb" type="button" aria-label="기록 등록">기록</button>':''}<div id="fx" aria-live="polite"></div><div id="sheet" hidden></div><div id="toast" hidden></div>`;
+  $('#swb').onclick=()=>{SW=!SW;try{localStorage.setItem('achuk_board_sw',SW?'1':'')}catch(e){}const br=$('#brd');br.classList.toggle('sw',SW);br.classList.remove('swapping');void br.offsetWidth;br.classList.add('swapping');setTimeout(()=>br.classList.remove('swapping'),500)};
+  $('#sndb').onclick=()=>{SND=!SND;try{localStorage.setItem('achuk_board_snd',SND?'1':'0')}catch(e){}paintSnd();if(SND)sfxUnlock()};paintSnd();$('#crwb').onclick=()=>{CRW=!CRW;try{localStorage.setItem('achuk_board_crowd',CRW?'1':'0')}catch(e){}paintCrowd();sfxUnlock();crowdSync()};paintCrowd();
+  const rb=$('#recb');if(rb)rb.onclick=()=>{SHEET=!SHEET;paintSheet()}}
+ const evs=events();const fresh=[];evs.forEach(e=>{if(!SEEN[e.eid]){SEEN[e.eid]=1;if(BOOTED&&!(+e.ts&&+e.ts<BOOT_AT-15000))fresh.push(e)}});
+ [['sa',a],['sb',b]].forEach(([id,v],i)=>{const el=$('#'+id);if(el.textContent!==String(v)){const up=LAST&&v>LAST[i];el.textContent=v;if(LAST){el.classList.remove('slam','drop');void el.offsetWidth;el.classList.add(up?'slam':'drop');setTimeout(()=>el.classList.remove('slam','drop'),750)}}});LAST=[a,b];
+ if(fresh.length){const pri=fresh.filter(e=>e.k==='골'||e.k==='자책골'||e.k==='상대골');celebrate((pri.length?pri:fresh)[ (pri.length?pri:fresh).length-1 ])}
+ BOOTED=true;
+ const ts=evs.map(e=>+e.ts).filter(Boolean);KICK=+M.kick||(ts.length?Math.min(...ts):0);tick()}
+function tick(){const el=$('#clk'),w=$('#clkw');if(!el||!M)return;const show=v=>{if(w)w.hidden=!v};if(!KICK||String(M.date).slice(0,10)!==TODAY()){el.textContent='';show(false);return}const s=Math.max(0,Math.floor((Date.now()-KICK)/1000));if(s>3*3600){el.textContent='';show(false);return}el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');show(true)}
+setInterval(tick,1000); // 화면 시계만 (데이터 폴링 아님)
+function status(s){const el=$('#live');if(el)el.textContent=s==='on'?'🟢 실시간':s==='re'?'🟡 재연결 중…':'⚪ 연결 중…'}
+async function live(fb){const V='10.14.1';const [A,AU,DBm]=await Promise.all([import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`),import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`)]);
+ F=DBm;const app=A.initializeApp(fb,'achuk-board');const au=AU.getAuth(app);d=F.getDatabase(app);
+ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('achuk-rt|'+KEY));space='s_'+[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+ await AU.signInAnonymously(au);let first=true;F.onValue(F.ref(d,'.info/connected'),s=>{if(s.val()){first=false;status('on')}else status(first?'':'re')});
+ const P=`achuk/${space}/live/${M.id}`;
+ F.onChildAdded(F.ref(d,P+'/events'),s=>{EV[s.key]=Object.assign({eid:s.key},s.val());render();window.__rx&&window.__rx(s.key)});
+ F.onChildAdded(F.ref(d,P+'/removed'),s=>{RM[s.key]=1;render()})}
+let BASE='../',FB=null;
+async function load(){if(!KEY){keyForm('');return}
+ try{const r=await fetch(BASE+'cfg.enc.json?_='+Date.now(),{cache:'no-store'});const c=await decryptDoc(await r.json(),KEY);STORE=c.store||'';FB=c.fb||null}
+ catch(e){if(e.badKey){try{localStorage.removeItem('achuk_k')}catch(_){}KEY='';keyForm('키가 맞지 않아요');return}$('#app').innerHTML='<div class="msg">설정을 불러오지 못했어요</div>';return}
+ try{if(STORE)await get()}catch(e){if(!/^pv-/.test(Q.get('m')||'')){$('#app').innerHTML='<div class="msg">서버 연결 실패 · 다시 열어 주세요</div>';return}}
+ M=pick();render();if(M&&FB)live(FB).catch(e=>status(''))}
+// BOOT-BEGIN
+load();
+// BOOT-END
+
+</script></body></html>
